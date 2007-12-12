@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<template name="MDIncRefresh" id="35" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.fixprotocol.org/ns/fast/td/1.1 T:\dev05\MDS\MDST\source\mdst\config\FAST\FASTTemplate.xsd">
-    <typeRef name="MDIncRefresh"/> 
+<template name="MDIncRefresh" id="35" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+    <typeRef name="MDIncRefresh"/>
     <string name="ApplVerID" id="1128"> <constant value="FIX.5.0"/> </string>
     <string name="MessageType" id="35"> <constant value="X"/> </string>
     <string name="SenderCompID" id="49"> <constant value="CME"/> </string>
