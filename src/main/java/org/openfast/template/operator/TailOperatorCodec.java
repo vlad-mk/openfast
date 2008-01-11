@@ -19,7 +19,11 @@ final class TailOperatorCodec extends OperatorCodec {
 
 	public ScalarValue getValueToEncode(ScalarValue value, ScalarValue priorValue, Scalar field) {
 	    if (value == null) {
-	        return ScalarValue.NULL;
+	    	if (priorValue == null)
+	    		return null;
+	    	if (priorValue.isUndefined() && field.getDefaultValue().isUndefined())
+	    		return null;
+    		return ScalarValue.NULL;
 	    }
 	
 	    if (priorValue == null) {
@@ -37,6 +41,8 @@ final class TailOperatorCodec extends OperatorCodec {
 		
 		if (val.length > prior.length)
 			return value;
+		if (val.length < prior.length)
+			Global.handleError(FastConstants.D3_CANT_ENCODE_VALUE, "The value " + val + " cannot be encoded by a tail operator with previous value " + priorValue);
 		
 		while (index < val.length && val[index] == prior[index])
 			index++;
@@ -45,17 +51,13 @@ final class TailOperatorCodec extends OperatorCodec {
 	    return (ScalarValue) field.createValue(new String(val, index, val.length-index));
 	}
 
-	public ScalarValue decodeValue(ScalarValue newValue,
-	    ScalarValue previousValue, Scalar field) {
+	public ScalarValue decodeValue(ScalarValue newValue, ScalarValue previousValue, Scalar field) {
 	    StringValue base;
 	
 	    if ((previousValue == null) && !field.isOptional()) {
-	        Global.handleError(FastConstants.D6_MNDTRY_FIELD_NOT_PRESENT,
-	            "");
-	
+	        Global.handleError(FastConstants.D6_MNDTRY_FIELD_NOT_PRESENT, "");
 	        return null;
-	    } else if ((previousValue == null) ||
-	            previousValue.isUndefined()) {
+	    } else if ((previousValue == null) || previousValue.isUndefined()) {
 	        base = (StringValue) field.getBaseValue();
 	    } else {
 	        base = (StringValue) previousValue;
@@ -76,13 +78,13 @@ final class TailOperatorCodec extends OperatorCodec {
 	    return new StringValue(root + delta);
 	}
 
-	public ScalarValue decodeEmptyValue(ScalarValue previousValue,
-	    Scalar field) {
-	    if (previousValue.isUndefined()) {
-	        return field.getBaseValue();
-	    }
-	
-	    return previousValue;
+	public ScalarValue decodeEmptyValue(ScalarValue previousValue, Scalar field) {
+		ScalarValue value = previousValue;
+	    if (value != null && value.isUndefined())
+	    	value = (field.getDefaultValue().isUndefined()) ? null : field.getDefaultValue();
+	    if (value == null && !field.isOptional())
+	    	Global.handleError(FastConstants.D6_MNDTRY_FIELD_NOT_PRESENT, "The field " + field + " was not present.");
+	    return value;
 	}
 
 	public boolean equals(Object obj) {
