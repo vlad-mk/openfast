@@ -36,6 +36,12 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.TemplateRegistry;
 
 
+/** The MessageOutputStream is designed to write FAST message to
+ * the underlying Java OutputStream.
+ * 
+ * @author jacob_northey
+ *
+ */
 public class MessageOutputStream implements MessageStream {
     private final OutputStream out;
     private final FastEncoder encoder;
