@@ -24,10 +24,10 @@ import org.openfast.ByteVectorValue;
 import org.openfast.ScalarValue;
 import org.openfast.template.type.codec.TypeCodec;
 
-final class ByteVectorType extends SimpleType {
+public final class ByteVectorType extends SimpleType {
     private static final long serialVersionUID = 1L;
 
-    ByteVectorType() {
+    public ByteVectorType() {
         super("byteVector", TypeCodec.BYTE_VECTOR, TypeCodec.NULLABLE_BYTE_VECTOR_TYPE);
     }
 

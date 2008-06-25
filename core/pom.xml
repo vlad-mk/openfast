@@ -86,4 +86,12 @@
             </plugin>
         </plugins>
     </build>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.lasalletech.exom</groupId>
+            <artifactId>exom</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

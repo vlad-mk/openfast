@@ -29,7 +29,7 @@ import org.openfast.template.operator.Operator;
 import org.openfast.template.type.codec.TypeCodec;
 import org.openfast.util.Util;
 
-public abstract class Type implements Serializable {
+public abstract class Type implements org.openfast.template.Type, Serializable {
     private final static Map TYPE_NAME_MAP = new LinkedHashMap();
     private final String name;
 
