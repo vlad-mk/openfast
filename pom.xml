@@ -2,8 +2,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.openfast</groupId>
     <artifactId>openfast</artifactId>
-    <packaging>jar</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>2.0.0-SNAPSHOT</version>
 
     <organization>
         <name>The LaSalle Technology Group, LLC</name>
@@ -16,6 +16,9 @@
         OpenFAST is a 100% Java implementation of the FAST Protocol.
     </description>
 
+    <modules>
+        <module>core</module>
+    </modules>
     <developers>
         <developer>
             <name>Jacob Northey</name>
@@ -71,9 +74,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/trunk</connection>
-        <developerConnection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/trunk</developerConnection>
-        <url>http://openfast.svn.sourceforge.net/viewvc/openfast/tags/trunk</url>
+        <connection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/branches/openfast-2.x</connection>
+        <developerConnection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/branches/openfast-2.x</developerConnection>
+        <url>http://openfast.svn.sourceforge.net/viewvc/openfast/tags/branches/openfast-2.x</url>
     </scm>
 
     <mailingLists>
