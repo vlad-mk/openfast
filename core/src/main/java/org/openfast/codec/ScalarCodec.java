@@ -26,7 +26,7 @@ import org.openfast.FastDictionary;
 import org.openfast.template.Scalar;
 
 public interface ScalarCodec extends Serializable {
-    void decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary);
-    void encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary);
+    int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary);
+    int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary);
     int getLength(byte[] buffer, int offset);
 }

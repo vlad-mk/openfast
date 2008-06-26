@@ -23,6 +23,7 @@ package org.openfast.error;
 import org.openfast.QName;
 
 public interface FastConstants {
+    byte NULL_BYTE = (byte) 0x80;
     QName ANY_TYPE = new QName("any");
     FastAlertSeverity ERROR = FastAlertSeverity.ERROR;
     FastAlertSeverity WARN = FastAlertSeverity.WARN;

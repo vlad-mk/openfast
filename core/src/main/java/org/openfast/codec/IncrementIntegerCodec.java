@@ -23,7 +23,9 @@ package org.openfast.codec;
 import org.lasalletech.exom.EObject;
 import org.openfast.FastDictionary;
 import org.openfast.NumericValue;
+import org.openfast.QName;
 import org.openfast.ScalarValue;
+import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
 
 final class IncrementIntegerCodec implements ScalarCodec {
@@ -31,25 +33,27 @@ final class IncrementIntegerCodec implements ScalarCodec {
     private final IntegerCodec integerCodec;
     private final int defaultValue;
     private final boolean hasDefaultValue;
-    
+
     public IncrementIntegerCodec(IntegerCodec integerCodec) {
         this.integerCodec = integerCodec;
         this.hasDefaultValue = false;
         this.defaultValue = 0;
     }
-    
+
     public IncrementIntegerCodec(IntegerCodec integerCodec, int defaultValue) {
         this.integerCodec = integerCodec;
         this.hasDefaultValue = true;
         this.defaultValue = defaultValue;
     }
-    
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary) {
+
+    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary) {
+        int length = integerCodec.getLength(buffer, offset);
         int value = integerCodec.decode(buffer, offset);
         dictionary.store(object.getEntity(), scalar.getKey(), null, value);
         object.set(index, value);
+        return offset + length;
     }
-    
+
     public void decodeEmpty(EObject object, int index, Scalar scalar, FastDictionary dictionary) {
         if (dictionary.isNull(object, scalar.getKey(), null)) {
             // leave object value set to null
@@ -66,23 +70,55 @@ final class IncrementIntegerCodec implements ScalarCodec {
                     dictionary.storeNull(object.getEntity(), scalar.getKey(), null);
                 }
             }
-        } else  {
+        } else {
             int previousValue = dictionary.lookupInt(object.getEntity(), scalar.getKey(), null);
-            object.set(index, previousValue+1);
+            object.set(index, previousValue + 1);
             dictionary.store(object.getEntity(), scalar.getKey(), null, previousValue + 1);
         }
     }
-    
+
     public int getLength(byte[] buffer, int offset) {
         return integerCodec.getLength(buffer, offset);
     }
 
-    public void encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary) {
-        if (dictionary.isDefined(object, scalar.getKey(), null)) {
-//            int previousValue = dictionary.lookupInt(object.getEntity(), scalar.getKey(), null);
-        } else {
-            
+    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary) {
+        QName key = scalar.getKey();
+        if (!object.isDefined(index)) {
+            if (!scalar.isOptional()) {
+                // TODO - error when value is null and scalar is mandatory
+            }
+            if (dictionary.isNull(object, key, null))
+                return offset;
+            else {
+                return encodeNull(buffer, offset, dictionary, key);
+            }
         }
+        int value = object.getInt(index);
+        if (dictionary.isNull(object, key, null)) {
+            dictionary.store(null, key, null, value);
+            return integerCodec.encode(buffer, offset, value);
+        }
+        if (!dictionary.isDefined(object, key, null)) {
+            if (!hasDefaultValue) {
+                dictionary.store(null, key, null, value);
+                return integerCodec.encode(buffer, offset, value);
+            } else if (hasDefaultValue && value == defaultValue) {
+                return offset;
+            } else {
+                return integerCodec.encode(buffer, offset, value);
+            }
+        }
+        int previousValue = dictionary.lookupInt(null, key, null);
+        if (value == previousValue + 1) {
+            return offset;
+        }
+        return integerCodec.encode(buffer, offset, value);
+    }
+
+    private int encodeNull(byte[] buffer, int offset, FastDictionary dictionary, QName key) {
+        buffer[offset] = FastConstants.NULL_BYTE;
+        dictionary.storeNull(null, key, null);
+        return offset + 1;
     }
 
     public ScalarValue getValueToEncode(ScalarValue value, ScalarValue priorValue, Scalar field) {

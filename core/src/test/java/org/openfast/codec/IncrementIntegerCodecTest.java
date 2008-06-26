@@ -15,6 +15,38 @@ import org.openfast.test.OpenFastTestCase;
 public class IncrementIntegerCodecTest extends OpenFastTestCase {
     IncrementIntegerCodec noDefaultSignedCodec = new IncrementIntegerCodec(new SignedIntegerCodec());
     IncrementIntegerCodec default22SignedCodec = new IncrementIntegerCodec(new SignedIntegerCodec(), 22);
+
+    public void testEncode() {
+        SimpleEntity entity = new SimpleEntity("yeah");
+        entity.add(new SimpleField("anything", null));
+        EObject object = entity.newObject();
+        Scalar scalar = new Scalar("1", Type.U32, Operator.INCREMENT, ScalarValue.UNDEFINED, true);
+        FastDictionary dictionary = new GlobalFastDictionary();
+        byte[] buffer = new byte[1];
+        
+        object.set(0, 22);
+        int newOffset = default22SignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        assertEquals(0, newOffset);
+        
+        dictionary.reset();
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        assertEquals(1, newOffset);
+        assertEquals("10010110", buffer);
+        
+        object.set(0, 23);
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        assertEquals(0, newOffset);
+        
+        object.set(0, 25);
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        assertEquals(1, newOffset);
+        assertEquals("10011001", buffer);
+        
+        object.clear(0);
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        assertEquals(1, newOffset);
+        assertEquals("10000000", buffer);
+    }
     
     public void testDecodeEmpty() {
         SimpleEntity entity = new SimpleEntity("yeah");
@@ -35,14 +67,18 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
     }
 
     public void testDecode() {
+        SimpleEntity entity = new SimpleEntity("yeah");
+        entity.add(new SimpleField("anything", null));
+        EObject object = entity.newObject();
+        Scalar scalar = new Scalar("1", Type.U32, Operator.INCREMENT, ScalarValue.UNDEFINED, true);
+        FastDictionary dictionary = new GlobalFastDictionary();
+        
+        noDefaultSignedCodec.decode(object, 0, bytes("10000001"), 0, scalar, dictionary);
+        assertEquals(1, object.getInt(0));
     }
 
     public void testGetLength() {
         byte[] buffer = ByteUtil.convertBitStringToFastByteArray("01000000 10000000");
         assertEquals(2, noDefaultSignedCodec.getLength(buffer, 0));
-    }
-
-    public void testEncode() {
-        
     }
 }
