@@ -20,6 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast;
 
+import org.lasalletech.exom.QName;
 import org.openfast.error.ErrorCode;
 import org.openfast.error.ErrorHandler;
 

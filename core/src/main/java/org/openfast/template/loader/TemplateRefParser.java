@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.loader;
 
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 import org.openfast.error.FastConstants;
 import org.openfast.template.DynamicTemplateReference;
 import org.openfast.template.Field;

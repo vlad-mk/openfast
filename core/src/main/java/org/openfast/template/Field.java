@@ -20,17 +20,14 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.openfast.Context;
-import org.openfast.FieldValue;
-import org.openfast.QName;
-import org.openfast.util.BitVectorBuilder;
+import org.lasalletech.exom.QName;
 import org.openfast.util.BitVectorReader;
 
 public abstract class Field implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected final QName name;
     protected QName key;
     protected final boolean optional;
@@ -165,62 +162,12 @@ public abstract class Field implements Serializable {
     }
 
     /**
-     * byte[] encode method declaration
-     * 
-     * @param value
-     *            The FieldValue object to be encoded
-     * @param template
-     *            The Group object to be encoded
-     * @param context
-     *            The previous object to keep the data in sync
-     * @param presenceMapBuilder
-     *            The BitVectorBuilder object to be encoded
-     */
-    public abstract byte[] encode(FieldValue value, Group template, Context context, BitVectorBuilder presenceMapBuilder);
-
-    /**
-     * FieldValue decode method declaration
-     * 
-     * @param in
-     *            The inputStream to be decoded
-     * @param template
-     *            The Group object to be decoded
-     * @param context
-     *            The previous object to keep the data in sync
-     * @param present
-     * 
-     */
-    public abstract FieldValue decode(InputStream in, Group template, Context context, BitVectorReader presenceMapReader);
-
-    /**
      * 
      * usesPresenceMapBit method declaration
      * 
      */
     public abstract boolean usesPresenceMapBit();
 
-    /**
-     * isPresenceMapBitSet method declaration
-     * 
-     * @param encoding
-     *            The byte array to check if it is present
-     * @param fieldValue
-     *            The fieldValue object
-     */
-    public abstract boolean isPresenceMapBitSet(byte[] encoding, FieldValue fieldValue);
-
-    /**
-     * getValueType method declaration
-     */
-    public abstract Class getValueType();
-
-    /**
-     * createValue method declaration
-     * 
-     * @param value
-     *            The string of the FieldValue that is to be created
-     */
-    public abstract FieldValue createValue(String value);
 
     /**
      * getTypeName method declaration

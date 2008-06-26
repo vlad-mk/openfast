@@ -24,59 +24,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import org.openfast.Global;
-import org.openfast.IntegerValue;
-import org.openfast.QName;
-import org.openfast.ScalarValue;
-import org.openfast.StringValue;
-import org.openfast.template.ComposedScalar;
-import org.openfast.template.Scalar;
-import org.openfast.template.TwinValue;
-import org.openfast.template.operator.Operator;
-import org.openfast.template.type.DecimalConverter;
-import org.openfast.template.type.Type;
 
 public class Util {
-    private static final TwinValue NO_DIFF = new TwinValue(new IntegerValue(0), new StringValue(""));
-
     public static boolean isBiggerThanInt(long value) {
         return (value > Integer.MAX_VALUE) || (value < Integer.MIN_VALUE);
-    }
-
-    public static ScalarValue getDifference(StringValue newValue, StringValue priorValue) {
-        String value = newValue.value;
-        if ((priorValue == null) || (priorValue.value.length() == 0)) {
-            return new TwinValue(new IntegerValue(0), newValue);
-        }
-        if (priorValue.equals(newValue)) {
-            return NO_DIFF;
-        }
-        String base = priorValue.value;
-        int appendIndex = 0;
-        while ((appendIndex < base.length()) && (appendIndex < value.length())
-                && (value.charAt(appendIndex) == base.charAt(appendIndex)))
-            appendIndex++;
-        String append = value.substring(appendIndex);
-        int prependIndex = 1;
-        while ((prependIndex <= value.length()) && (prependIndex <= base.length())
-                && (value.charAt(value.length() - prependIndex) == base.charAt(base.length() - prependIndex)))
-            prependIndex++;
-        String prepend = value.substring(0, value.length() - prependIndex + 1);
-        if (prepend.length() < append.length()) {
-            return new TwinValue(new IntegerValue(prependIndex - base.length() - 2), new StringValue(prepend));
-        }
-        return new TwinValue(new IntegerValue(base.length() - appendIndex), new StringValue(append));
-    }
-
-    public static StringValue applyDifference(StringValue baseValue, TwinValue diffValue) {
-        int subtraction = ((IntegerValue) diffValue.first).value;
-        String base = baseValue.value;
-        String diff = ((StringValue) diffValue.second).value;
-        if (subtraction < 0) {
-            subtraction = (-1 * subtraction) - 1;
-            return new StringValue(diff + base.substring(subtraction, base.length()));
-        }
-        return new StringValue(base.substring(0, base.length() - subtraction) + diff);
     }
 
     public static String collectionToString(Collection set) {
@@ -152,14 +103,6 @@ public class Util {
         cal.set(year, month - 1, day, hour, min, sec);
         cal.set(Calendar.MILLISECOND, ms);
         return cal.getTime();
-    }
-
-    public static ComposedScalar composedDecimal(QName name, Operator exponentOp, ScalarValue exponentVal, Operator mantissaOp,
-            ScalarValue mantissaVal, boolean optional) {
-        Scalar exponentScalar = new Scalar(Global.createImplicitName(name), Type.I32, exponentOp, exponentVal, optional);
-        Scalar mantissaScalar = new Scalar(Global.createImplicitName(name), Type.I64, mantissaOp, mantissaVal, false);
-        return new ComposedScalar(name, Type.DECIMAL, new Scalar[] { exponentScalar, mantissaScalar }, optional,
-                new DecimalConverter());
     }
 
     public static int toInt(String attribute) {

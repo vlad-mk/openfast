@@ -20,13 +20,12 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.loader;
 
+import org.lasalletech.exom.QName;
 import org.openfast.Global;
-import org.openfast.QName;
-import org.openfast.ScalarValue;
 import org.openfast.template.Field;
+import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
 import org.openfast.template.Sequence;
-import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -70,8 +69,7 @@ public class SequenceParser extends AbstractFieldParser {
     private Scalar parseSequenceLengthField(QName name, Element sequence, boolean optional, ParsingContext parent) {
         NodeList lengthElements = sequence.getElementsByTagName("length");
         if (lengthElements.getLength() == 0) {
-            Scalar implicitLength = new Scalar(Global.createImplicitName(name), Type.U32, Operator.NONE, ScalarValue.UNDEFINED,
-                    optional);
+            Scalar implicitLength = new Scalar(Global.createImplicitName(name), Type.U32, null, optional);
             implicitLength.setDictionary(parent.getDictionary());
             return implicitLength;
         }

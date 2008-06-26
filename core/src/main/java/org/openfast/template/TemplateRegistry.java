@@ -21,8 +21,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template;
 
 import java.util.Iterator;
-
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 
 public interface TemplateRegistry extends Iterable {
     TemplateRegistry NULL = new NullTemplateRegistry();

@@ -23,13 +23,10 @@ package org.openfast.template.type;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.openfast.ScalarValue;
-import org.openfast.template.operator.Operator;
-import org.openfast.template.type.codec.TypeCodec;
 import org.openfast.util.Util;
 
 public abstract class Type implements org.openfast.template.Type, Serializable {
+    private static final long serialVersionUID = 1L;
     private final static Map TYPE_NAME_MAP = new LinkedHashMap();
     private final String name;
 
@@ -63,15 +60,6 @@ public abstract class Type implements org.openfast.template.Type, Serializable {
     public String toString() {
         return name;
     }
-    public String serialize(ScalarValue value) {
-        return value.toString();
-    }
-    public abstract TypeCodec getCodec(Operator operator, boolean optional);
-    public abstract ScalarValue getValue(String value);
-    public abstract ScalarValue getDefaultValue();
-    public abstract boolean isValueOf(ScalarValue previousValue);
-    public void validateValue(ScalarValue value) {}
-
     public final static Type U8 = new UnsignedIntegerType(8, 256);
     public final static Type U16 = new UnsignedIntegerType(16, 65536);
     public final static Type U32 = new UnsignedIntegerType(32, 4294967295L);
@@ -80,9 +68,9 @@ public abstract class Type implements org.openfast.template.Type, Serializable {
     public final static Type I16 = new SignedIntegerType(16, Short.MIN_VALUE, Short.MAX_VALUE);
     public final static Type I32 = new SignedIntegerType(32, Integer.MIN_VALUE, Integer.MAX_VALUE);
     public final static Type I64 = new SignedIntegerType(64, Long.MIN_VALUE, Long.MAX_VALUE);
-    public final static Type STRING = new StringType("string", TypeCodec.ASCII, TypeCodec.NULLABLE_ASCII);
-    public final static Type ASCII = new StringType("ascii", TypeCodec.ASCII, TypeCodec.NULLABLE_ASCII);
-    public final static Type UNICODE = new StringType("unicode", TypeCodec.UNICODE, TypeCodec.NULLABLE_UNICODE);
+    public final static Type STRING = new StringType("string");
+    public final static Type ASCII = new StringType("ascii");
+    public final static Type UNICODE = new StringType("unicode");
     public final static Type BYTE_VECTOR = new ByteVectorType();
     public final static Type DECIMAL = new DecimalType();
     public static final Type[] ALL_TYPES = new Type[] { U8, U16, U32, U64, I8, I16, I32, I64, STRING, ASCII, UNICODE, BYTE_VECTOR,

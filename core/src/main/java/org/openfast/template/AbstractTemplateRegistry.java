@@ -23,7 +23,7 @@ package org.openfast.template;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 
 public abstract class AbstractTemplateRegistry implements TemplateRegistry {
     private List listeners = Collections.EMPTY_LIST;

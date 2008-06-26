@@ -20,25 +20,11 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import org.openfast.QName;
-import org.openfast.Context;
-import org.openfast.FieldValue;
+import org.lasalletech.exom.QName;
 import org.openfast.Global;
-import org.openfast.GroupValue;
-import org.openfast.IntegerValue;
-import org.openfast.ScalarValue;
-import org.openfast.SequenceValue;
-import org.openfast.error.FastConstants;
-import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
-import org.openfast.util.BitVectorBuilder;
-import org.openfast.util.BitVectorReader;
 
-public class Sequence extends Field implements FieldSet {
+public class Sequence extends Field {
     private static final long serialVersionUID = 1L;
     private final Group group;
     private final Scalar length;
@@ -99,7 +85,7 @@ public class Sequence extends Field implements FieldSet {
      * @return A Scalar value
      */
     private static Scalar createLength(QName name, boolean optional) {
-        return new Scalar(Global.createImplicitName(name), Type.U32, Operator.NONE, ScalarValue.UNDEFINED, optional);
+        return new Scalar(Global.createImplicitName(name), Type.U32, null, optional);
     }
 
     /**
@@ -109,17 +95,6 @@ public class Sequence extends Field implements FieldSet {
      */
     public int getFieldCount() {
         return group.getFieldCount();
-    }
-
-    /**
-     * Find a specific field
-     * 
-     * @param index
-     *            The field index that is passed
-     * @return Returns a Field object of the requested index
-     */
-    public Field getField(int index) {
-        return group.getField(index);
     }
 
     /**
@@ -137,90 +112,6 @@ public class Sequence extends Field implements FieldSet {
      */
     public boolean usesPresenceMapBit() {
         return length.usesPresenceMapBit();
-    }
-
-    /**
-     * @param encoding
-     *            Byte array to be checked if there is a MapBit
-     * @param fieldValue
-     *            FieldValue object
-     * @return True if there is a Map Bit set, false otherwise
-     */
-    public boolean isPresenceMapBitSet(byte[] encoding, FieldValue fieldValue) {
-        return length.isPresenceMapBitSet(encoding, fieldValue);
-    }
-
-    /**
-     * Store the data passed to a byte array
-     * 
-     * @param value
-     *            The FieldValue object
-     * @param template
-     *            The Group that is to be stored
-     * @param context
-     *            The previous object to keep the data in sync
-     * @return Returns the buffer of the byte array
-     */
-    public byte[] encode(FieldValue value, Group template, Context context, BitVectorBuilder presenceMapBuilder) {
-        if (hasTypeReference())
-            context.setCurrentApplicationType(getTypeReference());
-        if (value == null) {
-            return length.encode(null, template, context, presenceMapBuilder);
-        }
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        SequenceValue val = (SequenceValue) value;
-        int len = val.getLength();
-        try {
-            buffer.write(length.encode(new IntegerValue(len), template, context, presenceMapBuilder));
-            Iterator iter = val.iterator();
-            while (iter.hasNext()) {
-                buffer.write(group.encode((FieldValue) iter.next(), template, context));
-            }
-        } catch (IOException e) {
-            Global.handleError(FastConstants.IO_ERROR, "An IO error occurred while encoding " + this, e);
-        }
-        return buffer.toByteArray();
-    }
-
-    /**
-     * Decode the specified stream of data
-     * 
-     * @param in
-     *            The input stream to be decoded
-     * @param template
-     *            Which Group template is to be decoded
-     * @param context
-     *            The previous object to keep the data in sync
-     * @param present
-     * @return If there is nothing to decode - returns null, otherwise returns a
-     *         sequenceValue object that has the decoded information stored.
-     */
-    public FieldValue decode(InputStream in, Group template, Context context, BitVectorReader pmapReader) {
-        SequenceValue sequenceValue = new SequenceValue(this);
-        FieldValue lengthValue = length.decode(in, template, context, pmapReader);
-        if ((lengthValue == ScalarValue.NULL) || (lengthValue == null)) {
-            return null;
-        }
-        int len = ((IntegerValue) lengthValue).value;
-        for (int i = 0; i < len; i++)
-            sequenceValue.add((GroupValue) group.decode(in, template, context, BitVectorReader.INFINITE_TRUE));
-        return sequenceValue;
-    }
-
-    /**
-     * @return Returns the class of the current SequenceValue
-     */
-    public Class getValueType() {
-        return SequenceValue.class;
-    }
-
-    /**
-     * @param value
-     *            String of the new SequenceValue to create
-     * @return Returns a new SequenceValue with the specified value
-     */
-    public FieldValue createValue(String value) {
-        return new SequenceValue(this);
     }
 
     /**
@@ -310,11 +201,7 @@ public class Sequence extends Field implements FieldSet {
         return true;
     }
 
-    public boolean hasAttribute(QName attributeName) {
-        return group.hasAttribute(attributeName);
-    }
-
-    public String getAttribute(QName name) {
-        return group.getAttribute(name);
+    public Class getValueType() {
+        return null;
     }
 }

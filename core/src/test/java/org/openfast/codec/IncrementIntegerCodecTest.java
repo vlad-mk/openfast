@@ -4,11 +4,9 @@ import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.simple.SimpleEntity;
 import org.lasalletech.exom.simple.SimpleField;
 import org.openfast.ByteUtil;
-import org.openfast.ScalarValue;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.template.Scalar;
-import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 
@@ -20,7 +18,7 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
         SimpleEntity entity = new SimpleEntity("yeah");
         entity.add(new SimpleField("anything", null));
         EObject object = entity.newObject();
-        Scalar scalar = new Scalar("1", Type.U32, Operator.INCREMENT, ScalarValue.UNDEFINED, true);
+        Scalar scalar = new Scalar("1", Type.U32, null, true);
         FastDictionary dictionary = new GlobalFastDictionary();
         byte[] buffer = new byte[1];
         
@@ -52,7 +50,7 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
         SimpleEntity entity = new SimpleEntity("yeah");
         entity.add(new SimpleField("anything", null));
         EObject object = entity.newObject();
-        Scalar scalar = new Scalar("1", Type.U32, Operator.INCREMENT, ScalarValue.UNDEFINED, true);
+        Scalar scalar = new Scalar("1", Type.U32, null, true);
         FastDictionary dictionary = new GlobalFastDictionary();
         
         noDefaultSignedCodec.decodeEmpty(object, 0, scalar, dictionary);
@@ -70,7 +68,7 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
         SimpleEntity entity = new SimpleEntity("yeah");
         entity.add(new SimpleField("anything", null));
         EObject object = entity.newObject();
-        Scalar scalar = new Scalar("1", Type.U32, Operator.INCREMENT, ScalarValue.UNDEFINED, true);
+        Scalar scalar = new Scalar("1", Type.U32, null, true);
         FastDictionary dictionary = new GlobalFastDictionary();
         
         noDefaultSignedCodec.decode(object, 0, bytes("10000001"), 0, scalar, dictionary);

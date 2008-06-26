@@ -108,7 +108,7 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
         TemplateParser templateParser = new TemplateParser(loadTemplateIdFromAuxId);
 
         if (root.getNodeName().equals("template")) {
-            return new MessageTemplate[] { (MessageTemplate) templateParser.parse(root, initialContext) };
+            return new MessageTemplate[] { /*(MessageTemplate) templateParser.parse(root, initialContext)*/ };
         } else if (root.getNodeName().equals("templates")) {
             ParsingContext context = new ParsingContext(root, initialContext);
 
@@ -116,7 +116,7 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
             MessageTemplate[] templates = new MessageTemplate[templateTags.getLength()];
             for (int i = 0; i < templateTags.getLength(); i++) {
                 Element templateTag = (Element) templateTags.item(i);
-                templates[i] = (MessageTemplate) templateParser.parse(templateTag, context);
+                templates[i] = null/*(MessageTemplate) templateParser.parse(templateTag, context)*/;
             }
             return templates;
         } else {

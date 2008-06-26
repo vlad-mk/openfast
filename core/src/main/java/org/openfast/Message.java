@@ -20,58 +20,18 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast;
 
+import org.lasalletech.exom.simple.SimpleEObject;
 import org.openfast.template.MessageTemplate;
 
-public class Message extends GroupValue {
+public class Message extends SimpleEObject {
     private static final long serialVersionUID = 1L;
     private final MessageTemplate template;
 
-    public Message(MessageTemplate template, FieldValue[] fieldValues) {
-        super(template, fieldValues);
-        this.template = template;
-    }
     public Message(MessageTemplate template) {
-        this(template, initializeFieldValues(template.getFieldCount()));
-    }
-    private static FieldValue[] initializeFieldValues(int fieldCount) {
-        FieldValue[] fields = new FieldValue[fieldCount];
-        return fields;
-    }
-    public boolean equals(Object obj) {
-        if ((obj == null) || !(obj instanceof Message)) {
-            return false;
-        }
-        return equals((Message) obj);
-    }
-    public boolean equals(Message message) {
-        if (this.getFieldCount() != message.getFieldCount())
-            return false;
-        for (int i = 1; i < message.getFieldCount(); i++)
-            if (message.getValue(i) == null) {
-                if (this.getValue(i) == null) {
-                    continue;
-                } else {
-                    return false;
-                }
-            } else if (!message.getValue(i).equals(this.getValue(i))) {
-                return false;
-            }
-        return true;
-    }
-    public int hashCode() {
-        return super.hashCode() + template.hashCode();
-    }
-    public int getFieldCount() {
-        return values.length;
+        super(template);
+        this.template = template;
     }
     public MessageTemplate getTemplate() {
         return template;
-    }
-    public FieldValue copy() {
-        FieldValue[] copies = new FieldValue[values.length];
-        for (int i = 0; i < copies.length; i++) {
-            copies[i] = values[i].copy();
-        }
-        return new Message(template, this.values);
     }
 }

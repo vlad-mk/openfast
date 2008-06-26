@@ -20,11 +20,6 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template;
 
-import java.io.InputStream;
-import org.openfast.Context;
-import org.openfast.FieldValue;
-import org.openfast.util.BitVectorBuilder;
-import org.openfast.util.BitVectorReader;
 
 public class StaticTemplateReference extends Field {
     private static final long serialVersionUID = 1L;
@@ -35,28 +30,12 @@ public class StaticTemplateReference extends Field {
         this.template = template;
     }
 
-    public FieldValue createValue(String value) {
-        return null;
-    }
-
-    public FieldValue decode(InputStream in, Group template, Context context, BitVectorReader pmapReader) {
-        return null;
-    }
-
-    public byte[] encode(FieldValue value, Group template, Context context, BitVectorBuilder presenceMapBuilder) {
-        return null;
-    }
-
     public String getTypeName() {
         return null;
     }
 
     public Class getValueType() {
         return null;
-    }
-
-    public boolean isPresenceMapBitSet(byte[] encoding, FieldValue fieldValue) {
-        return false;
     }
 
     public boolean usesPresenceMapBit() {

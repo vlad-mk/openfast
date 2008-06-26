@@ -22,7 +22,7 @@ package org.openfast.template.loader;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Field;
 import org.openfast.template.Group;
@@ -47,15 +47,15 @@ public class GroupParser extends AbstractFieldParser {
     protected Field parse(Element groupElement, boolean optional, ParsingContext context) {
         Group group = new Group(context.getName(), parseFields(groupElement, context), optional);
         parseMore(groupElement, group, context);
-        return group;
+        return null/*group*/;
     }
 
     protected static void parseMore(Element groupElement, Group group, ParsingContext context) {
         group.setChildNamespace(context.getNamespace());
-        if (groupElement.hasAttribute("id"))
-            group.setId(groupElement.getAttribute("id"));
+//        if (groupElement.hasAttribute("id"))
+//            group.setId(groupElement.getAttribute("id"));
         group.setTypeReference(getTypeReference(groupElement));
-        parseExternalAttributes(groupElement, group);
+//        parseExternalAttributes(groupElement, group);
     }
 
     /**

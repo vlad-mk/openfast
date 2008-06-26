@@ -22,7 +22,7 @@ package org.openfast.template;
 
 import java.util.Collections;
 import java.util.Iterator;
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 
 final class NullTemplateRegistry implements TemplateRegistry {
     public void addTemplateRegisteredListener(TemplateRegisteredListener templateRegisteredListener) {}

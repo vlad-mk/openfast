@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.error;
 
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 
 public interface FastConstants {
     byte NULL_BYTE = (byte) 0x80;

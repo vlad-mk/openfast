@@ -20,10 +20,10 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.loader;
 
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 import org.openfast.template.Field;
+import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
-import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.util.Util;
 import org.w3c.dom.Element;
@@ -46,7 +46,7 @@ public class ScalarParser extends AbstractFieldParser {
     }
 
     public Field parse(Element fieldNode, boolean optional, ParsingContext context) {
-        Operator operator = Operator.NONE;
+        Operator operator = null;//Operator.NONE;
         String defaultValue = null;
         String key = null;
         String ns = "";
@@ -54,7 +54,7 @@ public class ScalarParser extends AbstractFieldParser {
         if (operatorElement != null) {
             if (operatorElement.hasAttribute("value"))
                 defaultValue = operatorElement.getAttribute("value");
-            operator = Operator.getOperator(operatorElement.getNodeName());
+//            operator = Operator.getOperator(operatorElement.getNodeName());
             if (operatorElement.hasAttribute("key"))
                 key = operatorElement.getAttribute("key");
             if (operatorElement.hasAttribute("ns"))
@@ -63,7 +63,7 @@ public class ScalarParser extends AbstractFieldParser {
                 context.setDictionary(operatorElement.getAttribute("dictionary"));
         }
         Type type = getType(fieldNode, context);
-        Scalar scalar = new Scalar(getName(fieldNode, context), type, operator, type.getValue(defaultValue), optional);
+        Scalar scalar = new Scalar(getName(fieldNode, context), type, operator, optional);
         if (fieldNode.hasAttribute("id"))
             scalar.setId(fieldNode.getAttribute("id"));
         if (key != null)

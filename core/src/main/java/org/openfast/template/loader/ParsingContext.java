@@ -22,7 +22,7 @@ package org.openfast.template.loader;
 
 import java.util.List;
 import java.util.Map;
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 import org.openfast.error.ErrorHandler;
 import org.openfast.template.TemplateRegistry;
 import org.w3c.dom.Element;

@@ -21,9 +21,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.codec;
 
 import org.lasalletech.exom.EObject;
-import org.openfast.NumericValue;
-import org.openfast.QName;
-import org.openfast.ScalarValue;
+import org.lasalletech.exom.QName;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
@@ -119,32 +117,5 @@ final class IncrementIntegerCodec implements ScalarCodec {
         buffer[offset] = FastConstants.NULL_BYTE;
         dictionary.storeNull(null, key, null);
         return offset + 1;
-    }
-
-    public ScalarValue getValueToEncode(ScalarValue value, ScalarValue priorValue, Scalar field) {
-        if (priorValue == null) {
-            return value;
-        }
-        if (value == null) {
-            if (field.isOptional()) {
-                if (priorValue == ScalarValue.UNDEFINED && field.getDefaultValue().isUndefined()) {
-                    return null;
-                }
-                return ScalarValue.NULL;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-        if (priorValue.isUndefined()) {
-            if (value.equals(field.getDefaultValue())) {
-                return null;
-            } else {
-                return value;
-            }
-        }
-        if (!value.equals(((NumericValue) priorValue).increment())) {
-            return value;
-        }
-        return null;
     }
 }

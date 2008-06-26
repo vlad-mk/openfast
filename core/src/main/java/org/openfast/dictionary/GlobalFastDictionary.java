@@ -3,7 +3,7 @@ package org.openfast.dictionary;
 import java.util.Arrays;
 import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.Entity;
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 
 public class GlobalFastDictionary implements FastDictionary {
     // Use power of 2 for size so that hashes can be calculated quickly

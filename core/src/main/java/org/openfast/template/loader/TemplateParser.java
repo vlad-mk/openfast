@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.loader;
 
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
 import org.w3c.dom.Element;
@@ -53,7 +53,8 @@ public class TemplateParser extends GroupParser {
             }
         } else
             context.getTemplateRegistry().define(messageTemplate);
-        return messageTemplate;
+        return null;
+//        return messageTemplate;
     }
 
     private QName getTemplateName(Element templateElement, ParsingContext context) {

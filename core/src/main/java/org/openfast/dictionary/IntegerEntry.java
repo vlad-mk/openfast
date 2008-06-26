@@ -1,6 +1,6 @@
 package org.openfast.dictionary;
 
-import org.openfast.QName;
+import org.lasalletech.exom.QName;
 
 public class IntegerEntry implements Entry {
     private final QName key;

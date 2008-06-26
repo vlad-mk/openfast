@@ -25,14 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.openfast.debug.BasicDecodeTrace;
-import org.openfast.debug.BasicEncodeTrace;
-import org.openfast.debug.Trace;
-import org.openfast.dictionary.ApplicationTypeDictionary;
-import org.openfast.dictionary.Dictionary;
-import org.openfast.dictionary.GlobalDictionary;
-import org.openfast.dictionary.TemplateDictionary;
+import org.lasalletech.exom.QName;
+import org.openfast.dictionary.FastDictionary;
+import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.error.ErrorHandler;
 import org.openfast.error.FastConstants;
 import org.openfast.template.BasicTemplateRegistry;
@@ -54,13 +49,9 @@ public class Context {
     private QName currentApplicationType;
     private List listeners = Collections.EMPTY_LIST;
     private boolean traceEnabled;
-    private Trace encodeTrace;
-    private Trace decodeTrace;
 
     public Context() {
-        dictionaries.put("global", new GlobalDictionary());
-        dictionaries.put("template", new TemplateDictionary());
-        dictionaries.put("type", new ApplicationTypeDictionary());
+        dictionaries.put("global", new GlobalFastDictionary());
     }
     public int getTemplateId(MessageTemplate template) {
         if (!templateRegistry.isRegistered(template)) {
@@ -90,24 +81,24 @@ public class Context {
     public void setLastTemplateId(int templateId) {
         lastTemplateId = templateId;
     }
-    public ScalarValue lookup(String dictionary, Group group, QName key) {
+    public int lookupInt(String dictionary, Group group, QName key) {
         if (group.hasTypeReference())
             currentApplicationType = group.getTypeReference();
-        return getDictionary(dictionary).lookup(group, key, currentApplicationType);
+        return getDictionary(dictionary).lookupInt(null, key, currentApplicationType);
     }
-    private Dictionary getDictionary(String dictionary) {
+    private FastDictionary getDictionary(String dictionary) {
         if (!dictionaries.containsKey(dictionary))
-            dictionaries.put(dictionary, new GlobalDictionary());
-        return (Dictionary) dictionaries.get(dictionary);
+            dictionaries.put(dictionary, new GlobalFastDictionary());
+        return (FastDictionary) dictionaries.get(dictionary);
     }
-    public void store(String dictionary, Group group, QName key, ScalarValue valueToEncode) {
+    public void store(String dictionary, Group group, QName key, int value) {
         if (group.hasTypeReference())
             currentApplicationType = group.getTypeReference();
-        getDictionary(dictionary).store(group, currentApplicationType, key, valueToEncode);
+        getDictionary(dictionary).store(null, currentApplicationType, key, value);
     }
     public void reset() {
         for (Iterator iter = dictionaries.values().iterator(); iter.hasNext();) {
-            Dictionary dict = (Dictionary) iter.next();
+            FastDictionary dict = (FastDictionary) iter.next();
             dict.reset();
         }
     }
@@ -128,24 +119,5 @@ public class Context {
     }
     public boolean isTraceEnabled() {
         return traceEnabled;
-    }
-    public void startTrace() {
-        setEncodeTrace(new BasicEncodeTrace());
-        setDecodeTrace(new BasicDecodeTrace());
-    }
-    public void setTraceEnabled(boolean enabled) {
-        this.traceEnabled = enabled;
-    }
-    public void setEncodeTrace(BasicEncodeTrace encodeTrace) {
-        this.encodeTrace = encodeTrace;
-    }
-    public Trace getEncodeTrace() {
-        return encodeTrace;
-    }
-    public void setDecodeTrace(Trace decodeTrace) {
-        this.decodeTrace = decodeTrace;
-    }
-    public Trace getDecodeTrace() {
-        return decodeTrace;
     }
 }

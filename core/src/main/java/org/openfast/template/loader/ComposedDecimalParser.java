@@ -20,12 +20,11 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.loader;
 
-import org.openfast.QName;
-import org.openfast.ScalarValue;
+import org.lasalletech.exom.QName;
 import org.openfast.template.ComposedScalar;
 import org.openfast.template.Field;
+import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
-import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.util.Util;
 import org.w3c.dom.Element;
@@ -83,8 +82,6 @@ public class ComposedDecimalParser extends AbstractFieldParser {
             ParsingContext context) {
         String mantissaOperator = "none";
         String exponentOperator = "none";
-        ScalarValue mantissaDefaultValue = ScalarValue.UNDEFINED;
-        ScalarValue exponentDefaultValue = ScalarValue.UNDEFINED;
         QName mantissaKey = null;
         QName exponentKey = null;
         String mantissaDictionary = context.getDictionary();
@@ -94,8 +91,8 @@ public class ComposedDecimalParser extends AbstractFieldParser {
         if ((mantissaNode != null) && mantissaNode.hasChildNodes()) {
             Element operatorElement = getElement((Element) mantissaNode, 1);
             mantissaOperator = operatorElement.getNodeName();
-            if (operatorElement.hasAttribute("value"))
-                mantissaDefaultValue = Type.I64.getValue(operatorElement.getAttribute("value"));
+//            if (operatorElement.hasAttribute("value"))
+//                mantissaDefaultValue = Type.I64.getValue(operatorElement.getAttribute("value"));
             if (operatorElement.hasAttribute("ns"))
                 mantissaNamespace = operatorElement.getAttribute("ns");
             if (operatorElement.hasAttribute("key"))
@@ -106,8 +103,8 @@ public class ComposedDecimalParser extends AbstractFieldParser {
         if ((exponentNode != null) && exponentNode.hasChildNodes()) {
             Element operatorElement = getElement((Element) exponentNode, 1);
             exponentOperator = operatorElement.getNodeName();
-            if (operatorElement.hasAttribute("value"))
-                exponentDefaultValue = Type.I32.getValue(operatorElement.getAttribute("value"));
+//            if (operatorElement.hasAttribute("value"))
+//                exponentDefaultValue = Type.I32.getValue(operatorElement.getAttribute("value"));
             if (operatorElement.hasAttribute("ns"))
                 exponentNamespace = operatorElement.getAttribute("ns");
             if (operatorElement.hasAttribute("key"))
@@ -115,18 +112,18 @@ public class ComposedDecimalParser extends AbstractFieldParser {
             if (operatorElement.hasAttribute("dictionary"))
                 exponentDictionary = operatorElement.getAttribute("dictionary");
         }
-        ComposedScalar scalar = Util.composedDecimal(name, Operator.getOperator(exponentOperator), exponentDefaultValue, Operator
-                .getOperator(mantissaOperator), mantissaDefaultValue, optional);
-        Scalar exponent = scalar.getFields()[0];
-        exponent.setDictionary(exponentDictionary);
-        if (exponentKey != null)
-            exponent.setKey(exponentKey);
-        Scalar mantissa = scalar.getFields()[1];
-        mantissa.setDictionary(mantissaDictionary);
-        if (mantissaKey != null)
-            mantissa.setKey(mantissaKey);
-        if (fieldNode.hasAttribute("id"))
-            scalar.setId(fieldNode.getAttribute("id"));
-        return scalar;
+//        ComposedScalar scalar = Util.composedDecimal(name, null, null, optional);
+//        Scalar exponent = scalar.getFields()[0];
+//        exponent.setDictionary(exponentDictionary);
+//        if (exponentKey != null)
+//            exponent.setKey(exponentKey);
+//        Scalar mantissa = scalar.getFields()[1];
+//        mantissa.setDictionary(mantissaDictionary);
+//        if (mantissaKey != null)
+//            mantissa.setKey(mantissaKey);
+//        if (fieldNode.hasAttribute("id"))
+//            scalar.setId(fieldNode.getAttribute("id"));
+//        return scalar;
+        return null;
     }
 }
