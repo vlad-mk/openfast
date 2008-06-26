@@ -1,4 +1,4 @@
-package org.openfast;
+package org.openfast.dictionary;
 
 public interface Entry {
     void setInt(int value);

@@ -22,7 +22,6 @@ package org.openfast.template.operator;
 
 import junit.framework.TestCase;
 
-import org.openfast.BitVectorBuilder;
 import org.openfast.IntegerValue;
 import org.openfast.ScalarValue;
 import org.openfast.StringValue;
@@ -30,6 +29,7 @@ import org.openfast.error.FastConstants;
 import org.openfast.error.FastException;
 import org.openfast.template.Scalar;
 import org.openfast.template.type.Type;
+import org.openfast.util.BitVectorBuilder;
 
 public class OperatorTest extends TestCase {
 

@@ -1,8 +1,5 @@
 package org.openfast.template.type.codec;
 
-import org.openfast.BitVector;
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
 import org.openfast.IntegerValue;
@@ -14,6 +11,9 @@ import org.openfast.template.LongValue;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.operator.Operator;
 import org.openfast.test.OpenFastTestCase;
+import org.openfast.util.BitVector;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 import org.openfast.util.Util;
 
 public class ComposedDecimalTest extends OpenFastTestCase {

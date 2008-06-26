@@ -23,9 +23,9 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.type.codec;
 
-import org.openfast.BitVector;
 import org.openfast.BitVectorValue;
 import org.openfast.ScalarValue;
+import org.openfast.util.BitVector;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

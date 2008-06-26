@@ -24,11 +24,11 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.Context;
 import org.openfast.FieldValue;
 import org.openfast.QName;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 public abstract class Field implements Serializable {
     protected final QName name;

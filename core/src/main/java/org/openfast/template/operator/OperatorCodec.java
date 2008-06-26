@@ -23,13 +23,13 @@ package org.openfast.template.operator;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.openfast.BitVectorBuilder;
 import org.openfast.FieldValue;
 import org.openfast.Global;
 import org.openfast.ScalarValue;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
 import org.openfast.template.type.Type;
+import org.openfast.util.BitVectorBuilder;
 import org.openfast.util.Key;
 
 public abstract class OperatorCodec implements Serializable {

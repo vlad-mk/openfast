@@ -22,6 +22,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 
 package org.openfast;
 
+import org.openfast.util.BitVector;
 import junit.framework.TestCase;
 
 

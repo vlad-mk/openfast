@@ -20,10 +20,10 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.operator;
 
-import org.openfast.BitVectorBuilder;
 import org.openfast.ScalarValue;
 import org.openfast.template.Scalar;
 import org.openfast.template.type.Type;
+import org.openfast.util.BitVectorBuilder;
 
 public abstract class AlwaysPresentOperatorCodec extends OperatorCodec {
     protected AlwaysPresentOperatorCodec(Operator operator, Type[] types) {

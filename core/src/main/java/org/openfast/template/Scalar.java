@@ -22,20 +22,20 @@ package org.openfast.template;
 
 import java.io.InputStream;
 
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.Context;
-import org.openfast.Dictionary;
 import org.openfast.FieldValue;
 import org.openfast.Global;
 import org.openfast.QName;
 import org.openfast.ScalarValue;
+import org.openfast.dictionary.Dictionary;
 import org.openfast.error.FastConstants;
 import org.openfast.error.FastException;
 import org.openfast.template.operator.Operator;
 import org.openfast.template.operator.OperatorCodec;
 import org.openfast.template.type.Type;
 import org.openfast.template.type.codec.TypeCodec;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 import org.openfast.util.RecordingInputStream;
 
 public class Scalar extends Field {

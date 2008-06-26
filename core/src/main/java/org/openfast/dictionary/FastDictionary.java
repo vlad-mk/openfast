@@ -1,7 +1,8 @@
-package org.openfast;
+package org.openfast.dictionary;
 
 import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.Entity;
+import org.openfast.QName;
 
 public interface FastDictionary {
     int lookupInt(Entity template, QName key, QName currentApplicationType);

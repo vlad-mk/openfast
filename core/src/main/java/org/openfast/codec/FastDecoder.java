@@ -20,8 +20,6 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.codec;
 
-import org.openfast.BitVector;
-import org.openfast.BitVectorReader;
 import org.openfast.BitVectorValue;
 import org.openfast.Context;
 import org.openfast.IntegerValue;
@@ -29,6 +27,8 @@ import org.openfast.Message;
 
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.type.codec.TypeCodec;
+import org.openfast.util.BitVector;
+import org.openfast.util.BitVectorReader;
 
 import java.io.InputStream;
 

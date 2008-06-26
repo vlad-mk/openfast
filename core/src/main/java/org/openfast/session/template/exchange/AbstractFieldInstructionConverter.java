@@ -22,9 +22,9 @@ package org.openfast.session.template.exchange;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.openfast.Dictionary;
 import org.openfast.GroupValue;
 import org.openfast.Message;
+import org.openfast.dictionary.Dictionary;
 import org.openfast.session.SessionControlProtocol_1_1;
 import org.openfast.template.Field;
 import org.openfast.template.Group;

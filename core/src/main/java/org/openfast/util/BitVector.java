@@ -18,7 +18,9 @@ are Copyright (C) The LaSalle Technology Group, LLC. All Rights Reserved.
 Contributor(s): Jacob Northey <jacob@lasalletech.com>
                 Craig Otis <cotis@lasalletech.com>
  */
-package org.openfast;
+package org.openfast.util;
+
+import org.openfast.ByteUtil;
 
 public class BitVector {
     private static final int VALUE_BITS_SET = 0x7F;

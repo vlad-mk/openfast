@@ -1,5 +1,7 @@
 package org.openfast;
 
+import org.openfast.util.BitVector;
+import org.openfast.util.BitVectorReader;
 import junit.framework.TestCase;
 
 public class BitVectorReaderTest extends TestCase {

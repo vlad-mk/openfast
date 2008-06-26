@@ -24,7 +24,6 @@ package org.openfast.template;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.openfast.BitVectorReader;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
 import org.openfast.FieldValue;
@@ -40,6 +39,7 @@ import org.openfast.template.type.Type;
 import org.openfast.test.ObjectMother;
 import org.openfast.test.OpenFastTestCase;
 import org.openfast.test.TestUtil;
+import org.openfast.util.BitVectorReader;
 
 public class GroupTest extends OpenFastTestCase {
     private Group template;

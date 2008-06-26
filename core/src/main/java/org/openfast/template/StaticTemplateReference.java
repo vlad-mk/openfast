@@ -21,10 +21,10 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template;
 
 import java.io.InputStream;
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.Context;
 import org.openfast.FieldValue;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 public class StaticTemplateReference extends Field {
     private static final long serialVersionUID = 1L;

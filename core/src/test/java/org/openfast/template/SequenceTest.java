@@ -26,8 +26,6 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
 import org.openfast.FieldValue;
@@ -37,6 +35,8 @@ import org.openfast.SequenceValue;
 import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.test.TestUtil;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 
 public class SequenceTest extends TestCase {

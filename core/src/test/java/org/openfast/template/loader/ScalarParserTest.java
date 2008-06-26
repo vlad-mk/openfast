@@ -1,8 +1,8 @@
 package org.openfast.template.loader;
 
 import org.openfast.DecimalValue;
-import org.openfast.Dictionary;
 import org.openfast.ScalarValue;
+import org.openfast.dictionary.Dictionary;
 import org.openfast.error.FastException;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.Operator;

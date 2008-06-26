@@ -22,7 +22,6 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 
 package org.openfast.template.type.codec;
 
-import org.openfast.BitVectorBuilder;
 import org.openfast.Context;
 import org.openfast.ScalarValue;
 import org.openfast.template.Field;
@@ -31,6 +30,7 @@ import org.openfast.template.Scalar;
 import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
+import org.openfast.util.BitVectorBuilder;
 
 
 public class StringDeltaTest extends OpenFastTestCase {

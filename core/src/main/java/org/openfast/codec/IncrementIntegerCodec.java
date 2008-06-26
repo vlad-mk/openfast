@@ -21,10 +21,10 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.codec;
 
 import org.lasalletech.exom.EObject;
-import org.openfast.FastDictionary;
 import org.openfast.NumericValue;
 import org.openfast.QName;
 import org.openfast.ScalarValue;
+import org.openfast.dictionary.FastDictionary;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
 

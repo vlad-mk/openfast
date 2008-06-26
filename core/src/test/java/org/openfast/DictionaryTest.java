@@ -27,6 +27,7 @@ import java.io.OutputStream;
 
 import junit.framework.TestCase;
 
+import org.openfast.dictionary.Dictionary;
 import org.openfast.session.Connection;
 import org.openfast.session.Session;
 import org.openfast.session.SessionConstants;

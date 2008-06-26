@@ -2,13 +2,13 @@ package org.openfast.template.loader;
 
 import java.io.InputStream;
 
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.Context;
 import org.openfast.FieldValue;
 import org.openfast.QName;
 import org.openfast.template.Field;
 import org.openfast.template.Group;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 public class Array extends Field {
 

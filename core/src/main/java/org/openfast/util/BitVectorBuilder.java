@@ -18,50 +18,31 @@ are Copyright (C) The LaSalle Technology Group, LLC. All Rights Reserved.
 Contributor(s): Jacob Northey <jacob@lasalletech.com>
                 Craig Otis <cotis@lasalletech.com>
  */
-package org.openfast;
+package org.openfast.util;
 
-public class BitVectorReader {
-    public static final BitVectorReader NULL = new BitVectorReader(null) {
-        public boolean read() {
-            throw new IllegalStateException();
-        }
-
-        public boolean hasMoreBitsSet() {
-            return false;
-        }
-    };
-    public static final BitVectorReader INFINITE_TRUE = new BitVectorReader(null) {
-        public boolean read() {
-            return true;
-        }
-    };
+public class BitVectorBuilder {
     private final BitVector vector;
     private int index = 0;
 
-    public BitVectorReader(BitVector vector) {
-        this.vector = vector;
+    public BitVectorBuilder(int size) {
+        vector = new BitVector(size);
     }
-
-    public boolean read() {
-        return vector.isSet(index++);
+    public void set() {
+        vector.set(index);
+        index++;
     }
-
+    public void skip() {
+        index++;
+    }
     public BitVector getBitVector() {
         return vector;
     }
-
-    public boolean hasMoreBitsSet() {
-        return vector.indexOfLastSet() > index;
+    public void setOnValueSkipOnNull(Object value) {
+        if (value == null)
+            skip();
+        else
+            set();
     }
-
-    public String toString() {
-        return vector.toString();
-    }
-
-    public boolean peek() {
-        return vector.isSet(index);
-    }
-
     public int getIndex() {
         return index;
     }

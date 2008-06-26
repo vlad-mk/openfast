@@ -22,7 +22,7 @@ package org.openfast.codec;
 
 import java.io.Serializable;
 import org.lasalletech.exom.EObject;
-import org.openfast.FastDictionary;
+import org.openfast.dictionary.FastDictionary;
 import org.openfast.template.Scalar;
 
 public interface ScalarCodec extends Serializable {

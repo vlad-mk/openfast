@@ -20,11 +20,11 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.operator;
 
-import org.openfast.BitVectorBuilder;
 import org.openfast.FieldValue;
 import org.openfast.ScalarValue;
 import org.openfast.template.Scalar;
 import org.openfast.template.type.Type;
+import org.openfast.util.BitVectorBuilder;
 
 final class ConstantOperatorCodec extends OperatorCodec {
     private static final long serialVersionUID = 1L;

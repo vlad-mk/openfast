@@ -18,8 +18,10 @@ are Copyright (C) The LaSalle Technology Group, LLC. All Rights Reserved.
 Contributor(s): Jacob Northey <jacob@lasalletech.com>
                 Craig Otis <cotis@lasalletech.com>
 */
-package org.openfast;
+package org.openfast.dictionary;
 
+import org.openfast.QName;
+import org.openfast.ScalarValue;
 import org.openfast.template.Group;
 
 

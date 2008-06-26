@@ -30,6 +30,7 @@ import org.openfast.template.Scalar;
 import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.util.ArrayIterator;
+import org.openfast.util.BitVector;
 
 public class GroupValue implements FieldValue {
     private static final long serialVersionUID = 1L;

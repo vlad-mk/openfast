@@ -24,6 +24,8 @@ package org.openfast;
 
 import junit.framework.TestCase;
 
+import org.openfast.dictionary.Dictionary;
+import org.openfast.dictionary.TemplateDictionary;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Field;
 import org.openfast.template.Group;

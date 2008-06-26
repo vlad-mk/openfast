@@ -28,9 +28,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.openfast.BitVector;
-import org.openfast.BitVectorBuilder;
-import org.openfast.BitVectorReader;
 import org.openfast.BitVectorValue;
 import org.openfast.Context;
 import org.openfast.FieldValue;
@@ -40,6 +37,9 @@ import org.openfast.QName;
 import org.openfast.error.FastConstants;
 import org.openfast.error.FastException;
 import org.openfast.template.type.codec.TypeCodec;
+import org.openfast.util.BitVector;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 public class Group extends Field {
     private static final long serialVersionUID = 1L;

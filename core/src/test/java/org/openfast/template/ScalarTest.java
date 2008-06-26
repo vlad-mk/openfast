@@ -22,7 +22,6 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 
 package org.openfast.template;
 
-import org.openfast.BitVectorBuilder;
 import org.openfast.Context;
 import org.openfast.FieldValue;
 import org.openfast.GroupValue;
@@ -38,6 +37,7 @@ import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 import org.openfast.test.TestUtil;
+import org.openfast.util.BitVectorBuilder;
 
 
 public class ScalarTest extends OpenFastTestCase {

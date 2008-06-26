@@ -18,8 +18,10 @@ are Copyright (C) The LaSalle Technology Group, LLC. All Rights Reserved.
 Contributor(s): Jacob Northey <jacob@lasalletech.com>
                 Craig Otis <cotis@lasalletech.com>
 */
-package org.openfast;
+package org.openfast.dictionary;
 
+import org.openfast.QName;
+import org.openfast.ScalarValue;
 import org.openfast.template.Group;
 
 import java.util.HashMap;
@@ -27,32 +29,45 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class GlobalDictionary implements Dictionary {
+public class TemplateDictionary implements Dictionary {
     protected Map table = new HashMap();
 
     public ScalarValue lookup(Group template, QName key, QName applicationType) {
-        if (!table.containsKey(key)) {
+        if (!table.containsKey(template)) {
             return ScalarValue.UNDEFINED;
         }
 
-        return (ScalarValue) table.get(key);
-    }
+        if (((Map) table.get(template)).containsKey(key)) {
+            return (ScalarValue) ((Map) table.get(template)).get(key);
+        }
 
-    public void store(Group group, QName applicationType, QName key, ScalarValue value) {
-        table.put(key, value);
+        return ScalarValue.UNDEFINED;
     }
 
     public void reset() {
         table.clear();
     }
-    
+
+    public void store(Group group, QName applicationType, QName key, ScalarValue valueToEncode) {
+        if (!table.containsKey(group)) {
+            table.put(group, new HashMap());
+        }
+
+        ((Map) table.get(group)).put(key, valueToEncode);
+    }
+
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        Iterator keyIterator = table.keySet().iterator();
-        while (keyIterator.hasNext()) {
-            QName key = (QName) keyIterator.next();
-            builder.append("Dictionary: Global");
-            builder.append(key).append("=").append(table.get(key)).append("\n");
+        Iterator templateIterator = table.keySet().iterator();
+        while (templateIterator.hasNext()) {
+            Object template = templateIterator.next();
+            builder.append("Dictionary: Template=" + template.toString());
+            Map templateMap = (Map)table.get(template);
+            Iterator keyIterator = templateMap.keySet().iterator();
+            while (keyIterator.hasNext()) {
+                Object key = keyIterator.next();
+                builder.append(key).append("=").append(templateMap.get(key)).append("\n");
+            }
         }
         return builder.toString();
     }

@@ -1,7 +1,7 @@
 package org.openfast.template.loader;
 
-import org.openfast.Dictionary;
 import org.openfast.ScalarValue;
+import org.openfast.dictionary.Dictionary;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.Operator;
 import org.openfast.template.type.Type;
