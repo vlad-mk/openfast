@@ -22,17 +22,12 @@ package org.openfast.template;
 
 import org.lasalletech.exom.QName;
 import org.openfast.Message;
-import org.openfast.template.type.Type;
 
-public class MessageTemplate extends Group {
+public class MessageTemplate extends Group implements Field {
     private static final long serialVersionUID = 1L;
 
     public MessageTemplate(QName name, Field[] fields) {
-        super(name, addTemplateIdField(fields), false);
-    }
-
-    public boolean usesPresenceMap() {
-        return true;
+        super(name, fields, false);
     }
 
     public MessageTemplate(String name, Field[] fields) {
@@ -40,64 +35,13 @@ public class MessageTemplate extends Group {
     }
 
     /**
-     * Take an existing field array and add TemplateID information to it
-     * 
-     * @param fields
-     *            The field array that needs the TemplateID added to it
-     * @return Returns a new array with the passed field information and
-     *         TemplateID
-     */
-    private static Field[] addTemplateIdField(Field[] fields) {
-        Field[] newFields = new Field[fields.length + 1];
-        newFields[0] = new Scalar("templateId", Type.U32, null, false);
-        System.arraycopy(fields, 0, newFields, 1, fields.length);
-        return newFields;
-    }
-
-    /**
-     * @return Returns the length of the fields as an int
-     */
-    public int getFieldCount() {
-        return fields.length;
-    }
-
-    /**
      * @return Returns the class of the message
      */
-    public Class getValueType() {
+    public Class<?> getValueType() {
         return Message.class;
     }
 
     public String toString() {
         return getName();
-    }
-
-    /**
-     * Returns a field array of the current stored fields
-     * 
-     * @return Returns a field array
-     */
-    public Field[] getTemplateFields() {
-        Field[] f = new Field[fields.length - 1];
-        System.arraycopy(fields, 1, f, 0, fields.length - 1);
-        return f;
-    }
-
-    public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-        if (obj == null || !(obj instanceof MessageTemplate))
-            return false;
-        return equals((MessageTemplate) obj);
-    }
-
-    private boolean equals(MessageTemplate other) {
-        if (fields.length != other.fields.length)
-            return false;
-        for (int i = 0; i < fields.length; i++) {
-            if (!fields[i].equals(other.fields[i]))
-                return false;
-        }
-        return true;
     }
 }

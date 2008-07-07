@@ -22,7 +22,7 @@ package org.openfast.template;
 
 import org.lasalletech.exom.QName;
 
-public class DynamicTemplateReference extends Field {
+public class DynamicTemplateReference extends BasicField {
     private static final long serialVersionUID = 1L;
     public static final DynamicTemplateReference INSTANCE = new DynamicTemplateReference();
 

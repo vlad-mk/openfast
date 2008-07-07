@@ -23,7 +23,7 @@ package org.openfast.template;
 import java.util.Iterator;
 import org.lasalletech.exom.QName;
 
-public interface TemplateRegistry extends Iterable {
+public interface TemplateRegistry extends Iterable<MessageTemplate> {
     TemplateRegistry NULL = new NullTemplateRegistry();
 
     void registerAll(TemplateRegistry registry);
@@ -56,7 +56,7 @@ public interface TemplateRegistry extends Iterable {
      * 
      * @return an iterator over the qualified names each item is of type QName
      */
-    Iterator/* <QName> */nameIterator();
+    Iterator<QName> nameIterator();
     /**
      * Iterator over the set of templates (defined or registered) in this
      * registry
@@ -64,5 +64,5 @@ public interface TemplateRegistry extends Iterable {
      * @return an iterator over the set of templates each item is an instance of
      *         MessageTemplate
      */
-    Iterator/* <MessageTemplate> */iterator();
+    Iterator<MessageTemplate> iterator();
 }

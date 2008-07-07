@@ -22,7 +22,7 @@ package org.openfast.template;
 
 import java.io.Serializable;
 
-public interface Type extends Serializable {
+public interface Type extends Serializable, org.lasalletech.exom.Type {
     String getName();
 //    private final static Map TYPE_NAME_MAP = new LinkedHashMap();
 //    private final String name;

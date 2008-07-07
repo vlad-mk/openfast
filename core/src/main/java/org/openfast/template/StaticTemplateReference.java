@@ -21,25 +21,13 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template;
 
 
-public class StaticTemplateReference extends Field {
+public class StaticTemplateReference extends BasicField {
     private static final long serialVersionUID = 1L;
     private MessageTemplate template;
 
     public StaticTemplateReference(MessageTemplate template) {
         super(template.getQName(), false);
         this.template = template;
-    }
-
-    public String getTypeName() {
-        return null;
-    }
-
-    public Class getValueType() {
-        return null;
-    }
-
-    public boolean usesPresenceMapBit() {
-        return false;
     }
 
     public MessageTemplate getTemplate() {

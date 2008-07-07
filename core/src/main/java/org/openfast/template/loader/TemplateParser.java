@@ -53,8 +53,7 @@ public class TemplateParser extends GroupParser {
             }
         } else
             context.getTemplateRegistry().define(messageTemplate);
-        return null;
-//        return messageTemplate;
+        return messageTemplate;
     }
 
     private QName getTemplateName(Element templateElement, ParsingContext context) {

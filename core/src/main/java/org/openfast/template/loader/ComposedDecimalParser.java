@@ -21,12 +21,12 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.loader;
 
 import org.lasalletech.exom.QName;
+import org.openfast.Global;
 import org.openfast.template.ComposedScalar;
 import org.openfast.template.Field;
 import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
 import org.openfast.template.type.Type;
-import org.openfast.util.Util;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -112,18 +112,21 @@ public class ComposedDecimalParser extends AbstractFieldParser {
             if (operatorElement.hasAttribute("dictionary"))
                 exponentDictionary = operatorElement.getAttribute("dictionary");
         }
-//        ComposedScalar scalar = Util.composedDecimal(name, null, null, optional);
-//        Scalar exponent = scalar.getFields()[0];
-//        exponent.setDictionary(exponentDictionary);
-//        if (exponentKey != null)
-//            exponent.setKey(exponentKey);
-//        Scalar mantissa = scalar.getFields()[1];
-//        mantissa.setDictionary(mantissaDictionary);
-//        if (mantissaKey != null)
-//            mantissa.setKey(mantissaKey);
-//        if (fieldNode.hasAttribute("id"))
-//            scalar.setId(fieldNode.getAttribute("id"));
-//        return scalar;
-        return null;
+        Operator exponentOp = context.getOperatorRegistry().get(exponentOperator);
+        Operator mantissaOp = context.getOperatorRegistry().get(mantissaOperator);
+        Scalar exponentScalar = new Scalar(Global.createImplicitName(name), Type.I32, exponentOp, optional);
+        Scalar mantissaScalar = new Scalar(Global.createImplicitName(name), Type.I64, mantissaOp, false);
+        ComposedScalar scalar = new ComposedScalar(name, Type.DECIMAL, new Scalar[] { exponentScalar, mantissaScalar }, optional);
+        Scalar exponent = scalar.getFields()[0];
+        exponent.setDictionary(exponentDictionary);
+        if (exponentKey != null)
+            exponent.setKey(exponentKey);
+        Scalar mantissa = scalar.getFields()[1];
+        mantissa.setDictionary(mantissaDictionary);
+        if (mantissaKey != null)
+            mantissa.setKey(mantissaKey);
+        if (fieldNode.hasAttribute("id"))
+            scalar.setId(fieldNode.getAttribute("id"));
+        return scalar;
     }
 }

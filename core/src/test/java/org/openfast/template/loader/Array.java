@@ -1,9 +1,9 @@
 package org.openfast.template.loader;
 
 import org.lasalletech.exom.QName;
-import org.openfast.template.Field;
+import org.openfast.template.BasicField;
 
-public class Array extends Field {
+public class Array extends BasicField {
     public Array(QName name, boolean optional) {
         super(name, optional);
     }

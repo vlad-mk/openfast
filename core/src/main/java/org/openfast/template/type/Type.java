@@ -21,43 +21,39 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.type;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import org.openfast.util.Util;
+import org.lasalletech.exom.QName;
 
 public abstract class Type implements org.openfast.template.Type, Serializable {
     private static final long serialVersionUID = 1L;
-    private final static Map TYPE_NAME_MAP = new LinkedHashMap();
-    private final String name;
+    private final QName name;
 
     public Type(String typeName) {
-        this.name = typeName;
-        TYPE_NAME_MAP.put(typeName, this);
+        this.name = new QName(typeName);
     }
-    /**
-     * Return the type that is being searched for
-     * 
-     * @param typeName
-     *            The type name that being searched for
-     * @return Return a Type object of the type that is being searched for
-     */
-    public static Type getType(String typeName) {
-        if (!TYPE_NAME_MAP.containsKey(typeName))
-            throw new IllegalArgumentException("The type named " + typeName + " does not exist.  Existing types are "
-                    + Util.collectionToString(TYPE_NAME_MAP.keySet()));
-        return (Type) TYPE_NAME_MAP.get(typeName);
+    
+    public boolean isRepeating() {
+        return false;
     }
+    
+    public boolean isPrimitive() {
+        return true;
+    }
+
     /**
      * 
      * @return Returns name as a string
      */
     public String getName() {
-        return name;
+        return name.getName();
     }
     /**
      * @return Returns the name as a string
      */
     public String toString() {
+        return name.getName();
+    }
+    
+    public QName getQName() {
         return name;
     }
     public final static Type U8 = new UnsignedIntegerType(8, 256);
@@ -77,9 +73,6 @@ public abstract class Type implements org.openfast.template.Type, Serializable {
             DECIMAL };
     public static final Type[] INTEGER_TYPES = new Type[] { U8, U16, U32, U64, I8, I16, I32, I64 };
 
-    public static Map getRegisteredTypeMap() {
-        return TYPE_NAME_MAP;
-    }
     public boolean equals(Object obj) {
         if (obj == null)
             return false;

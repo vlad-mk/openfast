@@ -21,9 +21,9 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template;
 
 import org.lasalletech.exom.QName;
-import org.openfast.template.type.Type;
+import org.openfast.template.Type;
 
-public class ComposedScalar extends Field {
+public class ComposedScalar extends BasicField {
     private static final long serialVersionUID = 1L;
     private static final Class ScalarValueType = null;
     private Scalar[] fields;
@@ -51,7 +51,7 @@ public class ComposedScalar extends Field {
         return false;
     }
 
-    public Type getType() {
+    public org.lasalletech.exom.Type getType() {
         return type;
     }
 

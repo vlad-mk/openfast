@@ -23,7 +23,7 @@ package org.openfast.template;
 import org.lasalletech.exom.QName;
 import org.openfast.template.type.Type;
 
-public class Scalar extends Field {
+public class Scalar extends BasicField {
     private static final long serialVersionUID = 1L;
     private final Operator operator;
     private final Type type;
@@ -78,7 +78,7 @@ public class Scalar extends Field {
      * 
      * @return Returns the type as a string
      */
-    public Type getType() {
+    public org.lasalletech.exom.Type getType() {
         return type;
     }
     /**
@@ -120,10 +120,7 @@ public class Scalar extends Field {
     public String getTypeName() {
         return "scalar";
     }
-    public Class getValueType() {
+    public Class<?> getValueType() {
         return null;
-    }
-    public boolean usesPresenceMapBit() {
-        return false;
     }
 }

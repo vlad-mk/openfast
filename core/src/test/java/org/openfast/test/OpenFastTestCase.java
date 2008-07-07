@@ -79,7 +79,7 @@ public abstract class OpenFastTestCase extends TestCase {
         return ByteUtil.convertBitStringToFastByteArray(binaryString);
     }
 
-    protected MessageTemplate template(String templateXml) {
+    protected static MessageTemplate template(String templateXml) {
         MessageTemplate[] templates = new XMLMessageTemplateLoader().load(new ByteArrayInputStream(templateXml.getBytes()));
         return templates[0];
     }

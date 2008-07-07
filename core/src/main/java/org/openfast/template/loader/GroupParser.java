@@ -47,7 +47,7 @@ public class GroupParser extends AbstractFieldParser {
     protected Field parse(Element groupElement, boolean optional, ParsingContext context) {
         Group group = new Group(context.getName(), parseFields(groupElement, context), optional);
         parseMore(groupElement, group, context);
-        return null/*group*/;
+        return group;
     }
 
     protected static void parseMore(Element groupElement, Group group, ParsingContext context) {

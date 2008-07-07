@@ -25,7 +25,6 @@ import org.openfast.template.Field;
 import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
 import org.openfast.template.type.Type;
-import org.openfast.util.Util;
 import org.w3c.dom.Element;
 
 public class ScalarParser extends AbstractFieldParser {
@@ -42,11 +41,11 @@ public class ScalarParser extends AbstractFieldParser {
     }
 
     public boolean canParse(Element element, ParsingContext context) {
-        return context.getTypeMap().containsKey(getTypeName(element));
+        return context.getTypeRegistry().isDefined(getTypeName(element));
     }
 
     public Field parse(Element fieldNode, boolean optional, ParsingContext context) {
-        Operator operator = null;//Operator.NONE;
+        Operator operator = context.getOperatorRegistry().getDefault();//Operator.NONE;
         String defaultValue = null;
         String key = null;
         String ns = "";
@@ -54,7 +53,7 @@ public class ScalarParser extends AbstractFieldParser {
         if (operatorElement != null) {
             if (operatorElement.hasAttribute("value"))
                 defaultValue = operatorElement.getAttribute("value");
-//            operator = Operator.getOperator(operatorElement.getNodeName());
+            operator = context.getOperatorRegistry().get(operatorElement.getNodeName());
             if (operatorElement.hasAttribute("key"))
                 key = operatorElement.getAttribute("key");
             if (operatorElement.hasAttribute("ns"))
@@ -62,7 +61,7 @@ public class ScalarParser extends AbstractFieldParser {
             if (operatorElement.hasAttribute("dictionary"))
                 context.setDictionary(operatorElement.getAttribute("dictionary"));
         }
-        Type type = getType(fieldNode, context);
+        Type type = (Type) context.getTypeRegistry().get(getTypeName(fieldNode));
         Scalar scalar = new Scalar(getName(fieldNode, context), type, operator, optional);
         if (fieldNode.hasAttribute("id"))
             scalar.setId(fieldNode.getAttribute("id"));
@@ -75,17 +74,6 @@ public class ScalarParser extends AbstractFieldParser {
 
     protected QName getName(Element fieldNode, ParsingContext context) {
         return context.getName();
-    }
-
-    protected Type getType(Element fieldNode, ParsingContext context) {
-        String typeName = getTypeName(fieldNode);
-        if (!context.getTypeMap().containsKey(typeName)) {
-            context.getErrorHandler().error(
-                    XMLMessageTemplateLoader.INVALID_TYPE,
-                    "The type " + typeName + " is not defined.  Possible types: "
-                            + Util.collectionToString(context.getTypeMap().keySet(), ", "));
-        }
-        return (Type) context.getTypeMap().get(typeName);
     }
 
     protected String getTypeName(Element fieldNode) {

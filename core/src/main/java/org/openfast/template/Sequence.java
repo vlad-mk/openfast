@@ -24,7 +24,7 @@ import org.lasalletech.exom.QName;
 import org.openfast.Global;
 import org.openfast.template.type.Type;
 
-public class Sequence extends Field {
+public class Sequence extends BasicField {
     private static final long serialVersionUID = 1L;
     private final Group group;
     private final Scalar length;
@@ -104,14 +104,6 @@ public class Sequence extends Field {
      */
     public Scalar getLength() {
         return length;
-    }
-
-    /**
-     * 
-     * @return True if there is a current MapBit, false otherwise
-     */
-    public boolean usesPresenceMapBit() {
-        return length.usesPresenceMapBit();
     }
 
     /**

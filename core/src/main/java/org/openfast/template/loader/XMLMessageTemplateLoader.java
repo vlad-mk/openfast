@@ -22,20 +22,16 @@ package org.openfast.template.loader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.openfast.error.ErrorCode;
 import org.openfast.error.ErrorHandler;
 import org.openfast.error.FastAlertSeverity;
 import org.openfast.error.FastConstants;
+import org.openfast.fast.impl.FastImplementation;
 import org.openfast.template.BasicTemplateRegistry;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.TemplateRegistry;
-import org.openfast.template.type.Type;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -60,6 +56,8 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
     private final ParsingContext initialContext;
 
     private boolean loadTemplateIdFromAuxId;
+    
+    private final FastImplementation implementation;
 
     public XMLMessageTemplateLoader() {
         this(false);
@@ -67,22 +65,22 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
 
     public XMLMessageTemplateLoader(boolean namespaceAwareness) {
         this.namespaceAwareness = namespaceAwareness;
-        this.initialContext = createInitialContext();
+        this.implementation = FastImplementation.getDefaultVersion();
+        this.initialContext = createInitialContext(implementation);
     }
 
-    public static ParsingContext createInitialContext() {
-        ParsingContext initialContext = new ParsingContext();
+    public static ParsingContext createInitialContext(FastImplementation implementation) {
+        ParsingContext initialContext = new ParsingContext(implementation);
         initialContext.setErrorHandler(ErrorHandler.DEFAULT);
         initialContext.setTemplateRegistry(new BasicTemplateRegistry());
-        initialContext.setTypeMap(Type.getRegisteredTypeMap());
-        initialContext.setFieldParsers(new ArrayList());
-        initialContext.addFieldParser(new ScalarParser());
-        initialContext.addFieldParser(new GroupParser());
-        initialContext.addFieldParser(new SequenceParser());
-        initialContext.addFieldParser(new ComposedDecimalParser());
-        initialContext.addFieldParser(new StringParser());
-        initialContext.addFieldParser(new ByteVectorParser());
-        initialContext.addFieldParser(new TemplateRefParser());
+//        initialContext.setFieldParsers(new ArrayList());
+//        initialContext.addFieldParser(new ScalarParser());
+//        initialContext.addFieldParser(new GroupParser());
+//        initialContext.addFieldParser(new SequenceParser());
+//        initialContext.addFieldParser(new ComposedDecimalParser());
+//        initialContext.addFieldParser(new StringParser());
+//        initialContext.addFieldParser(new ByteVectorParser());
+//        initialContext.addFieldParser(new TemplateRefParser());
         return initialContext;
     }
 
@@ -108,7 +106,7 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
         TemplateParser templateParser = new TemplateParser(loadTemplateIdFromAuxId);
 
         if (root.getNodeName().equals("template")) {
-            return new MessageTemplate[] { /*(MessageTemplate) templateParser.parse(root, initialContext)*/ };
+            return new MessageTemplate[] { (MessageTemplate) templateParser.parse(root, initialContext) };
         } else if (root.getNodeName().equals("templates")) {
             ParsingContext context = new ParsingContext(root, initialContext);
 
@@ -116,7 +114,7 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
             MessageTemplate[] templates = new MessageTemplate[templateTags.getLength()];
             for (int i = 0; i < templateTags.getLength(); i++) {
                 Element templateTag = (Element) templateTags.item(i);
-                templates[i] = null/*(MessageTemplate) templateParser.parse(templateTag, context)*/;
+                templates[i] = (MessageTemplate) templateParser.parse(templateTag, context);
             }
             return templates;
         } else {
@@ -185,10 +183,6 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
 
     public TemplateRegistry getTemplateRegistry() {
         return initialContext.getTemplateRegistry();
-    }
-
-    public void setTypeMap(Map typeMap) {
-        initialContext.setTypeMap(typeMap);
     }
 
     public void setLoadTemplateIdFromAuxId(boolean loadTempalteIdFromAuxId) {
