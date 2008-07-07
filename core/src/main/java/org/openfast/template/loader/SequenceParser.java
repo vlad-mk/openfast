@@ -70,7 +70,6 @@ public class SequenceParser extends AbstractFieldParser {
         NodeList lengthElements = sequence.getElementsByTagName("length");
         if (lengthElements.getLength() == 0) {
             Scalar implicitLength = new Scalar(Global.createImplicitName(name), Type.U32, null, optional);
-            implicitLength.setDictionary(parent.getDictionary());
             return implicitLength;
         }
         Element length = (Element) lengthElements.item(0);

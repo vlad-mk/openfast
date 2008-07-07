@@ -45,29 +45,15 @@ public class ScalarParser extends AbstractFieldParser {
     }
 
     public Field parse(Element fieldNode, boolean optional, ParsingContext context) {
-        Operator operator = context.getOperatorRegistry().getDefault();//Operator.NONE;
-        String defaultValue = null;
-        String key = null;
-        String ns = "";
+        Operator operator = Operator.NONE;
         Element operatorElement = getOperatorElement(fieldNode);
         if (operatorElement != null) {
-            if (operatorElement.hasAttribute("value"))
-                defaultValue = operatorElement.getAttribute("value");
-            operator = context.getOperatorRegistry().get(operatorElement.getNodeName());
-            if (operatorElement.hasAttribute("key"))
-                key = operatorElement.getAttribute("key");
-            if (operatorElement.hasAttribute("ns"))
-                ns = operatorElement.getAttribute("ns");
-            if (operatorElement.hasAttribute("dictionary"))
-                context.setDictionary(operatorElement.getAttribute("dictionary"));
+            operator = context.getOperatorParser(operatorElement).parse(operatorElement, context);
         }
         Type type = (Type) context.getTypeRegistry().get(getTypeName(fieldNode));
         Scalar scalar = new Scalar(getName(fieldNode, context), type, operator, optional);
         if (fieldNode.hasAttribute("id"))
             scalar.setId(fieldNode.getAttribute("id"));
-        if (key != null)
-            scalar.setKey(new QName(key, ns));
-        scalar.setDictionary(context.getDictionary());
         parseExternalAttributes(fieldNode, scalar);
         return scalar;
     }

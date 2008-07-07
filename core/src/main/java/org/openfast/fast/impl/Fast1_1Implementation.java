@@ -2,25 +2,29 @@ package org.openfast.fast.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.openfast.fast.FastOperators;
 import org.openfast.fast.FastTypes;
-import org.openfast.template.BasicOperatorRegistry;
 import org.openfast.template.BasicTypeRegistry;
-import org.openfast.template.OperatorRegistry;
 import org.openfast.template.TypeRegistry;
 import org.openfast.template.loader.ByteVectorParser;
 import org.openfast.template.loader.ComposedDecimalParser;
+import org.openfast.template.loader.ConstantOperatorParser;
+import org.openfast.template.loader.CopyOperatorParser;
+import org.openfast.template.loader.DefaultOperatorParser;
+import org.openfast.template.loader.DeltaOperatorParser;
 import org.openfast.template.loader.FieldParser;
 import org.openfast.template.loader.GroupParser;
+import org.openfast.template.loader.IncrementOperatorParser;
+import org.openfast.template.loader.OperatorParser;
 import org.openfast.template.loader.ScalarParser;
 import org.openfast.template.loader.SequenceParser;
 import org.openfast.template.loader.StringParser;
+import org.openfast.template.loader.TailOperatorParser;
 import org.openfast.template.loader.TemplateRefParser;
 
 public class Fast1_1Implementation extends FastImplementation {
     private List<FieldParser> parsers;
     private TypeRegistry typeRegistry;
-    private OperatorRegistry operatorRegistry;
+    private List<OperatorParser> operatorParsers;
 
     @Override
     public List<FieldParser> getFieldParsers() {
@@ -38,18 +42,17 @@ public class Fast1_1Implementation extends FastImplementation {
     }
 
     @Override
-    public OperatorRegistry getOperatorRegistry() {
-        if (operatorRegistry == null) {
-            operatorRegistry = new BasicOperatorRegistry();
-            operatorRegistry.register("none", FastOperators.NONE);
-            operatorRegistry.register("tail", FastOperators.TAIL);
-            operatorRegistry.register("delta", FastOperators.DELTA);
-            operatorRegistry.register("default", FastOperators.DEFAULT);
-            operatorRegistry.register("constant", FastOperators.CONSTANT);
-            operatorRegistry.register("increment", FastOperators.INCREMENT);
-            operatorRegistry.register("copy", FastOperators.COPY);
+    public List<OperatorParser> getOperatorParsers() {
+        if (operatorParsers == null) {
+            operatorParsers = new ArrayList<OperatorParser>();
+            operatorParsers.add(new DefaultOperatorParser());
+            operatorParsers.add(new TailOperatorParser());
+            operatorParsers.add(new DeltaOperatorParser());
+            operatorParsers.add(new ConstantOperatorParser());
+            operatorParsers.add(new IncrementOperatorParser());
+            operatorParsers.add(new CopyOperatorParser());
         }
-        return operatorRegistry;
+        return operatorParsers;
     }
 
     @Override

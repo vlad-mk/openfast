@@ -27,7 +27,6 @@ public class Scalar extends BasicField {
     private static final long serialVersionUID = 1L;
     private final Operator operator;
     private final Type type;
-    private String dictionary;
 
     /**
      * Scalar constructor - sets the dictionary as global and validates the
@@ -50,7 +49,6 @@ public class Scalar extends BasicField {
     public Scalar(QName name, Type type, Operator operator, boolean optional) {
         super(name, optional);
         this.operator = operator;
-        this.dictionary = "global";
         this.type = type;
     }
     /**
@@ -70,7 +68,6 @@ public class Scalar extends BasicField {
      */
     public Scalar(QName name, Type type, boolean optional) {
         super(name, optional);
-        this.dictionary = "global";
         this.type = type;
         this.operator = null;
     }
@@ -90,29 +87,10 @@ public class Scalar extends BasicField {
     }
 
     /**
-     * 
-     * @return Returns the dictionary as a string
-     */
-    public String getDictionary() {
-        return dictionary;
-    }
-
-    /**
-     * Sets the dictionary to the passed string
-     * 
-     * @param dictionary
-     *            The string to be stored as the dictionary
-     */
-    public void setDictionary(String dictionary) {
-        if (dictionary == null)
-            throw new NullPointerException();
-        this.dictionary = dictionary;
-    }
-    /**
      * @return Returns the string 'Scalar [name=X, operator=X, dictionary=X]'
      */
     public String toString() {
-        return "Scalar [name=" + name.getName() + ", operator=" + operator + ", type=" + type + ", dictionary=" + dictionary + "]";
+        return "Scalar [name=" + name.getName() + ", operator=" + operator + ", type=" + type + "]";
     }
     /**
      * @return Returns the string 'scalar'

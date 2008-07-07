@@ -23,5 +23,9 @@ package org.openfast.template;
 import java.io.Serializable;
 
 public interface Operator extends Serializable {
+    Operator NONE = new Operator() {
+        private static final long serialVersionUID = 1L;
+        public String getName() { return "none"; }
+    };
     String getName();
 }

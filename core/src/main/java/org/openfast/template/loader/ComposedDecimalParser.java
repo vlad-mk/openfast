@@ -80,51 +80,19 @@ public class ComposedDecimalParser extends AbstractFieldParser {
      */
     private Field createComposedDecimal(Element fieldNode, QName name, boolean optional, Node mantissaNode, Node exponentNode,
             ParsingContext context) {
-        String mantissaOperator = "none";
-        String exponentOperator = "none";
-        QName mantissaKey = null;
-        QName exponentKey = null;
-        String mantissaDictionary = context.getDictionary();
-        String exponentDictionary = context.getDictionary();
-        String mantissaNamespace = context.getNamespace();
-        String exponentNamespace = context.getNamespace();
+        Operator mantissaOp = Operator.NONE;
         if ((mantissaNode != null) && mantissaNode.hasChildNodes()) {
             Element operatorElement = getElement((Element) mantissaNode, 1);
-            mantissaOperator = operatorElement.getNodeName();
-//            if (operatorElement.hasAttribute("value"))
-//                mantissaDefaultValue = Type.I64.getValue(operatorElement.getAttribute("value"));
-            if (operatorElement.hasAttribute("ns"))
-                mantissaNamespace = operatorElement.getAttribute("ns");
-            if (operatorElement.hasAttribute("key"))
-                mantissaKey = new QName(operatorElement.getAttribute("key"), mantissaNamespace);
-            if (operatorElement.hasAttribute("dictionary"))
-                mantissaDictionary = operatorElement.getAttribute("dictionary");
+            mantissaOp = context.getOperatorParser(operatorElement).parse(operatorElement, context);
         }
+        Operator exponentOp = Operator.NONE;
         if ((exponentNode != null) && exponentNode.hasChildNodes()) {
             Element operatorElement = getElement((Element) exponentNode, 1);
-            exponentOperator = operatorElement.getNodeName();
-//            if (operatorElement.hasAttribute("value"))
-//                exponentDefaultValue = Type.I32.getValue(operatorElement.getAttribute("value"));
-            if (operatorElement.hasAttribute("ns"))
-                exponentNamespace = operatorElement.getAttribute("ns");
-            if (operatorElement.hasAttribute("key"))
-                exponentKey = new QName(operatorElement.getAttribute("key"), exponentNamespace);
-            if (operatorElement.hasAttribute("dictionary"))
-                exponentDictionary = operatorElement.getAttribute("dictionary");
+            exponentOp = context.getOperatorParser(operatorElement).parse(operatorElement, context);
         }
-        Operator exponentOp = context.getOperatorRegistry().get(exponentOperator);
-        Operator mantissaOp = context.getOperatorRegistry().get(mantissaOperator);
         Scalar exponentScalar = new Scalar(Global.createImplicitName(name), Type.I32, exponentOp, optional);
         Scalar mantissaScalar = new Scalar(Global.createImplicitName(name), Type.I64, mantissaOp, false);
         ComposedScalar scalar = new ComposedScalar(name, Type.DECIMAL, new Scalar[] { exponentScalar, mantissaScalar }, optional);
-        Scalar exponent = scalar.getFields()[0];
-        exponent.setDictionary(exponentDictionary);
-        if (exponentKey != null)
-            exponent.setKey(exponentKey);
-        Scalar mantissa = scalar.getFields()[1];
-        mantissa.setDictionary(mantissaDictionary);
-        if (mantissaKey != null)
-            mantissa.setKey(mantissaKey);
         if (fieldNode.hasAttribute("id"))
             scalar.setId(fieldNode.getAttribute("id"));
         return scalar;

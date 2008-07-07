@@ -74,8 +74,6 @@ public class ComposedScalar extends BasicField {
                 return false;
             if (!other.fields[i].getOperator().equals(fields[i].getOperator()))
                 return false;
-            if (!other.fields[i].getDictionary().equals(fields[i].getDictionary()))
-                return false;
         }
         return true;
     }

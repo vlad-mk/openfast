@@ -24,7 +24,6 @@ import java.util.List;
 import org.lasalletech.exom.QName;
 import org.openfast.error.ErrorHandler;
 import org.openfast.fast.impl.FastImplementation;
-import org.openfast.template.OperatorRegistry;
 import org.openfast.template.TemplateRegistry;
 import org.openfast.template.TypeRegistry;
 import org.w3c.dom.Element;
@@ -158,16 +157,23 @@ class ParsingContext {
     public void addFieldParser(FieldParser parser) {
         getFieldParsers().add(parser);
     }
-
-    public OperatorRegistry getOperatorRegistry() {
-        if (implementation != null)
-            return implementation.getOperatorRegistry();
-        return parent.getOperatorRegistry();
-    }
     
     public TypeRegistry getTypeRegistry() {
         if (implementation != null)
             return implementation.getTypeRegistry();
         return parent.getTypeRegistry();
+    }
+
+    public OperatorParser getOperatorParser(Element operatorElement) {
+        if (implementation != null) {
+            List<OperatorParser> parsers = implementation.getOperatorParsers();
+            for (int i = parsers.size() - 1; i >= 0; i--) {
+                OperatorParser parser = ((OperatorParser) parsers.get(i));
+                if (parser.canParse(operatorElement, this))
+                    return parser;
+            }
+            return null;
+        }
+        return parent.getOperatorParser(operatorElement);
     }
 }
