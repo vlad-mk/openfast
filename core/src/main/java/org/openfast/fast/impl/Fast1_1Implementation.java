@@ -2,6 +2,12 @@ package org.openfast.fast.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.openfast.codec.BasicCodecFactory;
+import org.openfast.codec.BasicTypeCodecRegistry;
+import org.openfast.codec.CodecFactory;
+import org.openfast.codec.SignedIntegerCodec;
+import org.openfast.codec.TypeCodecRegistry;
+import org.openfast.codec.UnsignedIntegerCodec;
 import org.openfast.fast.FastTypes;
 import org.openfast.template.BasicTypeRegistry;
 import org.openfast.template.TypeRegistry;
@@ -25,6 +31,7 @@ public class Fast1_1Implementation extends FastImplementation {
     private List<FieldParser> parsers;
     private TypeRegistry typeRegistry;
     private List<OperatorParser> operatorParsers;
+    private BasicTypeCodecRegistry typeCodecRegistry;
 
     @Override
     public List<FieldParser> getFieldParsers() {
@@ -74,5 +81,26 @@ public class Fast1_1Implementation extends FastImplementation {
             typeRegistry.register("unicode", FastTypes.UNICODE);
         }
         return typeRegistry;
+    }
+
+    @Override
+    public CodecFactory getCodecFactory() {
+        return new BasicCodecFactory();
+    }
+
+    @Override
+    public TypeCodecRegistry getTypeCodecRegistry() {
+        if (typeCodecRegistry == null) {
+            typeCodecRegistry = new BasicTypeCodecRegistry();
+            typeCodecRegistry.register(FastTypes.I8,  new SignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.I16, new SignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.I32, new SignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.I64, new SignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.U8,  new UnsignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.U16, new UnsignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.U32, new UnsignedIntegerCodec());
+            typeCodecRegistry.register(FastTypes.U64, new UnsignedIntegerCodec());
+        }
+        return typeCodecRegistry;
     }
 }

@@ -49,6 +49,7 @@ public class Context {
     private QName currentApplicationType;
     private List listeners = Collections.EMPTY_LIST;
     private boolean traceEnabled;
+    private byte[] tempBuffer = new byte[1024 * 32]; // max 32 kB message size
 
     public Context() {
         dictionaries.put("global", new GlobalFastDictionary());
@@ -86,7 +87,7 @@ public class Context {
             currentApplicationType = group.getTypeReference();
         return getDictionary(dictionary).lookupInt(null, key, currentApplicationType);
     }
-    private FastDictionary getDictionary(String dictionary) {
+    public FastDictionary getDictionary(String dictionary) {
         if (!dictionaries.containsKey(dictionary))
             dictionaries.put(dictionary, new GlobalFastDictionary());
         return (FastDictionary) dictionaries.get(dictionary);
@@ -119,5 +120,14 @@ public class Context {
     }
     public boolean isTraceEnabled() {
         return traceEnabled;
+    }
+    public byte[] getTemporaryBuffer() {
+        byte[] pointer = tempBuffer;
+        tempBuffer = null;
+        return pointer;
+    }
+    
+    public void discardTemporaryBuffer(byte[] buffer) {
+        tempBuffer = buffer;
     }
 }

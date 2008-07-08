@@ -2,7 +2,7 @@ package org.openfast.template.loader;
 
 import org.lasalletech.exom.QName;
 import org.openfast.template.Operator;
-import org.openfast.template.TailOperator;
+import org.openfast.template.operator.TailOperator;
 import org.w3c.dom.Element;
 
 public class TailOperatorParser extends DictionaryOperatorParser {

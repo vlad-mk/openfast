@@ -32,17 +32,31 @@ public class TestUtil {
         assertByteArrayEquals(ByteUtil.convertBitStringToFastByteArray(
                     bitString), encoding);
     }
+    
+    public static void assertBitVectorEquals(String bitString, byte[] encoding, int length) {
+
+        assertByteArrayEquals(ByteUtil.convertBitStringToFastByteArray(bitString), encoding, length);
+    }
 
     public static void assertByteArrayEquals(byte[] expected, byte[] actual) {
+        if (expected.length != actual.length)
+            TestCase.fail("expected:<" +
+                    ByteUtil.convertByteArrayToBitString(expected) +
+                    "> but was:<" + ByteUtil.convertByteArrayToBitString(actual) +
+                    ">");
+        assertByteArrayEquals(expected, actual, expected.length);
+    }
+    public static void assertByteArrayEquals(byte[] expected, byte[] actual, int length) {
         String error = "expected:<" +
         ByteUtil.convertByteArrayToBitString(expected) +
         "> but was:<" + ByteUtil.convertByteArrayToBitString(actual) +
         ">";
-        if (expected.length != actual.length)
+        if (expected.length < length || actual.length < length)
             TestCase.fail(error);
-
-        for (int i = 0; i < expected.length; i++) {
+        
+        for (int i = 0; i < length; i++) {
             TestCase.assertEquals(error, expected[i], actual[i]);
         }
     }
+
 }

@@ -1,8 +1,8 @@
 package org.openfast.template.loader;
 
 import org.lasalletech.exom.QName;
-import org.openfast.template.DeltaOperator;
 import org.openfast.template.Operator;
+import org.openfast.template.operator.DeltaOperator;
 import org.w3c.dom.Element;
 
 public class DeltaOperatorParser extends DictionaryOperatorParser {

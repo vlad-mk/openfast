@@ -1,4 +1,4 @@
-package org.openfast.template;
+package org.openfast.template.operator;
 
 import org.lasalletech.exom.QName;
 

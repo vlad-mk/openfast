@@ -18,7 +18,7 @@ public class GlobalFastDictionary implements FastDictionary {
     }
 
     public void store(Entity template, QName key, QName currentApplicationType, int value) {
-        int index = key.hashCode() % entries.length;
+        int index = key.hashCode() & (entries.length - 1);
         Entry entry = entries[index];
         if (entry == null) {
             entries[index] = new IntegerEntry(key, value);
@@ -57,7 +57,7 @@ public class GlobalFastDictionary implements FastDictionary {
     }
 
     private Entry getEntry(QName key) {
-        int index = key.hashCode() % entries.length;
+        int index = key.hashCode() & (entries.length - 1);
         Entry entry = entries[index];
         if (entry == null)
             return null;

@@ -27,7 +27,6 @@ import org.openfast.error.FastConstants;
 import org.openfast.error.FastException;
 import org.openfast.fast.FastTypes;
 import org.openfast.template.ComposedScalar;
-import org.openfast.template.DictionaryOperator;
 import org.openfast.template.DynamicTemplateReference;
 import org.openfast.template.Field;
 import org.openfast.template.Group;
@@ -35,6 +34,7 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 import org.openfast.template.Sequence;
 import org.openfast.template.Type;
+import org.openfast.template.operator.DictionaryOperator;
 import org.openfast.test.OpenFastTestCase;
 import org.w3c.dom.Element;
 

@@ -1,7 +1,7 @@
 package org.openfast.template.loader;
 
-import org.openfast.template.ConstantOperator;
 import org.openfast.template.Operator;
+import org.openfast.template.operator.ConstantOperator;
 import org.w3c.dom.Element;
 
 public class ConstantOperatorParser implements OperatorParser {

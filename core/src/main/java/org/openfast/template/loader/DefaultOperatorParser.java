@@ -1,7 +1,7 @@
 package org.openfast.template.loader;
 
-import org.openfast.template.DefaultOperator;
 import org.openfast.template.Operator;
+import org.openfast.template.operator.DefaultOperator;
 import org.w3c.dom.Element;
 
 public class DefaultOperatorParser implements OperatorParser {

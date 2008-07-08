@@ -1,9 +1,10 @@
 package org.openfast.codec;
 
+import org.openfast.Fast;
+
 
 
 public class SignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
-    protected static final byte STOP_BIT = (byte) 0x80;
 
     public int decode(byte[] buffer, int offset) {
         int value = 0;
@@ -31,7 +32,7 @@ public class SignedIntegerCodec extends StopBitEncodedTypeCodec implements Integ
         // 01000000 00000000 ... 00000000
         // ^----SIGN BIT
         buffer[offset] |= (0x40 & (value >> 57));
-        buffer[index - 1] |= STOP_BIT;
+        buffer[index - 1] |= Fast.STOP_BIT;
         return index;
     }
 

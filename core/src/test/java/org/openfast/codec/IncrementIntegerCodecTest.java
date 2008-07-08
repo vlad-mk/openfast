@@ -4,6 +4,7 @@ import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.simple.SimpleEntity;
 import org.lasalletech.exom.simple.SimpleField;
 import org.openfast.ByteUtil;
+import org.openfast.Context;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.template.Scalar;
@@ -19,29 +20,29 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
         entity.add(new SimpleField("anything", null));
         EObject object = entity.newObject();
         Scalar scalar = new Scalar("1", Type.U32, null, true);
-        FastDictionary dictionary = new GlobalFastDictionary();
+        Context context = new Context();
         byte[] buffer = new byte[1];
         
         object.set(0, 22);
-        int newOffset = default22SignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        int newOffset = default22SignedCodec.encode(object, 0, buffer, 0, scalar, context);
         assertEquals(0, newOffset);
         
-        dictionary.reset();
-        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        context.reset();
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, context);
         assertEquals(1, newOffset);
         assertEquals("10010110", buffer);
         
         object.set(0, 23);
-        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, context);
         assertEquals(0, newOffset);
         
         object.set(0, 25);
-        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, context);
         assertEquals(1, newOffset);
         assertEquals("10011001", buffer);
         
         object.clear(0);
-        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, dictionary);
+        newOffset = noDefaultSignedCodec.encode(object, 0, buffer, 0, scalar, context);
         assertEquals(1, newOffset);
         assertEquals("10000000", buffer);
     }
@@ -51,16 +52,16 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
         entity.add(new SimpleField("anything", null));
         EObject object = entity.newObject();
         Scalar scalar = new Scalar("1", Type.U32, null, true);
-        FastDictionary dictionary = new GlobalFastDictionary();
+        Context context = new Context();
         
-        noDefaultSignedCodec.decodeEmpty(object, 0, scalar, dictionary);
+        noDefaultSignedCodec.decodeEmpty(object, 0, scalar, context);
         assertFalse(object.isDefined(0));
         
-        dictionary.reset();
-        default22SignedCodec.decodeEmpty(object, 0, scalar, dictionary);
+        context.reset();
+        default22SignedCodec.decodeEmpty(object, 0, scalar, context);
         assertEquals(22, object.getInt(0));
         
-        default22SignedCodec.decodeEmpty(object, 0, scalar, dictionary);
+        default22SignedCodec.decodeEmpty(object, 0, scalar, context);
         assertEquals(23, object.getInt(0));
     }
 
@@ -71,7 +72,7 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
         Scalar scalar = new Scalar("1", Type.U32, null, true);
         FastDictionary dictionary = new GlobalFastDictionary();
         
-        noDefaultSignedCodec.decode(object, 0, bytes("10000001"), 0, scalar, dictionary);
+        noDefaultSignedCodec.decode(object, 0, bytes("10000001"), 0, scalar, new Context());
         assertEquals(1, object.getInt(0));
     }
 

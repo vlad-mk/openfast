@@ -1,4 +1,6 @@
-package org.openfast.template;
+package org.openfast.template.operator;
+
+import org.openfast.template.Operator;
 
 public class ConstantOperator implements Operator {
     private static final long serialVersionUID = 1L;

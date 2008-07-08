@@ -22,6 +22,8 @@ package org.openfast.codec;
 
 import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.QName;
+import org.openfast.Context;
+import org.openfast.Fast;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
@@ -29,6 +31,12 @@ import org.openfast.template.Scalar;
 final class IncrementIntegerCodec implements ScalarCodec {
     private static final long serialVersionUID = 1L;
     private final IntegerCodec integerCodec;
+    private String dictionary = Fast.GLOBAL;
+    
+    public void setDictionary(String dictionary) {
+        this.dictionary = dictionary;
+    }
+
     private final int defaultValue;
     private final boolean hasDefaultValue;
 
@@ -44,15 +52,16 @@ final class IncrementIntegerCodec implements ScalarCodec {
         this.defaultValue = defaultValue;
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary) {
+    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
         int length = integerCodec.getLength(buffer, offset);
         int value = integerCodec.decode(buffer, offset);
-        dictionary.store(object.getEntity(), scalar.getKey(), null, value);
+        context.getDictionary(dictionary).store(object.getEntity(), scalar.getKey(), null, value);
         object.set(index, value);
         return offset + length;
     }
 
-    public void decodeEmpty(EObject object, int index, Scalar scalar, FastDictionary dictionary) {
+    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
+        FastDictionary dictionary = context.getDictionary(this.dictionary);
         if (dictionary.isNull(object, scalar.getKey(), null)) {
             // leave object value set to null
             dictionary.storeNull(object.getEntity(), scalar.getKey(), null);
@@ -79,7 +88,8 @@ final class IncrementIntegerCodec implements ScalarCodec {
         return integerCodec.getLength(buffer, offset);
     }
 
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+        FastDictionary dictionary = context.getDictionary(this.dictionary);
         QName key = scalar.getKey();
         if (!object.isDefined(index)) {
             if (!scalar.isOptional()) {

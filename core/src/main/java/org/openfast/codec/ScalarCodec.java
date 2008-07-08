@@ -20,13 +20,8 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.codec;
 
-import java.io.Serializable;
-import org.lasalletech.exom.EObject;
-import org.openfast.dictionary.FastDictionary;
 import org.openfast.template.Scalar;
 
-public interface ScalarCodec extends Serializable {
-    int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary);
-    int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, FastDictionary dictionary);
+public interface ScalarCodec extends FieldCodec<Scalar> {
     int getLength(byte[] buffer, int offset);
 }

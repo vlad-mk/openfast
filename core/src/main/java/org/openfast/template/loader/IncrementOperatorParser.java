@@ -1,8 +1,8 @@
 package org.openfast.template.loader;
 
 import org.lasalletech.exom.QName;
-import org.openfast.template.IncrementOperator;
 import org.openfast.template.Operator;
+import org.openfast.template.operator.IncrementOperator;
 import org.w3c.dom.Element;
 
 public class IncrementOperatorParser extends DictionaryOperatorParser {
