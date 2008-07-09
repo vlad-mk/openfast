@@ -52,26 +52,6 @@ public class Scalar extends BasicField {
         this.type = type;
     }
     /**
-     * Scalar constructor - sets the dictionary as global and validates the
-     * entries
-     * 
-     * @param name
-     *            The name of Scalar as a string
-     * @param type
-     *            The type of the scalar field
-     * @param operatorCodec
-     *            Which operatorCodec object is being used
-     * @param defaultValue
-     *            The default value of the ScalarValue
-     * @param optional
-     *            Determines if the Scalar is required or not for the data
-     */
-    public Scalar(QName name, Type type, boolean optional) {
-        super(name, optional);
-        this.type = type;
-        this.operator = null;
-    }
-    /**
      * 
      * @return Returns the type as a string
      */

@@ -4,6 +4,7 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 import org.openfast.template.Type;
 import org.openfast.template.operator.DictionaryOperator;
+import org.openfast.codec.operator.IncrementIntegerCodec;
 
 public class BasicCodecFactory implements CodecFactory {
     public MessageCodec createCodec(int id, MessageTemplate template, TypeCodecRegistry typeCodecRegistry) {

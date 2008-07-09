@@ -1,6 +1,7 @@
-package org.openfast.codec;
+package org.openfast.codec.type;
 
 import java.util.Arrays;
+import org.openfast.codec.type.SignedIntegerCodec;
 import org.openfast.test.OpenFastTestCase;
 
 public class SignedIntegerCodecTest extends OpenFastTestCase {

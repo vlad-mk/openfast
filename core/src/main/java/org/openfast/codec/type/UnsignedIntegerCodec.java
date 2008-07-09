@@ -1,6 +1,7 @@
-package org.openfast.codec;
+package org.openfast.codec.type;
 
 import org.openfast.Fast;
+import org.openfast.codec.IntegerCodec;
 
 
 public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
@@ -54,5 +55,9 @@ public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements Int
             return 8; // 2 ^ 56
         }
         return 9;
+    }
+
+    public boolean isNull(byte[] buffer, int offset) {
+        return false;
     }
 }

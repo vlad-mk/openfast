@@ -18,17 +18,19 @@ are Copyright (C) The LaSalle Technology Group, LLC. All Rights Reserved.
 Contributor(s): Jacob Northey <jacob@lasalletech.com>
                 Craig Otis <cotis@lasalletech.com>
  */
-package org.openfast.codec;
+package org.openfast.codec.operator;
 
 import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.QName;
 import org.openfast.Context;
 import org.openfast.Fast;
+import org.openfast.codec.IntegerCodec;
+import org.openfast.codec.ScalarCodec;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
 
-final class IncrementIntegerCodec implements ScalarCodec {
+public final class IncrementIntegerCodec implements ScalarCodec {
     private static final long serialVersionUID = 1L;
     private final IntegerCodec integerCodec;
     private String dictionary = Fast.GLOBAL;

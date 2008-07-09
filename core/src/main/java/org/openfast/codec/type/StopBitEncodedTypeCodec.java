@@ -1,4 +1,4 @@
-package org.openfast.codec;
+package org.openfast.codec.type;
 
 public class StopBitEncodedTypeCodec {
     public int getLength(byte[] buffer, int offset) {

@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.openfast.ByteUtil;
 import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
+import org.openfast.template.Scalar;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
 
 public abstract class OpenFastTestCase extends TestCase {
@@ -99,5 +100,10 @@ public abstract class OpenFastTestCase extends TestCase {
     protected static void assertEquals(BigDecimal expected, BigDecimal actual) {
         if (expected.compareTo(actual) != 0)
             throw new AssertionFailedError("expected:<" + expected.toPlainString() + "> bug was:<" + actual.toPlainString() + ">");
+    }
+
+    protected static MessageTemplate template(Scalar field) {
+        MessageTemplate template = new MessageTemplate("", new Field[] { field });
+        return template;
     }
 }

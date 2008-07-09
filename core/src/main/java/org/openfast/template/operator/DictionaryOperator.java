@@ -26,4 +26,8 @@ public abstract class DictionaryOperator implements Operator {
     public String getDefaultValue() {
         return defaultValue;
     }
+
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
+    }
 }

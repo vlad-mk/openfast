@@ -28,9 +28,20 @@ public class GlobalFastDictionary implements FastDictionary {
                     entry.setNext(new IntegerEntry(key, value));
                     return;
                 }
-                entry = entry.getNext();
+                Entry next = entry.getNext();
+                if (next.matches(key) && next instanceof NullEntry) {
+                    entry.setNext(new IntegerEntry(key, value));
+                    entry.getNext().setNext(next.getNext());
+                    return;
+                }
+                entry = next;
             }
-            entry.setInt(value);
+            if (entry instanceof NullEntry) {
+                entry = new IntegerEntry(key, value);
+                entries[index] = entry;
+            } else {
+                entry.setInt(value);
+            }
         }
     }
 

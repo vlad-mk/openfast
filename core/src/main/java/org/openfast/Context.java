@@ -22,7 +22,6 @@ package org.openfast;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.lasalletech.exom.QName;
@@ -44,10 +43,10 @@ import org.openfast.template.TemplateRegistry;
 public class Context {
     private TemplateRegistry templateRegistry = new BasicTemplateRegistry();
     private int lastTemplateId;
-    private Map dictionaries = new HashMap();
+    private Map<String, FastDictionary> dictionaries = new HashMap<String, FastDictionary>();
     private ErrorHandler errorHandler = ErrorHandler.DEFAULT;
     private QName currentApplicationType;
-    private List listeners = Collections.EMPTY_LIST;
+    private List<TemplateRegisteredListener> listeners = Collections.emptyList();
     private boolean traceEnabled;
     private byte[] tempBuffer = new byte[1024 * 32]; // max 32 kB message size
 
@@ -71,9 +70,8 @@ public class Context {
     }
     public void registerTemplate(int templateId, MessageTemplate template) {
         templateRegistry.register(templateId, template);
-        Iterator iter = listeners.iterator();
-        while (iter.hasNext()) {
-            ((TemplateRegisteredListener) iter.next()).templateRegistered(template, templateId);
+        for (TemplateRegisteredListener listener : listeners) {
+            listener.templateRegistered(template, templateId);
         }
     }
     public int getLastTemplateId() {
@@ -98,13 +96,15 @@ public class Context {
         getDictionary(dictionary).store(null, currentApplicationType, key, value);
     }
     public void reset() {
-        for (Iterator iter = dictionaries.values().iterator(); iter.hasNext();) {
-            FastDictionary dict = (FastDictionary) iter.next();
+        for (FastDictionary dict : dictionaries.values()) {
             dict.reset();
         }
     }
     public void setErrorHandler(ErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
+    }
+    public ErrorHandler getErrorHandler() {
+        return errorHandler;
     }
     public void newMessage(MessageTemplate template) {
         currentApplicationType = (template.hasTypeReference()) ? template.getTypeReference() : FastConstants.ANY_TYPE;
@@ -129,5 +129,8 @@ public class Context {
     
     public void discardTemporaryBuffer(byte[] buffer) {
         tempBuffer = buffer;
+    }
+    public QName getCurrentApplicationType() {
+        return null;
     }
 }

@@ -1,11 +1,11 @@
-package org.openfast.codec;
+package org.openfast.codec.type;
 
 import org.openfast.Fast;
+import org.openfast.codec.IntegerCodec;
 
 
 
 public class SignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
-
     public int decode(byte[] buffer, int offset) {
         int value = 0;
         int byt = buffer[offset];
@@ -72,5 +72,9 @@ public class SignedIntegerCodec extends StopBitEncodedTypeCodec implements Integ
             return 9;
         }
         return 10;
+    }
+
+    public boolean isNull(byte[] buffer, int offset) {
+        return false;
     }
 }

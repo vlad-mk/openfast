@@ -1,10 +1,12 @@
-package org.openfast.codec;
+package org.openfast.codec.operator;
 
 import org.lasalletech.exom.EObject;
 import org.lasalletech.exom.simple.SimpleEntity;
 import org.lasalletech.exom.simple.SimpleField;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
+import org.openfast.codec.operator.IncrementIntegerCodec;
+import org.openfast.codec.type.SignedIntegerCodec;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.template.Scalar;
