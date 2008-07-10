@@ -34,7 +34,6 @@ public class TestUtil {
     }
     
     public static void assertBitVectorEquals(String bitString, byte[] encoding, int length) {
-
         assertByteArrayEquals(ByteUtil.convertBitStringToFastByteArray(bitString), encoding, length);
     }
 

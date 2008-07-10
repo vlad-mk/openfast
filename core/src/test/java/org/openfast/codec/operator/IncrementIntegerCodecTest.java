@@ -5,17 +5,20 @@ import org.lasalletech.exom.simple.SimpleEntity;
 import org.lasalletech.exom.simple.SimpleField;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
-import org.openfast.codec.operator.IncrementIntegerCodec;
+import org.openfast.Fast;
 import org.openfast.codec.type.SignedIntegerCodec;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.template.Scalar;
+import org.openfast.template.operator.IncrementOperator;
 import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 
 public class IncrementIntegerCodecTest extends OpenFastTestCase {
-    IncrementIntegerCodec noDefaultSignedCodec = new IncrementIntegerCodec(new SignedIntegerCodec());
-    IncrementIntegerCodec default22SignedCodec = new IncrementIntegerCodec(new SignedIntegerCodec(), 22);
+    IncrementOperator noDefault = new IncrementOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, null);
+    IncrementOperator withDefault = new IncrementOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "22");
+    IncrementIntegerCodec noDefaultSignedCodec = new IncrementIntegerCodec(noDefault, new SignedIntegerCodec());
+    IncrementIntegerCodec default22SignedCodec = new IncrementIntegerCodec(withDefault, new SignedIntegerCodec());
 
     public void testEncode() {
         SimpleEntity entity = new SimpleEntity("yeah");

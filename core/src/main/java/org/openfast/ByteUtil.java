@@ -97,8 +97,8 @@ public class ByteUtil {
         return result;
     }
 
-    public static boolean isEmpty(byte[] bytes) {
-        for (int i = 0; i < bytes.length; i++)
+    public static boolean isEmpty(byte[] bytes, int offset, int length) {
+        for (int i = offset; i < length; i++)
             if ((bytes[i] & 0x7f) != 0)
                 return false;
         return true;

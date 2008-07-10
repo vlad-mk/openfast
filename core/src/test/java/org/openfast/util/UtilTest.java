@@ -22,6 +22,7 @@ package org.openfast.util;
 
 import java.nio.ByteBuffer;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import junit.framework.TestCase;

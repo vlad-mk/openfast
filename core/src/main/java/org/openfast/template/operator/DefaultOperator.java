@@ -17,5 +17,9 @@ public class DefaultOperator implements Operator {
     public String getName() {
         return "default";
     }
+
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
+    }
     
 }

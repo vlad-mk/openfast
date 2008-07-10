@@ -18,4 +18,8 @@ public class ConstantOperator implements Operator {
     public String getName() {
         return "constant";
     }
+
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
+    }
 }

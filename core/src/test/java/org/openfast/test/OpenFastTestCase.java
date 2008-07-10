@@ -35,11 +35,11 @@ import org.openfast.template.Scalar;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
 
 public abstract class OpenFastTestCase extends TestCase {
-    protected static void assertEquals(String bitString, byte[] encoding) {
+    public static void assertEquals(String bitString, byte[] encoding) {
         TestUtil.assertBitVectorEquals(bitString, encoding);
     }
     
-    protected static void assertEquals(String bitString, byte[] encoding, int length) {
+    public static void assertEquals(String bitString, byte[] encoding, int length) {
         TestUtil.assertBitVectorEquals(bitString, encoding, length);
     }
 

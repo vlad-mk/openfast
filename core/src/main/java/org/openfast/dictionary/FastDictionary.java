@@ -6,12 +6,15 @@ import org.lasalletech.exom.QName;
 
 public interface FastDictionary {
     int lookupInt(Entity template, QName key, QName currentApplicationType);
+    String lookupString(Entity template, QName key, QName currentApplicationType);
     
     void store(Entity template, QName key, QName currentApplicationType, int value);
+    void store(Entity entity, QName key, QName currentApplicationType, String value);
     void storeNull(Entity entity, QName key, QName currentApplicationType);
     
     boolean isDefined(EObject object, QName key, QName currentApplicationType);
     boolean isNull(EObject object, QName key, QName currentApplicationType);
     
     void reset();
+
 }

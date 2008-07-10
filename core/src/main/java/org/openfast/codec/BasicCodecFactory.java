@@ -13,11 +13,7 @@ public class BasicCodecFactory implements CodecFactory {
 
     public ScalarCodec createCodec(Scalar scalar, TypeCodecRegistry typeCodecRegistry) {
         if ("increment".equals(scalar.getOperator().getName())) {
-            if (((DictionaryOperator)scalar.getOperator()).getDefaultValue() != null) {
-                int defaultValue = Integer.parseInt(((DictionaryOperator)scalar.getOperator()).getDefaultValue());
-                return new IncrementIntegerCodec(typeCodecRegistry.getIntegerCodec((Type) scalar.getType()), defaultValue);
-            }
-            return new IncrementIntegerCodec(typeCodecRegistry.getIntegerCodec((Type) scalar.getType()));
+            return new IncrementIntegerCodec((DictionaryOperator)scalar.getOperator(), typeCodecRegistry.getIntegerCodec((Type) scalar.getType()));
         }
         return null;
     }

@@ -26,6 +26,10 @@ public interface Operator extends Serializable {
     Operator NONE = new Operator() {
         private static final long serialVersionUID = 1L;
         public String getName() { return "none"; }
+        public String getDefaultValue() { return null; }
+        public boolean hasDefaultValue() { return false; }
     };
     String getName();
+    String getDefaultValue();
+    boolean hasDefaultValue();
 }

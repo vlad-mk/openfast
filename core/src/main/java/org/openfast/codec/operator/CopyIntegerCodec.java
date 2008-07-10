@@ -9,15 +9,10 @@ import org.openfast.dictionary.FastDictionary;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public class CopyIntegerCodec implements ScalarCodec {
-    private final IntegerCodec integerCodec;
-    private final int defaultValue;
-    private final DictionaryOperator operator;
+public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements ScalarCodec {
 
     public CopyIntegerCodec(DictionaryOperator operator, IntegerCodec integerCodec) {
-        this.operator = operator;
-        this.integerCodec = integerCodec;
-        this.defaultValue = (operator.hasDefaultValue()) ? Integer.parseInt(operator.getDefaultValue()) : 0;
+        super(operator, integerCodec);
     }
     
     public int getLength(byte[] buffer, int offset) {
@@ -51,7 +46,7 @@ public class CopyIntegerCodec implements ScalarCodec {
         }
         int value = object.getInt(index);
         if (dictionaryUndefined) {
-            if ((operator.hasDefaultValue() && defaultValue == value)) {
+            if ((operator.hasDefaultValue() && initialValue == value)) {
                 dictionary.store(object.getEntity(), operator.getKey(), context.getCurrentApplicationType(), value);
                 return offset;
             }
@@ -73,6 +68,6 @@ public class CopyIntegerCodec implements ScalarCodec {
         if (dictionary.isDefined(object, operator.getKey(), context.getCurrentApplicationType()))
             object.set(index, dictionary.lookupInt(object.getEntity(), operator.getKey(), null));
         else if (operator.hasDefaultValue())
-            object.set(index, defaultValue);
+            object.set(index, initialValue);
     }
 }

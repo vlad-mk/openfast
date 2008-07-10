@@ -85,4 +85,10 @@ public class GlobalFastDictionary implements FastDictionary {
         if (entry == null) return false;
         return entry.isNull();
     }
+
+    public String lookupString(Entity template, QName key, QName currentApplicationType) {
+        return null;
+    }
+
+    public void store(Entity entity, QName key, QName currentApplicationType, String value) {}
 }
