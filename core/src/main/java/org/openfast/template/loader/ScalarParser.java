@@ -50,12 +50,17 @@ public class ScalarParser extends AbstractFieldParser {
         if (operatorElement != null) {
             operator = context.getOperatorParser(operatorElement).parse(operatorElement, context);
         }
-        Type type = (Type) context.getTypeRegistry().get(getTypeName(fieldNode));
+        Type type = getType(fieldNode, context);
+        
         Scalar scalar = new Scalar(getName(fieldNode, context), type, operator, optional);
         if (fieldNode.hasAttribute("id"))
             scalar.setId(fieldNode.getAttribute("id"));
         parseExternalAttributes(fieldNode, scalar);
         return scalar;
+    }
+
+    protected Type getType(Element fieldNode, ParsingContext context) {
+        return (Type) context.getTypeRegistry().get(getTypeName(fieldNode));
     }
 
     protected QName getName(Element fieldNode, ParsingContext context) {

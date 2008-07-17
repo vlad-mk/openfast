@@ -14,10 +14,6 @@ public class Array extends BasicField {
         return null;
     }
 
-    public Class getValueType() {
-        return null;
-    }
-
     public boolean usesPresenceMapBit() {
         return false;
     }

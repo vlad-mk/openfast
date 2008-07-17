@@ -22,6 +22,7 @@ package org.openfast.template;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import org.lasalletech.exom.QName;
 
 final class NullTemplateRegistry implements TemplateRegistry {
@@ -141,11 +142,13 @@ final class NullTemplateRegistry implements TemplateRegistry {
 
     public void registerAll(TemplateRegistry registry) {}
 
-    public Iterator nameIterator() {
-        return Collections.EMPTY_LIST.iterator();
+    public Iterator<QName> nameIterator() {
+        List<QName> emptyList = Collections.emptyList();
+        return emptyList.iterator();
     }
 
-    public Iterator iterator() {
-        return null;
+    public Iterator<MessageTemplate> iterator() {
+        List<MessageTemplate> emptyList = Collections.emptyList();
+        return emptyList.iterator();
     }
 }

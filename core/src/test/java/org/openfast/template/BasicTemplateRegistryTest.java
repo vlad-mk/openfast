@@ -58,7 +58,7 @@ public class BasicTemplateRegistryTest extends OpenFastTestCase {
     }
 
     private void assertContains(MessageTemplate mt, TemplateRegistry registry) {
-        List templates = Arrays.asList(registry.getTemplates());
+        List<MessageTemplate> templates = Arrays.asList(registry.getTemplates());
         assertTrue(templates.contains(mt));
     }
 

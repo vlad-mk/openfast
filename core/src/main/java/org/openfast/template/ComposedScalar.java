@@ -25,7 +25,6 @@ import org.openfast.template.Type;
 
 public class ComposedScalar extends BasicField {
     private static final long serialVersionUID = 1L;
-    private static final Class ScalarValueType = null;
     private Scalar[] fields;
     private Type type;
 
@@ -41,10 +40,6 @@ public class ComposedScalar extends BasicField {
 
     public String getTypeName() {
         return type.getName();
-    }
-
-    public Class getValueType() {
-        return ScalarValueType;
     }
 
     public boolean usesPresenceMapBit() {

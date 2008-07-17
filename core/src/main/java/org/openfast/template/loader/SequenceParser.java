@@ -23,7 +23,6 @@ package org.openfast.template.loader;
 import org.lasalletech.exom.QName;
 import org.openfast.Global;
 import org.openfast.template.Field;
-import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
 import org.openfast.template.Sequence;
 import org.openfast.template.type.Type;

@@ -192,8 +192,4 @@ public class Sequence extends BasicField {
             return false;
         return true;
     }
-
-    public Class getValueType() {
-        return null;
-    }
 }

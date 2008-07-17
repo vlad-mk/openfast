@@ -1,6 +1,5 @@
 package org.openfast.codec;
 
-import org.openfast.template.Scalar;
 import org.openfast.template.Type;
 
 public interface TypeCodecRegistry {

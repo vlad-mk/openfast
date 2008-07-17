@@ -5,7 +5,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import org.openfast.ByteUtil;
 import org.openfast.Fast;
 import org.openfast.Global;
@@ -14,7 +13,7 @@ import org.openfast.error.FastConstants;
 
 public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements StringCodec {
     private final CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
-    private final CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
+//    private final CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
     public String decode(byte[] buffer, int offset) {
         CharBuffer decoded;
         try {

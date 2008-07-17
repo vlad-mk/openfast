@@ -22,7 +22,6 @@ package org.openfast.util;
 
 import java.nio.ByteBuffer;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import junit.framework.TestCase;
@@ -30,7 +29,7 @@ import org.openfast.ByteUtil;
 
 public class UtilTest extends TestCase {
     public void testCollectionToString() {
-        Map map = new LinkedHashMap();
+        Map<String, String> map = new LinkedHashMap<String, String>();
         map.put("abc", "123");
         map.put("def", "456");
         assertEquals("{abc,def}", Util.collectionToString(map.keySet()));

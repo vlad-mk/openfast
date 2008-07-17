@@ -21,7 +21,6 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.codec.operator;
 
 import org.lasalletech.exom.EObject;
-import org.lasalletech.exom.QName;
 import org.openfast.Context;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;
@@ -73,7 +72,6 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
-        QName key = scalar.getKey();
         if (!object.isDefined(index)) {
             if (!scalar.isOptional()) {
                 // TODO - error when value is null and scalar is mandatory

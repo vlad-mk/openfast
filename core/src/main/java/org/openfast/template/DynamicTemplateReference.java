@@ -37,20 +37,6 @@ public class DynamicTemplateReference extends BasicField {
         return null;
     }
 
-    /**
-     * @return Returns null
-     */
-    public Class getValueType() {
-        return null;
-    }
-
-    /**
-     * @return Returns false
-     */
-    public boolean usesPresenceMapBit() {
-        return false;
-    }
-
     public boolean equals(Object obj) {
         return obj != null && obj.getClass().equals(this.getClass());
     }

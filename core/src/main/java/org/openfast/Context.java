@@ -93,8 +93,8 @@ public class Context {
     public void newMessage(MessageTemplate template) {
         currentApplicationType = (template.hasTypeReference()) ? template.getTypeReference() : FastConstants.ANY_TYPE;
     }
-    public void setCurrentApplicationType(QName name) {
-        currentApplicationType = name;
+    public QName getCurrentApplicationType() {
+        return currentApplicationType;
     }
     public TemplateRegistry getTemplateRegistry() {
         return templateRegistry;
