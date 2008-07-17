@@ -21,15 +21,20 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template;
 
 import java.io.Serializable;
+import org.lasalletech.util.Copyable;
 
-public interface Operator extends Serializable {
-    Operator NONE = new Operator() {
+public interface Operator extends Copyable<Operator>, Serializable {
+    Operator NONE = new AbstractOperator() {
         private static final long serialVersionUID = 1L;
         public String getName() { return "none"; }
         public String getDefaultValue() { return null; }
         public boolean hasDefaultValue() { return false; }
+        public Operator copy() {
+            return this;
+        }
     };
     String getName();
     String getDefaultValue();
     boolean hasDefaultValue();
+    Operator copy();
 }

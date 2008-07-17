@@ -30,7 +30,6 @@ import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.error.ErrorHandler;
 import org.openfast.error.FastConstants;
 import org.openfast.template.BasicTemplateRegistry;
-import org.openfast.template.Group;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.TemplateRegisteredListener;
 import org.openfast.template.TemplateRegistry;
@@ -80,21 +79,6 @@ public class Context {
     public void setLastTemplateId(int templateId) {
         lastTemplateId = templateId;
     }
-    public int lookupInt(String dictionary, Group group, QName key) {
-        if (group.hasTypeReference())
-            currentApplicationType = group.getTypeReference();
-        return getDictionary(dictionary).lookupInt(null, key, currentApplicationType);
-    }
-    public FastDictionary getDictionary(String dictionary) {
-        if (!dictionaries.containsKey(dictionary))
-            dictionaries.put(dictionary, new GlobalFastDictionary());
-        return (FastDictionary) dictionaries.get(dictionary);
-    }
-    public void store(String dictionary, Group group, QName key, int value) {
-        if (group.hasTypeReference())
-            currentApplicationType = group.getTypeReference();
-        getDictionary(dictionary).store(null, currentApplicationType, key, value);
-    }
     public void reset() {
         for (FastDictionary dict : dictionaries.values()) {
             dict.reset();
@@ -129,8 +113,5 @@ public class Context {
     
     public void discardTemporaryBuffer(byte[] buffer) {
         tempBuffer = buffer;
-    }
-    public QName getCurrentApplicationType() {
-        return null;
     }
 }

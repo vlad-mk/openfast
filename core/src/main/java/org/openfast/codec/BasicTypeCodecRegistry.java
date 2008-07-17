@@ -3,15 +3,36 @@ package org.openfast.codec;
 import java.util.HashMap;
 import java.util.Map;
 import org.openfast.template.Type;
+import org.openfast.util.Key;
 
 public class BasicTypeCodecRegistry implements TypeCodecRegistry {
-    private Map<Type, TypeCodec> codecs = new HashMap<Type, TypeCodec>();
+    private Map<Key, TypeCodec> codecs = new HashMap<Key, TypeCodec>();
 
-    public IntegerCodec getIntegerCodec(Type intType) {
-        return (IntegerCodec) codecs.get(intType);
+    public IntegerCodec getIntegerCodec(Type type) {
+        return (IntegerCodec) getCodec(type, false);
+    }
+
+    public StringCodec getStringCodec(Type type) {
+        return (StringCodec) getCodec(type, false);
+    }
+
+    private TypeCodec getCodec(Type type, boolean nullable) {
+        return codecs.get(new Key(type, new Boolean(nullable)));
+    }
+
+    public void register(Type type, boolean nullable, TypeCodec codec) {
+        codecs.put(new Key(type, new Boolean(nullable)), codec);
     }
 
     public void register(Type type, TypeCodec codec) {
-        codecs.put(type, codec);
+        register(type, false, codec);
+    }
+
+    public IntegerCodec getIntegerCodec(Type type, boolean nullable) {
+        return (IntegerCodec) getCodec(type, nullable);
+    }
+
+    public StringCodec getStringCodec(Type type, boolean nullable) {
+        return (StringCodec) getCodec(type, nullable);
     }
 }

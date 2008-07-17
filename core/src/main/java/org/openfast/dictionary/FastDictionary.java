@@ -1,20 +1,20 @@
 package org.openfast.dictionary;
 
-import org.lasalletech.exom.EObject;
-import org.lasalletech.exom.Entity;
 import org.lasalletech.exom.QName;
+import org.openfast.template.type.Type;
 
 public interface FastDictionary {
-    int lookupInt(Entity template, QName key, QName currentApplicationType);
-    String lookupString(Entity template, QName key, QName currentApplicationType);
+    int lookupInt(QName key);
+    String lookupString(QName key);
     
-    void store(Entity template, QName key, QName currentApplicationType, int value);
-    void store(Entity entity, QName key, QName currentApplicationType, String value);
-    void storeNull(Entity entity, QName key, QName currentApplicationType);
+    void store(QName key, int value);
+    void store(QName key, String value);
+    void storeNull(QName key);
     
-    boolean isDefined(EObject object, QName key, QName currentApplicationType);
-    boolean isNull(EObject object, QName key, QName currentApplicationType);
+    boolean isDefined(QName key);
+    boolean isNull(QName key);
     
     void reset();
-
+    DictionaryEntry getEntry(QName key);
+    DictionaryEntry getEntry(QName key, Type type);
 }

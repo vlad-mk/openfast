@@ -4,19 +4,16 @@ import static org.openfast.codec.operator.FastOperatorTestHarness.KEY;
 import static org.openfast.codec.operator.FastStringOperatorTestHarness.INITIAL_VALUE;
 import static org.openfast.codec.operator.FastStringOperatorTestHarness.NO_INITIAL_VALUE;
 import static org.openfast.codec.operator.FastStringOperatorTestHarness.UNDEFINED;
-import org.openfast.Fast;
-import org.openfast.codec.ScalarCodec;
-import org.openfast.codec.type.FastTypeCodecs;
-import org.openfast.template.operator.DeltaOperator;
-import org.openfast.template.operator.DictionaryOperator;
 import junit.framework.TestCase;
+import org.openfast.Fast;
+import org.openfast.template.Scalar;
+import org.openfast.template.operator.DeltaOperator;
+import org.openfast.template.type.Type;
 
 public class DeltaAsciiCodecTest extends TestCase {
-    private DictionaryOperator noDefault = new DeltaOperator(KEY, Fast.GLOBAL, null);
-    private DictionaryOperator withDefault = new DeltaOperator(KEY, Fast.GLOBAL, "ABCD");
-    private ScalarCodec noDefaultCodec = new DeltaAsciiCodec(noDefault, FastTypeCodecs.NULLABLE_SIGNED_INTEGER, FastTypeCodecs.ASCII_STRING);
-    private ScalarCodec withDefaultCodec = new DeltaAsciiCodec(withDefault, FastTypeCodecs.NULLABLE_SIGNED_INTEGER, FastTypeCodecs.ASCII_STRING);;
-    FastStringOperatorTestHarness harness = new FastStringOperatorTestHarness(noDefaultCodec, withDefaultCodec);
+    private Scalar noDefaultScalar = new Scalar("", Type.ASCII, new DeltaOperator(KEY, Fast.GLOBAL, null), true);
+    private Scalar defaultScalar = new Scalar("", Type.ASCII, new DeltaOperator(KEY, Fast.GLOBAL, "ABCD"), true);
+    FastStringOperatorTestHarness harness = new FastStringOperatorTestHarness(noDefaultScalar, defaultScalar);
 
     public void testDecode() {
         harness.assertDecodeNull(NO_INITIAL_VALUE, UNDEFINED, "10000000");

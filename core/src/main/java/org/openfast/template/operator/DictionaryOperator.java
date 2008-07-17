@@ -1,13 +1,14 @@
 package org.openfast.template.operator;
 
 import org.lasalletech.exom.QName;
+import org.openfast.template.AbstractOperator;
 import org.openfast.template.Operator;
 
-public abstract class DictionaryOperator implements Operator {
+public abstract class DictionaryOperator extends AbstractOperator implements Operator {
     private static final long serialVersionUID = 1L;
     private final QName key;
     private final String dictionary;
-    private final String defaultValue;
+    private String defaultValue;
 
     protected DictionaryOperator(QName key, String dictionary, String defaultValue) {
         this.key = key;
@@ -29,5 +30,14 @@ public abstract class DictionaryOperator implements Operator {
 
     public boolean hasDefaultValue() {
         return defaultValue != null;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

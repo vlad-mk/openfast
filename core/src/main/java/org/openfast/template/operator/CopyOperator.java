@@ -13,4 +13,8 @@ public class CopyOperator extends DictionaryOperator implements Operator {
     public String getName() {
         return "copy";
     }
+
+    public Operator copy() {
+        return new CopyOperator(getKey(), getDictionary(), getDefaultValue());
+    }
 }

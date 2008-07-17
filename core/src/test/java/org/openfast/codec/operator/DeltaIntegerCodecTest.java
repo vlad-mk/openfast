@@ -4,16 +4,15 @@ import static org.openfast.codec.operator.FastOperatorTestHarness.INITIAL_VALUE;
 import static org.openfast.codec.operator.FastOperatorTestHarness.NO_INITIAL_VALUE;
 import static org.openfast.codec.operator.FastOperatorTestHarness.UNDEFINED;
 import org.openfast.Fast;
-import org.openfast.codec.type.FastTypeCodecs;
+import org.openfast.template.Scalar;
 import org.openfast.template.operator.DeltaOperator;
+import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 
 public class DeltaIntegerCodecTest extends OpenFastTestCase {
-    DeltaOperator noDefault = new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, null);
-    DeltaOperator withDefault = new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "15");
-    DeltaIntegerCodec noDefaultCodec = new DeltaIntegerCodec(noDefault, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
-    DeltaIntegerCodec defaultCodec = new DeltaIntegerCodec(withDefault, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
-    FastOperatorTestHarness harness = new FastOperatorTestHarness(noDefaultCodec, defaultCodec);
+    Scalar noDefaultScalar = new Scalar("", Type.I32, new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, null), true);
+    Scalar defaultScalar = new Scalar("", Type.I32, new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "15"), true);
+    FastOperatorTestHarness harness = new FastOperatorTestHarness(defaultScalar, noDefaultScalar);
     
     public void testDecode() {
         harness.assertDecodeNull(NO_INITIAL_VALUE, UNDEFINED, "10000000");

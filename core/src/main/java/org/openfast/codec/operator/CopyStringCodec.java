@@ -3,16 +3,16 @@ package org.openfast.codec.operator;
 import org.lasalletech.exom.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
-import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;
+import org.openfast.codec.StringCodec;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements ScalarCodec {
+public class CopyStringCodec extends DictionaryOperatorStringCodec implements ScalarCodec {
 
-    public CopyIntegerCodec(DictionaryEntry entry, DictionaryOperator operator, IntegerCodec integerCodec) {
-        super(entry, operator, integerCodec);
+    public CopyStringCodec(DictionaryEntry dictionaryEntry, DictionaryOperator operator, StringCodec stringCodec) {
+        super(dictionaryEntry, operator, stringCodec);
     }
     
     public int getLength(byte[] buffer, int offset) {
@@ -20,14 +20,14 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
     }
 
     public int decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
-        if (integerCodec.isNull(buffer, offset)) {
+        if (stringCodec.isNull(buffer, offset)) {
             dictionaryEntry.setNull();
             return offset + 1;
         }
-        int value = integerCodec.decode(buffer, offset);
+        String value = stringCodec.decode(buffer, offset);
         object.set(index, value);
         dictionaryEntry.set(value);
-        return integerCodec.getLength(buffer, offset) + offset;
+        return stringCodec.getLength(buffer, offset) + offset;
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
@@ -42,19 +42,19 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
                 return offset+1;
             }
         }
-        int value = object.getInt(index);
+        String value = object.getString(index);
         if (dictionaryUndefined) {
-            if ((operator.hasDefaultValue() && initialValue == value)) {
+            if ((operator.hasDefaultValue() && operator.getDefaultValue().equals(value))) {
                 dictionaryEntry.set(value);
                 return offset;
             }
         } else if (!dictionaryNull) {
-            if (dictionaryEntry.getInt() == value) {
+            if (value.equals(dictionaryEntry.getString())) {
                 dictionaryEntry.set(value);
                 return offset;
             }
         }
-        int newOffset = integerCodec.encode(buffer, offset, value);
+        int newOffset = stringCodec.encode(buffer, offset, value);
         dictionaryEntry.set(value);
         return newOffset;
     }
@@ -63,8 +63,8 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
         if (dictionaryEntry.isNull())
             return;
         if (dictionaryEntry.isDefined())
-            object.set(index, dictionaryEntry.getInt());
+            object.set(index, dictionaryEntry.getString());
         else if (operator.hasDefaultValue())
-            object.set(index, initialValue);
+            object.set(index, operator.getDefaultValue());
     }
 }

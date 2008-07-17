@@ -9,4 +9,5 @@ public class FastTypeCodecs {
     public static final IntegerCodec NULLABLE_UNSIGNED_INTEGER  = new NullableUnsignedIntegerCodec();
     public static final IntegerCodec NULLABLE_SIGNED_INTEGER    = new NullableSignedIntegerCodec();
     public static final StringCodec  ASCII_STRING               = new AsciiStringCodec();
+    public static final StringCodec  NULLABLE_ASCII_STRING      = new NullableAsciiStringCodec();
 }

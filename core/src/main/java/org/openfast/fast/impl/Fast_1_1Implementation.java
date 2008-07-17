@@ -2,11 +2,17 @@ package org.openfast.fast.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.openfast.Fast;
 import org.openfast.codec.BasicCodecFactory;
 import org.openfast.codec.BasicTypeCodecRegistry;
 import org.openfast.codec.CodecFactory;
+import org.openfast.codec.IncrementOperatorCodecFactory;
 import org.openfast.codec.TypeCodecRegistry;
 import org.openfast.codec.type.FastTypeCodecs;
+import org.openfast.dictionary.BasicDictionaryTypeRegistry;
+import org.openfast.dictionary.DictionaryTypeRegistry;
+import org.openfast.dictionary.GlobalDictionaryType;
+import org.openfast.dictionary.TemplateDictionaryType;
 import org.openfast.fast.FastTypes;
 import org.openfast.template.BasicTypeRegistry;
 import org.openfast.template.TypeRegistry;
@@ -26,11 +32,13 @@ import org.openfast.template.loader.StringParser;
 import org.openfast.template.loader.TailOperatorParser;
 import org.openfast.template.loader.TemplateRefParser;
 
-public class Fast1_1Implementation extends FastImplementation {
+public class Fast_1_1Implementation extends FastImplementation {
     private List<FieldParser> parsers;
     private TypeRegistry typeRegistry;
     private List<OperatorParser> operatorParsers;
-    private BasicTypeCodecRegistry typeCodecRegistry;
+    private TypeCodecRegistry typeCodecRegistry;
+    private DictionaryTypeRegistry dictionaryTypeRegistry;
+    private BasicCodecFactory codecFactory;
 
     @Override
     public List<FieldParser> getFieldParsers() {
@@ -84,7 +92,13 @@ public class Fast1_1Implementation extends FastImplementation {
 
     @Override
     public CodecFactory getCodecFactory() {
-        return new BasicCodecFactory();
+        if (codecFactory == null) {
+            codecFactory = new BasicCodecFactory();
+            codecFactory.register("increment", new IncrementOperatorCodecFactory());
+            codecFactory.register("copy", new CopyOperatorCodecFactory());
+            codecFactory.register("delta", new DeltaOperatorCodecFactory());
+        }
+        return codecFactory;
     }
 
     @Override
@@ -95,11 +109,31 @@ public class Fast1_1Implementation extends FastImplementation {
             typeCodecRegistry.register(FastTypes.I16, FastTypeCodecs.SIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.I32, FastTypeCodecs.SIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.I64, FastTypeCodecs.SIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.I8,  true, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.I16, true, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.I32, true, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.I64, true, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U8,  FastTypeCodecs.UNSIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U16, FastTypeCodecs.UNSIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U32, FastTypeCodecs.UNSIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U64, FastTypeCodecs.UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.U8,  true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.U16, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.U32, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.U64, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.ASCII, FastTypeCodecs.ASCII_STRING);
+            typeCodecRegistry.register(FastTypes.ASCII, true, FastTypeCodecs.NULLABLE_ASCII_STRING);
         }
         return typeCodecRegistry;
+    }
+
+    @Override
+    public DictionaryTypeRegistry getDictionaryTypeRegistry() {
+        if (dictionaryTypeRegistry == null) {
+            dictionaryTypeRegistry = new BasicDictionaryTypeRegistry();
+            dictionaryTypeRegistry.register(Fast.GLOBAL, new GlobalDictionaryType());
+            dictionaryTypeRegistry.register(Fast.TEMPLATE, new TemplateDictionaryType());
+        }
+        return dictionaryTypeRegistry;
     }
 }

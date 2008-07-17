@@ -1,25 +1,28 @@
 package org.openfast.dictionary;
 
-import java.util.Arrays;
-import org.lasalletech.exom.EObject;
-import org.lasalletech.exom.Entity;
 import org.lasalletech.exom.QName;
+import org.openfast.template.type.IntegerType;
+import org.openfast.template.type.StringType;
+import org.openfast.template.type.Type;
 
 public class GlobalFastDictionary implements FastDictionary {
     // Use power of 2 for size so that hashes can be calculated quickly
-    private Entry[] entries = new Entry[256];
+    private DictionaryEntry[] entries = new DictionaryEntry[256];
     
-    public int lookupInt(Entity template, QName key, QName currentApplicationType) {
+    public int lookupInt(QName key) {
         return getEntry(key).getInt();
     }
 
     public void reset() {
-        Arrays.fill(entries, null);
+        for (DictionaryEntry entry : entries) {
+            if (entry != null)
+                entry.reset();
+        }
     }
 
-    public void store(Entity template, QName key, QName currentApplicationType, int value) {
+    public void store(QName key, int value) {
         int index = key.hashCode() & (entries.length - 1);
-        Entry entry = entries[index];
+        DictionaryEntry entry = entries[index];
         if (entry == null) {
             entries[index] = new IntegerEntry(key, value);
         } else {
@@ -28,33 +31,22 @@ public class GlobalFastDictionary implements FastDictionary {
                     entry.setNext(new IntegerEntry(key, value));
                     return;
                 }
-                Entry next = entry.getNext();
-                if (next.matches(key) && next instanceof NullEntry) {
-                    entry.setNext(new IntegerEntry(key, value));
-                    entry.getNext().setNext(next.getNext());
-                    return;
-                }
+                DictionaryEntry next = entry.getNext();
                 entry = next;
             }
-            if (entry instanceof NullEntry) {
-                entry = new IntegerEntry(key, value);
-                entries[index] = entry;
-            } else {
-                entry.setInt(value);
-            }
+            entry.set(value);
         }
     }
 
-    public void storeNull(Entity entity, QName key, QName currentApplicationType) {
+    public void storeNull(QName key) {
         int index = key.hashCode() & (entries.length - 1);
-        Entry entry = entries[index];
+        DictionaryEntry entry = entries[index];
         if (entry == null) {
-            entries[index] = new NullEntry(key);
+            throw new IllegalStateException("The dictionary entry for " + key + " was never initialized.");
         } else {
             while (!entry.matches(key)) {
                 if (!entry.hasNext()) {
-                    entry.setNext(new NullEntry(key));
-                    return;
+                    throw new IllegalStateException("The dictionary entry for " + key + " was never initialized.");
                 }
                 entry = entry.getNext();
             }
@@ -62,14 +54,14 @@ public class GlobalFastDictionary implements FastDictionary {
         }
     }
 
-    public boolean isDefined(EObject object, QName key, QName currentApplicationType) {
-        Entry entry = getEntry(key);
+    public boolean isDefined(QName key) {
+        DictionaryEntry entry = getEntry(key);
         return entry != null;
     }
 
-    private Entry getEntry(QName key) {
+    public DictionaryEntry getEntry(QName key) {
         int index = key.hashCode() & (entries.length - 1);
-        Entry entry = entries[index];
+        DictionaryEntry entry = entries[index];
         if (entry == null)
             return null;
         while (!entry.matches(key)) {
@@ -80,15 +72,48 @@ public class GlobalFastDictionary implements FastDictionary {
         return entry;
     }
 
-    public boolean isNull(EObject object, QName key, QName currentApplicationType) {
-        Entry entry = getEntry(key);
+    public boolean isNull(QName key) {
+        DictionaryEntry entry = getEntry(key);
         if (entry == null) return false;
         return entry.isNull();
     }
 
-    public String lookupString(Entity template, QName key, QName currentApplicationType) {
+    public String lookupString(QName key) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void store(QName key, String value) {
+        throw new UnsupportedOperationException();
+    }
+
+    public DictionaryEntry getEntry(QName key, Type type) {
+        DictionaryEntry entry = getEntry(key);
+        if (entry == null) {
+            entry = createEntry(key, type);
+            storeEntry(entry);
+        }
+        return entry;
+    }
+
+    private DictionaryEntry createEntry(QName key, Type type) {
+        if (type instanceof IntegerType) {
+            return new IntegerEntry(key);
+        } else if (type instanceof StringType) {
+            return new StringEntry(key);
+        }
         return null;
     }
 
-    public void store(Entity entity, QName key, QName currentApplicationType, String value) {}
+    private void storeEntry(DictionaryEntry e) {
+        int index = e.getKey().hashCode() & (entries.length - 1);
+        DictionaryEntry entry = entries[index];
+        if (entry == null) {
+            entries[index] = e;
+        } else {
+            while (entry.hasNext()) {
+                entry = entry.getNext();
+            }
+            entry.setNext(entry);
+        }
+    }
 }

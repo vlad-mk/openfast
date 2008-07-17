@@ -2,48 +2,34 @@ package org.openfast.dictionary;
 
 import org.lasalletech.exom.QName;
 
-public class IntegerEntry implements Entry {
-    private final QName key;
+public class IntegerEntry extends AbstractDictionaryEntry implements DictionaryEntry {
     private int value;
-    private Entry next;
-    private boolean isNull;
 
     public IntegerEntry(QName key, int value) {
-        if (key == null) throw new NullPointerException();
-        this.key = key;
+        super(key);
         this.value = value;
+        this.isDefined = true;
+    }
+
+    public IntegerEntry(QName key) {
+        super(key);
     }
 
     public int getInt() {
         return value;
     }
 
-    public Entry getNext() {
-        return next;
-    }
-
-    public boolean hasNext() {
-        return next != null;
-    }
-
-    public boolean isNull() {
-        return isNull;
-    }
-
-    public boolean matches(Object key) {
-        return this.key.equals(key);
-    }
-
-    public void setInt(int value) {
+    public void set(int value) {
         this.value = value;
         isNull = false;
+        isDefined = true;
     }
 
-    public void setNext(Entry entry) {
-        next = entry;
+    public String getString() {
+        return String.valueOf(value);
     }
 
-    public void setNull() {
-        isNull = true;
+    public void set(String value) {
+        set(Integer.parseInt(value));
     }
 }

@@ -6,7 +6,7 @@ import org.openfast.Fast;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;
 import org.openfast.codec.StringCodec;
-import org.openfast.dictionary.FastDictionary;
+import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
@@ -14,8 +14,9 @@ import org.openfast.template.operator.DictionaryOperator;
 public class DeltaAsciiCodec extends DictionaryOperatorStringCodec implements ScalarCodec {
     private IntegerCodec integerCodec;
 
-    public DeltaAsciiCodec(DictionaryOperator operator, IntegerCodec integerCodec, StringCodec stringCodec) {
-        super(operator, stringCodec);
+    public DeltaAsciiCodec(DictionaryEntry dictionaryEntry, DictionaryOperator operator, IntegerCodec integerCodec, StringCodec stringCodec) {
+        super(dictionaryEntry, operator, stringCodec);
+        if (integerCodec == null) throw new NullPointerException();
         this.integerCodec = integerCodec;
     }
 
@@ -31,23 +32,21 @@ public class DeltaAsciiCodec extends DictionaryOperatorStringCodec implements Sc
         offset = integerCodec.getLength(buffer, offset);
         String delta = stringCodec.decode(buffer, offset);
         String value = new StringDelta(subtractionLength, delta).applyTo(getPreviousValue(object, field, context));
-        FastDictionary dictionary = context.getDictionary(operator.getDictionary());
-        dictionary.store(object.getEntity(), operator.getKey(), context.getCurrentApplicationType(), value);
+        dictionaryEntry.set(value);
         object.set(index, value);
         return stringCodec.getLength(buffer, offset) + offset;
     }
 
     private String getPreviousValue(EObject object, Scalar field, Context context) {
-        FastDictionary dictionary = context.getDictionary(operator.getDictionary());
-        if (!dictionary.isDefined(object, operator.getKey(), context.getCurrentApplicationType())) {
+        if (!dictionaryEntry.isDefined()) {
             if (operator.hasDefaultValue())
                 return operator.getDefaultValue();
             return "";
-        } else if (dictionary.isNull(object, operator.getKey(), context.getCurrentApplicationType())) {
+        } else if (dictionaryEntry.isNull()) {
             context.getErrorHandler().error(FastConstants.D6_MNDTRY_FIELD_NOT_PRESENT, "The field " + field + " must have a priorValue defined.");
             return "";
         }
-        return dictionary.lookupString(object.getEntity(), operator.getKey(), context.getCurrentApplicationType());
+        return dictionaryEntry.getString();
     }
 
     public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {}

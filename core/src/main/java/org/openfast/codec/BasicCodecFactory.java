@@ -1,20 +1,27 @@
 package org.openfast.codec;
 
+import java.util.HashMap;
+import java.util.Map;
+import org.openfast.dictionary.DictionaryRegistry;
+import org.openfast.fast.impl.FastImplementation;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
-import org.openfast.template.Type;
-import org.openfast.template.operator.DictionaryOperator;
-import org.openfast.codec.operator.IncrementIntegerCodec;
 
 public class BasicCodecFactory implements CodecFactory {
-    public MessageCodec createCodec(int id, MessageTemplate template, TypeCodecRegistry typeCodecRegistry) {
-        return new BasicMessageCodec(id, template, typeCodecRegistry, this);
+    private Map<String, ScalarCodecFactory> codecFactories = new HashMap<String, ScalarCodecFactory>();
+
+    public MessageCodec createMessageCodec(int id, MessageTemplate template, FastImplementation implementation, DictionaryRegistry dictionaryRegistry) {
+        return new BasicMessageCodec(id, template, implementation, dictionaryRegistry, this);
     }
 
-    public ScalarCodec createCodec(Scalar scalar, TypeCodecRegistry typeCodecRegistry) {
-        if ("increment".equals(scalar.getOperator().getName())) {
-            return new IncrementIntegerCodec((DictionaryOperator)scalar.getOperator(), typeCodecRegistry.getIntegerCodec((Type) scalar.getType()));
+    public ScalarCodec createScalarCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation, DictionaryRegistry dictionaryRegistry) {
+        if (!codecFactories.containsKey(scalar.getOperator().getName())) {
+            throw new IllegalArgumentException("Encountered unknown operator " + scalar.getOperator() + " in scalar " + scalar.getQName());
         }
-        return null;
+        return codecFactories.get(scalar.getOperator().getName()).createCodec(template, scalar, implementation, dictionaryRegistry);
+    }
+
+    public void register(String operator, ScalarCodecFactory scalarCodecFactory) {
+        codecFactories.put(operator, scalarCodecFactory);
     }
 }

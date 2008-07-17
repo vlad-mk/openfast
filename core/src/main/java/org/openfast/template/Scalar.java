@@ -23,7 +23,7 @@ package org.openfast.template;
 import org.lasalletech.exom.QName;
 import org.openfast.template.type.Type;
 
-public class Scalar extends BasicField {
+public class Scalar extends BasicField implements Cloneable {
     private static final long serialVersionUID = 1L;
     private final Operator operator;
     private final Type type;
@@ -46,16 +46,25 @@ public class Scalar extends BasicField {
     public Scalar(String name, Type type, Operator operator, boolean optional) {
         this(new QName(name), type, operator, optional);
     }
+    
     public Scalar(QName name, Type type, Operator operator, boolean optional) {
         super(name, optional);
         this.operator = operator;
         this.type = type;
     }
     /**
+     * Copy constructor
+     * 
+     * @param scalar
+     */
+    public Scalar(Scalar scalar) {
+        this(new QName(scalar.getQName()), scalar.getType(), (Operator) scalar.getOperator().copy(), scalar.isOptional());
+    }
+    /**
      * 
      * @return Returns the type as a string
      */
-    public org.lasalletech.exom.Type getType() {
+    public Type getType() {
         return type;
     }
     /**
@@ -80,5 +89,10 @@ public class Scalar extends BasicField {
     }
     public Class<?> getValueType() {
         return null;
+    }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

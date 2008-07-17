@@ -5,15 +5,15 @@ import org.lasalletech.exom.EObject;
 import org.openfast.Context;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;
-import org.openfast.dictionary.FastDictionary;
+import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
 public class DeltaIntegerCodec extends DictionaryOperatorIntegerCodec implements ScalarCodec {
 
-    public DeltaIntegerCodec(DictionaryOperator operator, IntegerCodec integerDeltaCodec) {
-        super(operator, integerDeltaCodec);
+    public DeltaIntegerCodec(DictionaryEntry entry, DictionaryOperator operator, IntegerCodec integerDeltaCodec) {
+        super(entry, operator, integerDeltaCodec);
     }
     
     public int getLength(byte[] buffer, int offset) {
@@ -28,19 +28,18 @@ public class DeltaIntegerCodec extends DictionaryOperatorIntegerCodec implements
         int previousValue = getPreviousValue(object, context, field);
         int newValue = delta + previousValue;
         object.set(index, newValue);
-        context.getDictionary(operator.getDictionary()).store(object.getEntity(), operator.getKey(), context.getCurrentApplicationType(), newValue);
+        dictionaryEntry.set(newValue);
         return integerCodec.getLength(buffer, offset) + offset;
     }
 
     private int getPreviousValue(EObject object, Context context, Scalar field) {
-        FastDictionary dictionary = context.getDictionary(operator.getDictionary());
-        if (!dictionary.isDefined(object, operator.getKey(), context.getCurrentApplicationType())) {
+        if (!dictionaryEntry.isDefined()) {
             return initialValue;
-        } else if (dictionary.isNull(object, operator.getKey(), context.getCurrentApplicationType())) {
+        } else if (dictionaryEntry.isNull()) {
             context.getErrorHandler().error(FastConstants.D6_MNDTRY_FIELD_NOT_PRESENT, "The field " + field + " must have a priorValue defined.");
             return 0;
         }
-        return dictionary.lookupInt(object.getEntity(), operator.getKey(), context.getCurrentApplicationType());
+        return dictionaryEntry.getInt();
     }
 
     public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {}
