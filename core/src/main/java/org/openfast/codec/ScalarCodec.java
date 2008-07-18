@@ -23,5 +23,4 @@ package org.openfast.codec;
 import org.openfast.template.Scalar;
 
 public interface ScalarCodec extends FieldCodec<Scalar> {
-    int getLength(byte[] buffer, int offset);
 }

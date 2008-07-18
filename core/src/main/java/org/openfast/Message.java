@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast;
 
-import org.lasalletech.exom.simple.SimpleEObject;
+import org.lasalletech.entity.simple.SimpleEObject;
 import org.openfast.template.MessageTemplate;
 
 public class Message extends SimpleEObject {

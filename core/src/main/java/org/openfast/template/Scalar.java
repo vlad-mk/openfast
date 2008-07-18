@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template;
 
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.template.type.Type;
 
 public class Scalar extends BasicField implements Cloneable {

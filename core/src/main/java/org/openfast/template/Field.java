@@ -21,10 +21,10 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template;
 
 import java.io.Serializable;
-import org.lasalletech.exom.Named;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.Named;
+import org.lasalletech.entity.QName;
 
-public interface Field extends org.lasalletech.exom.Field, Named, Serializable {
+public interface Field extends org.lasalletech.entity.Field, Named, Serializable {
     boolean isOptional();
     QName getKey();
     void setKey(QName key);

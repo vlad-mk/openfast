@@ -22,7 +22,7 @@ package org.openfast.template.loader;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.error.FastConstants;
 import org.openfast.template.Field;
 import org.openfast.template.Group;

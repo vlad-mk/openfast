@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 
 public class BasicTemplateRegistry extends AbstractTemplateRegistry {
     private Map<QName, MessageTemplate> nameMap = new HashMap<QName, MessageTemplate>();

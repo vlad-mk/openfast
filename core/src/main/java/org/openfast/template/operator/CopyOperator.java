@@ -1,6 +1,6 @@
 package org.openfast.template.operator;
 
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.template.Operator;
 
 public class CopyOperator extends DictionaryOperator implements Operator {

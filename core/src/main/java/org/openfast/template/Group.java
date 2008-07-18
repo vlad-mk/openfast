@@ -23,9 +23,9 @@ package org.openfast.template;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import org.lasalletech.exom.QName;
-import org.lasalletech.exom.Type;
-import org.lasalletech.exom.simple.SimpleEntity;
+import org.lasalletech.entity.QName;
+import org.lasalletech.entity.Type;
+import org.lasalletech.entity.simple.SimpleEntity;
 
 public class Group extends SimpleEntity implements Field {
     private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class Group extends SimpleEntity implements Field {
         for (Field field : fields) {
             if (field instanceof StaticTemplateReference) {
               StaticTemplateReference reference = (StaticTemplateReference) field;
-              for (org.lasalletech.exom.Field referencedField : reference.getTemplate().getFields())
+              for (org.lasalletech.entity.Field referencedField : reference.getTemplate().getFields())
                   add(referencedField);
               if (staticTemplateReferences.isEmpty()) {
                   staticTemplateReferences = new LinkedList<StaticTemplateReference>();
@@ -99,7 +99,7 @@ public class Group extends SimpleEntity implements Field {
      * @return Returns a Group object of the specified field name
      */
     public Group getGroup(String fieldName) {
-        return (Group) ((GroupReference) getField(fieldName).getType()).getEntity();
+        return (Group) getField(fieldName);
     }
 
     /**

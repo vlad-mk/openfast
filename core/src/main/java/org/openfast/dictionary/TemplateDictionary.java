@@ -2,7 +2,7 @@ package org.openfast.dictionary;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.template.Scalar;
 
 public class TemplateDictionary implements Dictionary {

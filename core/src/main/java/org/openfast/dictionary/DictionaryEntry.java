@@ -1,6 +1,6 @@
 package org.openfast.dictionary;
 
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 
 public interface DictionaryEntry {
     void set(int value);

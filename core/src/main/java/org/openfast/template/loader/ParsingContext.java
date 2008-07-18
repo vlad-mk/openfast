@@ -21,7 +21,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.loader;
 
 import java.util.List;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.error.ErrorHandler;
 import org.openfast.fast.impl.FastImplementation;
 import org.openfast.template.TemplateRegistry;

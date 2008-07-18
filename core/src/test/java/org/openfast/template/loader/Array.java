@@ -1,6 +1,6 @@
 package org.openfast.template.loader;
 
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.template.BasicField;
 
 public class Array extends BasicField {

@@ -1,6 +1,6 @@
 package org.openfast.dictionary;
 
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.template.type.IntegerType;
 import org.openfast.template.type.StringType;
 import org.openfast.template.type.Type;

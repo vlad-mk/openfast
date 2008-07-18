@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.dictionary.FastDictionary;
 import org.openfast.dictionary.GlobalFastDictionary;
 import org.openfast.error.ErrorHandler;

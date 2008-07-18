@@ -21,7 +21,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.loader;
 
 import java.io.InputStream;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.error.ErrorHandler;
 import org.openfast.error.FastConstants;
 import org.openfast.error.FastException;

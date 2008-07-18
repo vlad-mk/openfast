@@ -18,7 +18,9 @@
 
     <modules>
         <module>core</module>
+        <module>nio</module>
     </modules>
+    
     <developers>
         <developer>
             <name>Jacob Northey</name>
@@ -169,21 +171,10 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                     <descriptors>
-                        <descriptor>src/assembly/sources-jar.xml</descriptor>
-                        <descriptor>src/assembly/javadoc-jar.xml</descriptor>
                         <descriptor>src/assembly/source.xml</descriptor>
                         <descriptor>src/assembly/binary.xml</descriptor>
                     </descriptors>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>attached</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

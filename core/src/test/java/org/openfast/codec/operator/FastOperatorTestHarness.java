@@ -1,13 +1,13 @@
 package org.openfast.codec.operator;
 
 import junit.framework.Assert;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
 import org.openfast.Fast;
 import org.openfast.Message;
 import org.openfast.codec.CodecFactory;
-import org.openfast.codec.ScalarCodec;
+import org.openfast.codec.SinglePresenceMapEntryFieldCodec;
 import org.openfast.dictionary.BasicDictionaryRegistry;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.dictionary.DictionaryRegistry;
@@ -25,23 +25,24 @@ public class FastOperatorTestHarness {
     public static final int NULL = Integer.MIN_VALUE + 1;
     public static final int NO_INITIAL_VALUE = Integer.MIN_VALUE + 2;
     public static final int INITIAL_VALUE = Integer.MIN_VALUE + 3;
-    private final ScalarCodec noDefaultCodec;
-    private final ScalarCodec defaultCodec;
+    private final SinglePresenceMapEntryFieldCodec<Scalar> noDefaultCodec;
+    private final SinglePresenceMapEntryFieldCodec<Scalar> defaultCodec;
     private final Scalar noDefaultScalar;
     private final Scalar defaultScalar;
     private final DictionaryRegistry dictionaryRegistry;
 
+    @SuppressWarnings("unchecked")
     public FastOperatorTestHarness(Scalar defaultScalar, Scalar noDefaultScalar) {
         CodecFactory factory = FastImplementation.getDefaultVersion().getCodecFactory();
         this.noDefaultScalar = noDefaultScalar;
         this.dictionaryRegistry = new BasicDictionaryRegistry(FastImplementation.getDefaultVersion().getDictionaryTypeRegistry());
-        this.noDefaultCodec = factory.createScalarCodec(null, noDefaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
+        this.noDefaultCodec = (SinglePresenceMapEntryFieldCodec<Scalar>) factory.createScalarCodec(null, noDefaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
         this.defaultScalar = defaultScalar;
-        this.defaultCodec = factory.createScalarCodec(null, defaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
+        this.defaultCodec = (SinglePresenceMapEntryFieldCodec<Scalar>) factory.createScalarCodec(null, defaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
     }
 
     public void assertDecodeNull(int initialValue, int dictionaryState) {
-        ScalarCodec codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
         MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
@@ -51,7 +52,7 @@ public class FastOperatorTestHarness {
     }
 
     public void assertDecodeNull(int initialValue, int dictionaryState, String encoded) {
-        ScalarCodec codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
         MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
@@ -62,7 +63,7 @@ public class FastOperatorTestHarness {
     }
 
     public void assertDecode(int expectedValue, int initialValue, int dictionaryState) {
-        ScalarCodec codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
         MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
@@ -72,7 +73,7 @@ public class FastOperatorTestHarness {
     }
 
     public void assertDecode(int expectedValue, int initialValue, int dictionaryState, String encoded) {
-        ScalarCodec codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
         Scalar scalar = new Scalar(QName.NULL, Type.U32, null, true);
@@ -94,8 +95,8 @@ public class FastOperatorTestHarness {
         }
     }
 
-    private ScalarCodec getCodec(int initialValue) {
-        ScalarCodec codec;
+    private SinglePresenceMapEntryFieldCodec<Scalar> getCodec(int initialValue) {
+        SinglePresenceMapEntryFieldCodec<Scalar> codec;
         if (initialValue == NO_INITIAL_VALUE) {
             codec = noDefaultCodec;
         } else {
@@ -112,7 +113,7 @@ public class FastOperatorTestHarness {
     }
 
     public void assertEncode(String encoded, int initialValue, int dictionaryState) {
-        ScalarCodec codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
         MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
@@ -125,7 +126,7 @@ public class FastOperatorTestHarness {
     }
     
     public void assertEncode(String encoded, int initialValue, int dictionaryState, int value) {
-        ScalarCodec codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
         MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });

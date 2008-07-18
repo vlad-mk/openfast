@@ -1,6 +1,6 @@
 package org.openfast.codec;
 
-import org.lasalletech.exom.Field;
+import org.lasalletech.entity.Field;
 import org.openfast.Context;
 import org.openfast.Message;
 import org.openfast.dictionary.DictionaryRegistry;
@@ -9,6 +9,7 @@ import org.openfast.fast.impl.FastImplementation;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 public class BasicMessageCodec implements MessageCodec {
     private final int templateId;
@@ -40,19 +41,28 @@ public class BasicMessageCodec implements MessageCodec {
             context.setLastTemplateId(templateId);
             pmapBuilder.set();
         }
-        int previousIndex;
         for (int i=0; i<fieldCodecs.length; i++) {
-            previousIndex = index;
-            index = fieldCodecs[i].encode(message, i, temp, index, message.getTemplate().getField(i), context);
-            if (index != previousIndex)
-                pmapBuilder.set();
-            else
-                pmapBuilder.skip();
+            index = fieldCodecs[i].encode(message, i, temp, index, message.getTemplate().getField(i), pmapBuilder, context);
         }
         byte[] pmap = pmapBuilder.getBitVector().getBytes();
         System.arraycopy(pmap, 0, buffer, offset, pmap.length);
         System.arraycopy(temp, 0, buffer, offset + pmap.length, index);
         context.discardTemporaryBuffer(temp);
         return offset + pmap.length + index;
+    }
+
+    public int getLength(byte[] buffer, int offset, BitVectorReader reader, Context context) {
+        int length = 0;
+        for (int i=0; i<fieldCodecs.length; i++) {
+            length += fieldCodecs[i].getLength(buffer, offset, reader);
+        }
+        return length;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void decode(Message message, byte[] buffer, int offset, BitVectorReader reader, Context context) {
+        for (int i=0; i<fieldCodecs.length; i++) {
+            fieldCodecs[i].decode(message, i, buffer, offset, message.getTemplate().getField(i), reader, context);
+        }
     }
 }

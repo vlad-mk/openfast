@@ -5,7 +5,7 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
 import org.openfast.test.OpenFastTestCase;
 
-public class GeneralAcceptanceTest extends OpenFastTestCase {
+public class BasicMessageEncodingAcceptanceTest extends OpenFastTestCase {
     public void testBasicFastImplementation() throws Exception {
         XMLMessageTemplateLoader loader = new XMLMessageTemplateLoader();
         loader.setLoadTemplateIdFromAuxId(true);

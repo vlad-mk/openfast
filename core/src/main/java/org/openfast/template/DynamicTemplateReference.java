@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template;
 
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 
 public class DynamicTemplateReference extends BasicField {
     private static final long serialVersionUID = 1L;

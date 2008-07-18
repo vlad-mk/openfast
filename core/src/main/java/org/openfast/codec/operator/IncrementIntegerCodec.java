@@ -20,7 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.codec.operator;
 
-import org.lasalletech.exom.EObject;
+import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;

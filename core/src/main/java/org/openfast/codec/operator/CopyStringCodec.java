@@ -1,6 +1,6 @@
 package org.openfast.codec.operator;
 
-import org.lasalletech.exom.EObject;
+import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
 import org.openfast.codec.ScalarCodec;

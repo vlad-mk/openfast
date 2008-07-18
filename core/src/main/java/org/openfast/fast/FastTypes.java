@@ -23,5 +23,8 @@ public interface FastTypes {
     public final static Type DECIMAL = new DecimalType();
     public static final Type[] ALL_TYPES = new Type[] { U8, U16, U32, U64, I8, I16, I32, I64, STRING, ASCII, UNICODE, BYTE_VECTOR,
             DECIMAL };
-    public static final Type[] INTEGER_TYPES = new Type[] { U8, U16, U32, U64, I8, I16, I32, I64 }; 
+    public static final Type[] INTEGER_TYPES = new Type[] { U8, U16, U32, U64, I8, I16, I32, I64 };
+    public static final Type BIT_VECTOR = new org.openfast.template.type.Type("bitVector"){
+        private static final long serialVersionUID = 1L;
+        };
 }

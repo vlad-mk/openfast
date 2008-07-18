@@ -21,7 +21,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.type;
 
 import java.io.Serializable;
-import org.lasalletech.exom.QName;
+import org.lasalletech.entity.QName;
 
 public abstract class Type implements org.openfast.template.Type, Serializable {
     private static final long serialVersionUID = 1L;

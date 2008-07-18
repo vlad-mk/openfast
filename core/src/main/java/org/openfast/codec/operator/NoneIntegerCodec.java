@@ -1,13 +1,13 @@
 package org.openfast.codec.operator;
 
-import org.lasalletech.exom.EObject;
+import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;
 import org.openfast.template.Scalar;
 
-public class NoneIntegerCodec implements ScalarCodec {
+public class NoneIntegerCodec extends AlwaysPresentCodec<Scalar> implements ScalarCodec {
     private IntegerCodec integerCodec;
 
     public NoneIntegerCodec(IntegerCodec integerCodec) {
@@ -23,8 +23,6 @@ public class NoneIntegerCodec implements ScalarCodec {
         }
         return integerCodec.getLength(buffer, offset);
     }
-
-    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {}
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (!object.isDefined(index)) {

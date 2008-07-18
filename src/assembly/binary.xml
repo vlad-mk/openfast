@@ -1,0 +1,27 @@
+<assembly>
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>license.txt</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+    <moduleSets>
+        <moduleSet>
+            <sources>
+                <fileSets>
+                    <fileSet>
+                        <directory>src/main/java</directory>
+                        <outputDirectory>src</outputDirectory>
+                    </fileSet>
+                </fileSets>
+            </sources>
+        </moduleSet>
+    </moduleSets>
+</assembly>

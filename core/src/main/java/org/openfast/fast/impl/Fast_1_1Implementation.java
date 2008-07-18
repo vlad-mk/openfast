@@ -123,6 +123,7 @@ public class Fast_1_1Implementation extends FastImplementation {
             typeCodecRegistry.register(FastTypes.U64, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.ASCII, FastTypeCodecs.ASCII_STRING);
             typeCodecRegistry.register(FastTypes.ASCII, true, FastTypeCodecs.NULLABLE_ASCII_STRING);
+            typeCodecRegistry.register(FastTypes.BIT_VECTOR, false, FastTypeCodecs.BIT_VECTOR);
         }
         return typeCodecRegistry;
     }

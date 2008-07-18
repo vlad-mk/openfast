@@ -35,4 +35,8 @@ public class BasicTypeCodecRegistry implements TypeCodecRegistry {
     public StringCodec getStringCodec(Type type, boolean nullable) {
         return (StringCodec) getCodec(type, nullable);
     }
+
+    public BitVectorCodec getBitVectorCodec(Type type) {
+        return (BitVectorCodec) getCodec(type, false);
+    }
 }

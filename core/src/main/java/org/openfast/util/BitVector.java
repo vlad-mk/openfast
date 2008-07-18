@@ -20,11 +20,11 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.util;
 
+import static org.openfast.Fast.STOP_BIT;
+import static org.openfast.Fast.VALUE_BITS;
 import org.openfast.ByteUtil;
 
 public class BitVector {
-    private static final int VALUE_BITS_SET = 0x7F;
-    private static final int STOP_BIT = 0x80;
     private byte[] bytes;
     private int size;
 
@@ -44,7 +44,7 @@ public class BitVector {
 
     public byte[] getTruncatedBytes() {
         int index = bytes.length - 1;
-        for (; (index > 0) && ((bytes[index] & VALUE_BITS_SET) == 0); index--)
+        for (; (index > 0) && ((bytes[index] & VALUE_BITS) == 0); index--)
             ;
         if (index == (bytes.length - 1)) {
             return bytes;
@@ -93,7 +93,7 @@ public class BitVector {
     }
 
     public boolean isOverlong() {
-        return (bytes.length > 1) && ((bytes[bytes.length - 1] & VALUE_BITS_SET) == 0);
+        return (bytes.length > 1) && ((bytes[bytes.length - 1] & VALUE_BITS) == 0);
     }
 
     public String toString() {
