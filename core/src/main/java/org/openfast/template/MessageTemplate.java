@@ -20,28 +20,8 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template;
 
-import org.lasalletech.entity.QName;
 import org.openfast.Message;
 
-public class MessageTemplate extends Group implements Field {
-    private static final long serialVersionUID = 1L;
+public interface MessageTemplate extends Composite<Message> {
 
-    public MessageTemplate(QName name, Field[] fields) {
-        super(name, fields, false);
-    }
-
-    public MessageTemplate(String name, Field[] fields) {
-        this(new QName(name), fields);
-    }
-
-    /**
-     * @return Returns the class of the message
-     */
-    public Class<?> getValueType() {
-        return Message.class;
-    }
-
-    public String toString() {
-        return getName();
-    }
 }

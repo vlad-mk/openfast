@@ -20,11 +20,18 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.type;
 
+import org.lasalletech.entity.EObject;
+
 
 public class SignedIntegerType extends IntegerType {
     private static final long serialVersionUID = 1L;
 
     public SignedIntegerType(int numberBits, long min, long max) {
         super("int" + numberBits, min, max);
+    }
+
+    public void parse(EObject o, int index, String value) {
+        int integerValue = Integer.parseInt(value);
+        o.set(index, integerValue);
     }
 }

@@ -1,5 +1,7 @@
 package org.openfast;
 
+import org.openfast.simple.SimpleMessageTemplateFactory;
+
 public class Fast {
     public static final byte STOP_BIT = (byte) 0x80;
     public static final byte VALUE_BITS = (byte) 0x7f;
@@ -9,4 +11,5 @@ public class Fast {
     
     public static final String GLOBAL = "global";
     public static final String TEMPLATE = "template";
+    public static final MessageTemplateFactory SIMPLE = new SimpleMessageTemplateFactory();
 }

@@ -1,0 +1,8 @@
+TemplateID,incU32NoDefault,incU32Default,incU32OptionalNoDefault,incU32OptionalDefault
+10,5,200, ,
+10,6,201,1,200
+10,7,202,2,201
+10,9,204,3,202
+10,10,205, ,
+10,11,206,4,203
+10,1,1,5,204

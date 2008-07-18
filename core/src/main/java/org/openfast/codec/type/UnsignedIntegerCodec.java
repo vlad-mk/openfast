@@ -1,25 +1,27 @@
 package org.openfast.codec.type;
 
-import org.openfast.Fast;
+import static org.openfast.Fast.STOP_BIT;
+import static org.openfast.Fast.VALUE_BITS;
 import org.openfast.codec.IntegerCodec;
 
 
 public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
     public int decode(byte[] buffer, int offset) {
         int value = 0;
-        int index = offset;
+        int index = offset - 1;
         do {
-            value = (value << 7) | (buffer[index] & 0x7f);
-        } while ((buffer[index] & 0x80) == 0);
+            index++;
+            value = (value << 7) | (buffer[index] & VALUE_BITS);
+        } while ((buffer[index] & STOP_BIT) == 0);
         return value;
     }
 
     public int encode(byte[] buffer, int offset, int value) {
         int size = getUnsignedIntegerSize(value);
         for (int factor = 0; factor < size; factor++) {
-            buffer[size - factor - 1 + offset] = (byte) ((value >> (factor * 7)) & 0x7f);
+            buffer[size - factor - 1 + offset] = (byte) ((value >> (factor * 7)) & VALUE_BITS);
         }
-        buffer[offset + size - 1] |= Fast.STOP_BIT;
+        buffer[offset + size - 1] |= STOP_BIT;
         return offset + size;
     }
     

@@ -24,7 +24,7 @@ import org.lasalletech.entity.QName;
 import org.openfast.template.Field;
 import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
-import org.openfast.template.type.Type;
+import org.openfast.template.Type;
 import org.w3c.dom.Element;
 
 public class ScalarParser extends AbstractFieldParser {

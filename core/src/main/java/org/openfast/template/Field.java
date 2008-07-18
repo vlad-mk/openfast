@@ -24,7 +24,7 @@ import java.io.Serializable;
 import org.lasalletech.entity.Named;
 import org.lasalletech.entity.QName;
 
-public interface Field extends org.lasalletech.entity.Field, Named, Serializable {
+public interface Field extends org.lasalletech.entity.Field<Type>, Named, Serializable {
     boolean isOptional();
     QName getKey();
     void setKey(QName key);

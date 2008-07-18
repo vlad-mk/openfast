@@ -1,7 +1,7 @@
 package org.openfast.dictionary;
 
 import org.lasalletech.entity.QName;
-import org.openfast.template.type.Type;
+import org.openfast.template.Type;
 
 public interface FastDictionary {
     int lookupInt(QName key);

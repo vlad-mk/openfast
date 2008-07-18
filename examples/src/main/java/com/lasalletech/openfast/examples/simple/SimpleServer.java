@@ -1,8 +1,12 @@
 package com.lasalletech.openfast.examples.simple;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.net.URL;
+import java.util.List;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -21,6 +25,7 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
 import com.lasalletech.openfast.nio.mina.FastMessageEncoder;
 import com.lasalletech.openfast.nio.mina.FastProtocolCodecFactory;
+import com.lasalletech.openfast.util.csv.CsvParser;
 
 public class SimpleServer {
     private static final int DEFAULT_PORT = 7178;
@@ -31,19 +36,24 @@ public class SimpleServer {
     /**
      * @param args
      * @throws ParseException 
+     * @throws FileNotFoundException 
      */
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, FileNotFoundException {
         Options options = new Options();
         options.addOption("p", "port", true, "The port that this server runs on");
         CommandLine cl = new BasicParser().parse(options, args);
         new SimpleServer(cl.getOptionValue('p')).start();
     }
 
-    private void start() {
+    private void start() throws FileNotFoundException {
         final XMLMessageTemplateLoader loader = new XMLMessageTemplateLoader();
         loader.setLoadTemplateIdFromAuxId(true);
-        loader.load(resource("simple/integerTemplates.xml"));
-        final MessageTemplate template = loader.getTemplateRegistry().getTemplates()[0];
+        File[] templateFiles = getFiles("/simple/templates");
+        for (File templateFile : templateFiles)
+            loader.load(new FileInputStream(templateFile));
+        final MessageTemplate disconnectTemplate = loader.getTemplateRegistry().get("disconnect");
+        final Message disconnect = disconnectTemplate.newObject();
+        final CsvParser csvParser = new CsvParser(loader.getTemplateRegistry());
         
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
@@ -67,14 +77,17 @@ public class SimpleServer {
                 public void sessionCreated(IoSession session) throws Exception {
                     session.setAttribute(FastMessageEncoder.ENCODER, new FastEncoder(loader.getTemplateRegistry()));
                     System.out.println("Client connected.");
-                    for (int i=0; i<10; i++) {
-                        Message message = new Message(template);
-                        message.set(0, i+1);
-                        System.out.println(message);
-                        session.write(message);
+                    File[] csvFiles = getFiles("/simple/data");
+                    for (File csvFile : csvFiles) {
+                        List<Message> messages = csvParser.parse(new FileInputStream(csvFile));
+                        for (Message message : messages) {
+                            System.out.println(message);
+                            session.write(message);
+                        }
+                        ((FastEncoder)session.getAttribute(FastMessageEncoder.ENCODER)).reset();
                     }
-//                    Thread.sleep(100);
-//                    session.close();
+                    System.out.println(disconnect);
+                    session.write(disconnect);
                 }
                 @Override
                 public void sessionClosed(IoSession session) throws Exception {
@@ -86,7 +99,9 @@ public class SimpleServer {
         }
     }
 
-    protected InputStream resource(String url) {
-        return this.getClass().getClassLoader().getResourceAsStream(url);
+    protected File[] getFiles(String path) {
+        URL url = this.getClass().getResource(path);
+        File dir = new File(url.getFile());
+        return dir.listFiles();
     }
 }

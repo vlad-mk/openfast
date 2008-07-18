@@ -4,14 +4,14 @@ import static org.openfast.codec.operator.FastOperatorTestHarness.INITIAL_VALUE;
 import static org.openfast.codec.operator.FastOperatorTestHarness.NO_INITIAL_VALUE;
 import static org.openfast.codec.operator.FastOperatorTestHarness.UNDEFINED;
 import org.openfast.Fast;
+import org.openfast.fast.FastTypes;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DeltaOperator;
-import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 
 public class DeltaIntegerCodecTest extends OpenFastTestCase {
-    Scalar noDefaultScalar = new Scalar("", Type.I32, new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, null), true);
-    Scalar defaultScalar = new Scalar("", Type.I32, new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "15"), true);
+    Scalar noDefaultScalar = new Scalar("", FastTypes.I32, new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, null), true);
+    Scalar defaultScalar = new Scalar("", FastTypes.I32, new DeltaOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "15"), true);
     FastOperatorTestHarness harness = new FastOperatorTestHarness(defaultScalar, noDefaultScalar);
     
     public void testDecode() {

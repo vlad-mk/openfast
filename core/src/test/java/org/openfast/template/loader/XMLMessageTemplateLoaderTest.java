@@ -27,6 +27,7 @@ import org.openfast.error.FastConstants;
 import org.openfast.error.FastException;
 import org.openfast.fast.FastTypes;
 import org.openfast.template.ComposedScalar;
+import org.openfast.template.Composite;
 import org.openfast.template.DynamicTemplateReference;
 import org.openfast.template.Field;
 import org.openfast.template.Group;
@@ -118,27 +119,27 @@ public class XMLMessageTemplateLoaderTest extends OpenFastTestCase {
         assertScalarField(messageTemplate, index++, FastTypes.U32, "75", NS);
         /************************************* SEQUENCE **************************************/
         assertSequence(messageTemplate, index, "MDEntries", 17, "268", NS);
-        Sequence sequence = (Sequence) messageTemplate.getField(index++);
+        Sequence sequence = messageTemplate.getSequence(index++);
         assertEquals("MDEntries", sequence.getTypeReference().getName());
         /********************************** SEQUENCE FIELDS **********************************/
         int seqIndex = 0;
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.DECIMAL, "270", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.I32, "271", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.U32, "273", NS);
-        assertOptionalScalarField(sequence.getGroup(), seqIndex++, FastTypes.U32, "346", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.U32, "1023", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "279", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "269", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "107", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "48", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "276", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "274", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.DECIMAL, "451", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "277", NS);
-        assertOptionalScalarField(sequence.getGroup(), seqIndex++, FastTypes.U32, "1020", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.I32, "537", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "1024", NS);
-        assertScalarField(sequence.getGroup(), seqIndex++, FastTypes.ASCII, "336", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.DECIMAL, "270", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.I32, "271", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.U32, "273", NS);
+        assertOptionalScalarField(sequence, seqIndex++, FastTypes.U32, "346", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.U32, "1023", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "279", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "269", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "107", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "48", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "276", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "274", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.DECIMAL, "451", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "277", NS);
+        assertOptionalScalarField(sequence, seqIndex++, FastTypes.U32, "1020", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.I32, "537", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "1024", NS);
+        assertScalarField(sequence, seqIndex++, FastTypes.ASCII, "336", NS);
         assertScalarField(messageTemplate, index++, FastTypes.ASCII, "10", NS);
     }
 
@@ -257,14 +258,14 @@ public class XMLMessageTemplateLoaderTest extends OpenFastTestCase {
         assertOperator(mantissa, mantissaOperator, mantissaKey, "", mantissaDefault, mantissaDictionary);
     }
 
-    private void assertScalarField(Group messageTemplate, int index, Type type, String name, String namespace) {
+    private void assertScalarField(Composite<?> messageTemplate, int index, Type type, String name, String namespace) {
         Scalar scalar = messageTemplate.getScalar(index);
         assertEquals(new QName(name, namespace), scalar.getQName());
         assertEquals(type, scalar.getType());
         assertFalse(scalar.isOptional());
     }
     
-    private void assertOperator(Group group, int index, String operator, String key, String namespace, String defaultValue, String dictionary) {
+    private void assertOperator(Composite<?> group, int index, String operator, String key, String namespace, String defaultValue, String dictionary) {
         Scalar scalar = group.getScalar(index);
         assertOperator(scalar, operator, key, namespace, defaultValue, dictionary);
     }
@@ -282,7 +283,7 @@ public class XMLMessageTemplateLoaderTest extends OpenFastTestCase {
         }
     }
 
-    private void assertOptionalScalarField(Group messageTemplate, int index, Type type, String name, String namespace) {
+    private void assertOptionalScalarField(Composite<?> messageTemplate, int index, Type type, String name, String namespace) {
         Scalar scalar = messageTemplate.getScalar(index);
         assertEquals(new QName(name, namespace), scalar.getQName());
         assertEquals(type, scalar.getType());
@@ -290,12 +291,12 @@ public class XMLMessageTemplateLoaderTest extends OpenFastTestCase {
     }
 
     private void assertGroup(MessageTemplate messageTemplate, int index, String name) {
-        Group group = (Group) messageTemplate.getField(index);
+        Group group = messageTemplate.getGroup(index);
         assertEquals(name, group.getName());
     }
 
     private void assertSequence(MessageTemplate messageTemplate, int index, String name, int fieldCount, String lengthFieldName, String namespace) {
-        Sequence sequence = (Sequence) messageTemplate.getField(index);
+        Sequence sequence = (Sequence) messageTemplate.getSequence(index);
         assertEquals(fieldCount, sequence.getFieldCount());
         assertEquals(new QName(name, namespace), sequence.getQName());
         if (lengthFieldName != null) {

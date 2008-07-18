@@ -1,5 +1,6 @@
 package org.openfast.fast;
 
+import org.lasalletech.entity.EObject;
 import org.openfast.template.Type;
 import org.openfast.template.type.ByteVectorType;
 import org.openfast.template.type.DecimalType;
@@ -26,5 +27,9 @@ public interface FastTypes {
     public static final Type[] INTEGER_TYPES = new Type[] { U8, U16, U32, U64, I8, I16, I32, I64 };
     public static final Type BIT_VECTOR = new org.openfast.template.type.Type("bitVector"){
         private static final long serialVersionUID = 1L;
+
+        public void parse(EObject o, int index, String value) {
+            throw new UnsupportedOperationException();
+        }
         };
 }

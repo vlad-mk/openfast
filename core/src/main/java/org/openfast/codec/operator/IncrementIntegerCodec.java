@@ -37,6 +37,8 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
     }
 
     public int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+        if (integerCodec.isNull(buffer, offset))
+            return offset;
         int length = integerCodec.getLength(buffer, offset);
         int value = integerCodec.decode(buffer, offset);
         dictionaryEntry.set(value);
@@ -92,6 +94,7 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
                 dictionaryEntry.set(value);
                 return integerCodec.encode(buffer, offset, value);
             } else if (operator.hasDefaultValue() && value == initialValue) {
+                dictionaryEntry.set(value);
                 return offset;
             } else {
                 return integerCodec.encode(buffer, offset, value);
@@ -99,7 +102,7 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         }
         int previousValue = dictionaryEntry.getInt();
         if (value == previousValue + 1) {
-            dictionaryEntry.set(previousValue + 1);
+            dictionaryEntry.set(value);
             return offset;
         }
 

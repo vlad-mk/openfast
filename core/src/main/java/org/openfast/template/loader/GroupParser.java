@@ -23,7 +23,9 @@ package org.openfast.template.loader;
 import java.util.ArrayList;
 import java.util.List;
 import org.lasalletech.entity.QName;
+import org.openfast.Fast;
 import org.openfast.error.FastConstants;
+import org.openfast.template.Composite;
 import org.openfast.template.Field;
 import org.openfast.template.Group;
 import org.w3c.dom.Element;
@@ -45,12 +47,12 @@ public class GroupParser extends AbstractFieldParser {
      * @return Returns a newly created Group object
      */
     protected Field parse(Element groupElement, boolean optional, ParsingContext context) {
-        Group group = new Group(context.getName(), parseFields(groupElement, context), optional);
+        Group group = Fast.SIMPLE.createGroup(context.getName(), parseFields(groupElement, context));
         parseMore(groupElement, group, context);
-        return group;
+        return Fast.SIMPLE.createField(group, optional);
     }
 
-    protected static void parseMore(Element groupElement, Group group, ParsingContext context) {
+    protected static void parseMore(Element groupElement, Composite<?> group, ParsingContext context) {
         group.setChildNamespace(context.getNamespace());
 //        if (groupElement.hasAttribute("id"))
 //            group.setId(groupElement.getAttribute("id"));

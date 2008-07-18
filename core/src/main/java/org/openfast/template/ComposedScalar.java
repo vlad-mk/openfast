@@ -46,7 +46,7 @@ public class ComposedScalar extends BasicField {
         return false;
     }
 
-    public org.lasalletech.entity.Type getType() {
+    public Type getType() {
         return type;
     }
 

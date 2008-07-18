@@ -20,11 +20,20 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.type;
 
+import org.lasalletech.entity.EObject;
+
 
 public class UnsignedIntegerType extends IntegerType {
     private static final long serialVersionUID = 1L;
 
     public UnsignedIntegerType(int numberBits, long maxValue) {
         super("uInt" + numberBits, 0, maxValue);
+    }
+
+    public void parse(EObject o, int index, String value) {
+        int intValue = Integer.parseInt(value);
+        if (intValue < 0)
+            throw new NumberFormatException("The type \"" + this + "\" does not accept negative numbers.");
+        o.set(index, intValue);
     }
 }

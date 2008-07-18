@@ -20,11 +20,18 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.type;
 
+import org.lasalletech.entity.EObject;
+
 
 public final class DecimalType extends Type {
     private static final long serialVersionUID = 1L;
 
     public DecimalType() {
         super("decimal");
+    }
+
+    public void parse(EObject o, int index, String value) {
+        double doubleValue = Double.parseDouble(value);
+        o.set(index, doubleValue);
     }
 }

@@ -24,6 +24,7 @@ package org.openfast.template;
 
 import java.util.Arrays;
 import java.util.List;
+import org.openfast.Fast;
 import org.openfast.test.OpenFastTestCase;
 
 
@@ -32,7 +33,7 @@ public class BasicTemplateRegistryTest extends OpenFastTestCase {
     // A defined template should be in the Registry
 
     public void testDefine() {
-        MessageTemplate mt = new MessageTemplate("Logon", new Field[0]);
+        MessageTemplate mt = Fast.SIMPLE.createMessageTemplate("Logon", new Field[0]);
         TemplateRegistry registry = new BasicTemplateRegistry();
         registry.define(mt);
 
@@ -46,7 +47,7 @@ public class BasicTemplateRegistryTest extends OpenFastTestCase {
     // A registerd template should be in the Registry with an ID
 
     public void testRegister() {
-        MessageTemplate mt = new MessageTemplate("Logon", new Field[0]);
+        MessageTemplate mt = Fast.SIMPLE.createMessageTemplate("Logon", new Field[0]);
         TemplateRegistry registry = new BasicTemplateRegistry();
         registry.register(1000, mt);
 

@@ -44,7 +44,7 @@ public class FastDecoder implements Coder {
         }
         MessageTemplate template = context.getTemplate(templateId);
         MessageCodec codec = getCodec(templateId, template);
-        Message message = new Message(template);
+        Message message = template.newObject();
         codec.decode(message, buffer, offset, reader, context);
         return message;
     }
@@ -62,7 +62,7 @@ public class FastDecoder implements Coder {
 
     public int getNextMessageLength(byte[] buffer, final int offset) {
         BitVectorReader reader = new BitVectorReader(bitVectorCodec.decode(buffer, offset));
-        int newOffset = bitVectorCodec.getLength(buffer, offset);
+        int newOffset = offset + bitVectorCodec.getLength(buffer, offset);
         int templateId = 0;
         if (reader.read()) {
             templateId = uintCodec.decode(buffer, newOffset);
@@ -73,6 +73,6 @@ public class FastDecoder implements Coder {
         MessageTemplate template = context.getTemplate(templateId);
         MessageCodec codec = getCodec(templateId, template);
         newOffset += codec.getLength(buffer, newOffset, reader, context);
-        return newOffset;
+        return newOffset - offset;
     }
 }

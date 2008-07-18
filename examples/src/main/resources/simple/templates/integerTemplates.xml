@@ -1,0 +1,8 @@
+<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+    <template name="incrementU32" id="10">
+        <uInt32 name="incU32NoDefault"><increment/></uInt32>
+        <uInt32 name="incU32Default"><increment value="200"/></uInt32>
+        <uInt32 name="incU32OptionalNoDefault" presence="optional"><increment/></uInt32>
+        <uInt32 name="incU32OptionalDefault" presence="optional"><increment value="200"/></uInt32>
+    </template>
+</templates>

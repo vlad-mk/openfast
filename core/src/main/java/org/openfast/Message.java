@@ -20,18 +20,12 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast;
 
-import org.lasalletech.entity.simple.SimpleEObject;
+import org.lasalletech.entity.EObject;
+import org.openfast.template.Field;
+import org.openfast.template.Group;
 import org.openfast.template.MessageTemplate;
+import org.openfast.template.Type;
 
-public class Message extends SimpleEObject {
-    private static final long serialVersionUID = 1L;
-    private final MessageTemplate template;
-
-    public Message(MessageTemplate template) {
-        super(template);
-        this.template = template;
-    }
-    public MessageTemplate getTemplate() {
-        return template;
-    }
+public interface Message extends EObject<MessageTemplate, Message, Type, Field, MessageTemplate, Message, Group, FastObject> {
+    MessageTemplate getTemplate();
 }

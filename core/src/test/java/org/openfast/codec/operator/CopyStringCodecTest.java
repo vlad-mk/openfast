@@ -6,14 +6,14 @@ import static org.openfast.codec.operator.FastStringOperatorTestHarness.NO_INITI
 import static org.openfast.codec.operator.FastStringOperatorTestHarness.NULL;
 import static org.openfast.codec.operator.FastStringOperatorTestHarness.UNDEFINED;
 import org.openfast.Fast;
+import org.openfast.fast.FastTypes;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.CopyOperator;
-import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 
 public class CopyStringCodecTest extends OpenFastTestCase {
-    Scalar noDefaultScalar = new Scalar("", Type.ASCII, new CopyOperator(KEY, Fast.GLOBAL, null), true);
-    Scalar defaultScalar = new Scalar("", Type.ASCII, new CopyOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "A"), true);
+    Scalar noDefaultScalar = new Scalar("", FastTypes.ASCII, new CopyOperator(KEY, Fast.GLOBAL, null), true);
+    Scalar defaultScalar = new Scalar("", FastTypes.ASCII, new CopyOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "A"), true);
     
     FastStringOperatorTestHarness harness = new FastStringOperatorTestHarness(noDefaultScalar, defaultScalar);
     

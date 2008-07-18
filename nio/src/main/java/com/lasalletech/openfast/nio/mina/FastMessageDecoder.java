@@ -25,6 +25,7 @@ public class FastMessageDecoder implements MessageDecoder {
         FastDecoder decoder = (FastDecoder) session.getAttribute(DECODER);
         int nextMessageLength = ((Integer)session.getAttribute(NEXT_MESSAGE_LENGTH)).intValue();
         byte[] arr = new byte[nextMessageLength];
+        System.out.println("Reading message: " + buffer.position() + "-" + (nextMessageLength + buffer.position()) + " (remaining=" + buffer.remaining() + ")");
         buffer.get(arr, 0, nextMessageLength);
         Message message = decoder.decode(arr, 0);
         out.write(message);

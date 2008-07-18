@@ -1,12 +1,12 @@
 package org.openfast.codec;
 
-import org.lasalletech.entity.Field;
 import org.openfast.ByteUtil;
 import org.openfast.Context;
 import org.openfast.Message;
 import org.openfast.dictionary.DictionaryRegistry;
 import org.openfast.fast.FastTypes;
 import org.openfast.fast.impl.FastImplementation;
+import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 import org.openfast.util.BitVectorBuilder;
@@ -59,7 +59,9 @@ public class BasicMessageCodec implements MessageCodec {
     public int getLength(byte[] buffer, int offset, BitVectorReader reader, Context context) {
         int length = 0;
         for (int i=0; i<fieldCodecs.length; i++) {
-            length += fieldCodecs[i].getLength(buffer, offset, reader);
+            int fieldLength = fieldCodecs[i].getLength(buffer, offset, reader);
+            length += fieldLength;
+            offset += fieldLength;
         }
         return length;
     }
@@ -67,7 +69,7 @@ public class BasicMessageCodec implements MessageCodec {
     @SuppressWarnings("unchecked")
     public void decode(Message message, byte[] buffer, int offset, BitVectorReader reader, Context context) {
         for (int i=0; i<fieldCodecs.length; i++) {
-            fieldCodecs[i].decode(message, i, buffer, offset, message.getTemplate().getField(i), reader, context);
+            offset = fieldCodecs[i].decode(message, i, buffer, offset, message.getTemplate().getField(i), reader, context);
         }
     }
 }

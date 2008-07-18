@@ -6,13 +6,13 @@ import static org.openfast.codec.operator.FastStringOperatorTestHarness.NO_INITI
 import static org.openfast.codec.operator.FastStringOperatorTestHarness.UNDEFINED;
 import junit.framework.TestCase;
 import org.openfast.Fast;
+import org.openfast.fast.FastTypes;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DeltaOperator;
-import org.openfast.template.type.Type;
 
 public class DeltaAsciiCodecTest extends TestCase {
-    private Scalar noDefaultScalar = new Scalar("", Type.ASCII, new DeltaOperator(KEY, Fast.GLOBAL, null), true);
-    private Scalar defaultScalar = new Scalar("", Type.ASCII, new DeltaOperator(KEY, Fast.GLOBAL, "ABCD"), true);
+    private Scalar noDefaultScalar = new Scalar("", FastTypes.ASCII, new DeltaOperator(KEY, Fast.GLOBAL, null), true);
+    private Scalar defaultScalar = new Scalar("", FastTypes.ASCII, new DeltaOperator(KEY, Fast.GLOBAL, "ABCD"), true);
     FastStringOperatorTestHarness harness = new FastStringOperatorTestHarness(noDefaultScalar, defaultScalar);
 
     public void testDecode() {

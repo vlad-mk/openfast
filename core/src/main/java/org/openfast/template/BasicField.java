@@ -23,7 +23,6 @@ package org.openfast.template;
 import java.util.HashMap;
 import java.util.Map;
 import org.lasalletech.entity.QName;
-import org.lasalletech.entity.Type;
 
 public class BasicField implements Field {
     private static final long serialVersionUID = 1L;

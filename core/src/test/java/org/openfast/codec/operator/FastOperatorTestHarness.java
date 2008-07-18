@@ -11,11 +11,11 @@ import org.openfast.codec.SinglePresenceMapEntryFieldCodec;
 import org.openfast.dictionary.BasicDictionaryRegistry;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.dictionary.DictionaryRegistry;
+import org.openfast.fast.FastTypes;
 import org.openfast.fast.impl.FastImplementation;
 import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
-import org.openfast.template.type.Type;
 import org.openfast.test.OpenFastTestCase;
 
 public class FastOperatorTestHarness {
@@ -45,8 +45,8 @@ public class FastOperatorTestHarness {
         SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
-        MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
-        Message message = new Message(template);
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
+        Message message = template.newObject();
         codec.decodeEmpty(message, 0, null, context);
         Assert.assertFalse(message.isDefined(0));
     }
@@ -55,8 +55,8 @@ public class FastOperatorTestHarness {
         SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
-        MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
-        Message message = new Message(template);
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
+        Message message = template.newObject();
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
         codec.decode(message, 0, encodedBytes, 0, null, context);
         Assert.assertFalse(message.isDefined(0));
@@ -66,8 +66,8 @@ public class FastOperatorTestHarness {
         SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
-        MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
-        Message message = new Message(template);
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
+        Message message = template.newObject();
         codec.decodeEmpty(message, 0, null, context);
         Assert.assertEquals(expectedValue, message.getInt(0));
     }
@@ -76,9 +76,9 @@ public class FastOperatorTestHarness {
         SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
-        Scalar scalar = new Scalar(QName.NULL, Type.U32, null, true);
-        MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { scalar });
-        Message message = new Message(template);
+        Scalar scalar = new Scalar(QName.NULL, FastTypes.U32, null, true);
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { scalar });
+        Message message = template.newObject();
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
         codec.decode(message, 0, encodedBytes, 0, null, context);
         Assert.assertEquals(expectedValue, message.getInt(0));
@@ -116,8 +116,8 @@ public class FastOperatorTestHarness {
         SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
-        MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
-        Message message = new Message(template);
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
+        Message message = template.newObject();
         byte[] buffer = new byte[32];
         int offset = codec.encode(message, 0, buffer, 0, null, context);
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
@@ -129,8 +129,8 @@ public class FastOperatorTestHarness {
         SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(getScalar(initialValue), dictionaryState);
-        MessageTemplate template = new MessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, Type.U32, null, true) });
-        Message message = new Message(template);
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
+        Message message = template.newObject();
         message.set(0, value);
         byte[] buffer = new byte[32];
         int offset = codec.encode(message, 0, buffer, 0, null, context);

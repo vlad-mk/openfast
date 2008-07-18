@@ -3,7 +3,7 @@ package org.openfast.dictionary;
 import org.lasalletech.entity.QName;
 import org.openfast.template.type.IntegerType;
 import org.openfast.template.type.StringType;
-import org.openfast.template.type.Type;
+import org.openfast.template.Type;
 
 public class GlobalFastDictionary implements FastDictionary {
     // Use power of 2 for size so that hashes can be calculated quickly

@@ -1,0 +1,4 @@
+<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+    <template name="reset" id="1"/>
+    <template name="disconnect" id="2"/>
+</templates>

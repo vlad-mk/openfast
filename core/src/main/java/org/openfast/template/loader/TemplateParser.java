@@ -21,14 +21,17 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.loader;
 
 import org.lasalletech.entity.QName;
+import org.openfast.MessageTemplateFactory;
 import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
 import org.w3c.dom.Element;
 
-public class TemplateParser extends GroupParser {
-    private boolean loadTemplateIdFromAuxId;
+public class TemplateParser implements Parser<MessageTemplate> {
+    private final boolean loadTemplateIdFromAuxId;
+    private final MessageTemplateFactory templateFactory;
 
-    public TemplateParser(boolean loadTemplateIdFromAuxId) {
+    public TemplateParser(MessageTemplateFactory templateFactory, boolean loadTemplateIdFromAuxId) {
+        this.templateFactory = templateFactory;
         this.loadTemplateIdFromAuxId = loadTemplateIdFromAuxId;
     }
 
@@ -40,10 +43,10 @@ public class TemplateParser extends GroupParser {
      *            The dom element object
      * @return Returns a newly created MessageTemplate object
      */
-    protected Field parse(Element templateElement, boolean optional, ParsingContext context) {
-        MessageTemplate messageTemplate = new MessageTemplate(getTemplateName(templateElement, context), parseFields(templateElement,
-                context));
-        parseMore(templateElement, messageTemplate, context);
+    public MessageTemplate parse(Element templateElement, ParsingContext context) {
+        Field[] fields = GroupParser.parseFields(templateElement, context);
+        MessageTemplate messageTemplate = templateFactory.createMessageTemplate(getTemplateName(templateElement, context), fields);
+        GroupParser.parseMore(templateElement, messageTemplate, context);
         if (loadTemplateIdFromAuxId && templateElement.hasAttribute("id")) {
             try {
                 int templateId = Integer.parseInt(templateElement.getAttribute("id"));
@@ -58,5 +61,9 @@ public class TemplateParser extends GroupParser {
 
     private QName getTemplateName(Element templateElement, ParsingContext context) {
         return new QName(templateElement.getAttribute("name"), context.getTemplateNamespace());
+    }
+
+    public boolean canParse(Element element, ParsingContext context) {
+        return "template".equals(element.getNodeName());
     }
 }

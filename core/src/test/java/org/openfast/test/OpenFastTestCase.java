@@ -29,6 +29,7 @@ import java.util.Date;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import org.openfast.ByteUtil;
+import org.openfast.Fast;
 import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
@@ -90,7 +91,7 @@ public abstract class OpenFastTestCase extends TestCase {
     }
 
     protected MessageTemplate template(Field field) {
-        return new MessageTemplate("Doesn't matter", new Field[] { field });
+        return Fast.SIMPLE.createMessageTemplate("Doesn't matter", new Field[] { field });
     }
 
     protected InputStream resource(String url) {
@@ -103,7 +104,7 @@ public abstract class OpenFastTestCase extends TestCase {
     }
 
     protected static MessageTemplate template(Scalar field) {
-        MessageTemplate template = new MessageTemplate("", new Field[] { field });
+        MessageTemplate template = Fast.SIMPLE.createMessageTemplate("", new Field[] { field });
         return template;
     }
 }

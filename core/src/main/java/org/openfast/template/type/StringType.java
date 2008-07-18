@@ -20,11 +20,17 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.template.type;
 
+import org.lasalletech.entity.EObject;
+
 
 public class StringType extends Type {
     private static final long serialVersionUID = 1L;
 
     public StringType(String typeName) {
         super(typeName);
+    }
+
+    public void parse(EObject o, int index, String value) {
+        o.set(index, value);
     }
 }

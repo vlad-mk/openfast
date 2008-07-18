@@ -24,11 +24,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.openfast.MessageTemplateFactory;
 import org.openfast.error.ErrorCode;
 import org.openfast.error.ErrorHandler;
 import org.openfast.error.FastAlertSeverity;
 import org.openfast.error.FastConstants;
 import org.openfast.fast.impl.FastImplementation;
+import org.openfast.simple.SimpleMessageTemplateFactory;
 import org.openfast.template.BasicTemplateRegistry;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.TemplateRegistry;
@@ -58,6 +60,8 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
     private boolean loadTemplateIdFromAuxId;
     
     private final FastImplementation implementation;
+
+    private MessageTemplateFactory templateFactory = new SimpleMessageTemplateFactory();
 
     public XMLMessageTemplateLoader() {
         this(false);
@@ -103,7 +107,7 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
 
         Element root = document.getDocumentElement();
 
-        TemplateParser templateParser = new TemplateParser(loadTemplateIdFromAuxId);
+        TemplateParser templateParser = new TemplateParser(templateFactory, loadTemplateIdFromAuxId);
 
         if (root.getNodeName().equals("template")) {
             return new MessageTemplate[] { (MessageTemplate) templateParser.parse(root, initialContext) };

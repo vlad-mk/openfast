@@ -22,11 +22,11 @@ package org.openfast.template.loader;
 
 import org.lasalletech.entity.QName;
 import org.openfast.Global;
+import org.openfast.fast.FastTypes;
 import org.openfast.template.ComposedScalar;
 import org.openfast.template.Field;
 import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
-import org.openfast.template.type.Type;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -90,9 +90,9 @@ public class ComposedDecimalParser extends AbstractFieldParser {
             Element operatorElement = getElement((Element) exponentNode, 1);
             exponentOp = context.getOperatorParser(operatorElement).parse(operatorElement, context);
         }
-        Scalar exponentScalar = new Scalar(Global.createImplicitName(name), Type.I32, exponentOp, optional);
-        Scalar mantissaScalar = new Scalar(Global.createImplicitName(name), Type.I64, mantissaOp, false);
-        ComposedScalar scalar = new ComposedScalar(name, Type.DECIMAL, new Scalar[] { exponentScalar, mantissaScalar }, optional);
+        Scalar exponentScalar = new Scalar(Global.createImplicitName(name), FastTypes.I32, exponentOp, optional);
+        Scalar mantissaScalar = new Scalar(Global.createImplicitName(name), FastTypes.I64, mantissaOp, false);
+        ComposedScalar scalar = new ComposedScalar(name, FastTypes.DECIMAL, new Scalar[] { exponentScalar, mantissaScalar }, optional);
         if (fieldNode.hasAttribute("id"))
             scalar.setId(fieldNode.getAttribute("id"));
         return scalar;
