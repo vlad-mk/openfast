@@ -41,7 +41,7 @@ import org.openfast.template.TemplateRegistry;
  */
 public class Context {
     private TemplateRegistry templateRegistry = new BasicTemplateRegistry();
-    private int lastTemplateId;
+    private int lastTemplateId = -1;
     private Map<String, FastDictionary> dictionaries = new HashMap<String, FastDictionary>();
     private ErrorHandler errorHandler = ErrorHandler.DEFAULT;
     private QName currentApplicationType;

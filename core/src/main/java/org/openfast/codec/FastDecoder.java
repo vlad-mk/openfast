@@ -67,13 +67,12 @@ public class FastDecoder implements Coder {
         if (reader.read()) {
             templateId = uintCodec.decode(buffer, newOffset);
             newOffset += uintCodec.getLength(buffer, newOffset);
-            context.setLastTemplateId(templateId);
         } else {
             templateId = context.getLastTemplateId();
         }
         MessageTemplate template = context.getTemplate(templateId);
         MessageCodec codec = getCodec(templateId, template);
         newOffset += codec.getLength(buffer, newOffset, reader, context);
-        return newOffset - offset;
+        return newOffset;
     }
 }

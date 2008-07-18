@@ -4,7 +4,7 @@ import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
 
 public class FastProtocolCodecFactory extends DemuxingProtocolCodecFactory {
     public FastProtocolCodecFactory() {
-        register(FastMessageDecoder.class);
-        register(FastMessageEncoder.class);
+        register(new FastMessageDecoder());
+        register(new FastMessageEncoder());
     }
 }

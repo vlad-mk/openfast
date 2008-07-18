@@ -99,8 +99,11 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         }
         int previousValue = dictionaryEntry.getInt();
         if (value == previousValue + 1) {
+            dictionaryEntry.set(previousValue + 1);
             return offset;
         }
+
+        dictionaryEntry.set(value);
         return integerCodec.encode(buffer, offset, value);
     }
 

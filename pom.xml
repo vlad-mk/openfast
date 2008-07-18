@@ -19,6 +19,7 @@
     <modules>
         <module>core</module>
         <module>nio</module>
+        <module>examples</module>
     </modules>
     
     <developers>
