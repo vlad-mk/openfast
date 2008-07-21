@@ -11,6 +11,7 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.TemplateRegistry;
 
 public class CsvParser {
+    private static final String[] EMPTY = new String[0];
     private final TemplateRegistry registry;
     private boolean indexBased = true;
     public CsvParser(TemplateRegistry registry) {
@@ -25,6 +26,7 @@ public class CsvParser {
         String line = reader.readLine();
         while ((line = reader.readLine()) != null) {
             String[] values = parse(line);
+            if (values.length == 0) continue;
             int templateId = Integer.parseInt(values[0]);
             MessageTemplate template = registry.get(templateId);
             Message message = template.newObject();
@@ -39,6 +41,7 @@ public class CsvParser {
         return messages;
     }
     private String[] parse(String line) {
+        if ("".equals(line.trim())) return EMPTY;
         String[] values = line.split(",");
         for (int i=0; i<values.length; i++) {
             values[i] = values[i].trim();

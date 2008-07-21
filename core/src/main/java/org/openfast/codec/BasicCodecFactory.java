@@ -18,7 +18,10 @@ public class BasicCodecFactory implements CodecFactory {
         if (!codecFactories.containsKey(scalar.getOperator().getName())) {
             throw new IllegalArgumentException("Encountered unknown operator " + scalar.getOperator() + " in scalar " + scalar.getQName());
         }
-        return codecFactories.get(scalar.getOperator().getName()).createCodec(template, scalar, implementation, dictionaryRegistry);
+        ScalarCodec codec = codecFactories.get(scalar.getOperator().getName()).createCodec(template, scalar, implementation, dictionaryRegistry);
+        if (codec == null)
+            throw new IllegalArgumentException("Could not create codec for field " + scalar);
+        return codec;
     }
 
     public void register(String operator, ScalarCodecFactory scalarCodecFactory) {

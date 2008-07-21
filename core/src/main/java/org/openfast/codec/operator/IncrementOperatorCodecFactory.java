@@ -1,6 +1,8 @@
-package org.openfast.codec;
+package org.openfast.codec.operator;
 
-import org.openfast.codec.operator.IncrementIntegerCodec;
+import org.openfast.codec.IntegerCodec;
+import org.openfast.codec.ScalarCodec;
+import org.openfast.codec.ScalarCodecFactory;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.dictionary.DictionaryRegistry;
 import org.openfast.fast.impl.FastImplementation;

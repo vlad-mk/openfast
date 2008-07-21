@@ -106,6 +106,8 @@ public class Context {
         return traceEnabled;
     }
     public byte[] getTemporaryBuffer() {
+        if (tempBuffer == null)
+            throw new IllegalStateException("The temporary buffer was not checked in.");
         byte[] pointer = tempBuffer;
         tempBuffer = null;
         return pointer;

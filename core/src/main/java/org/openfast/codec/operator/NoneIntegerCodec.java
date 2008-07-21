@@ -14,14 +14,13 @@ public class NoneIntegerCodec extends AlwaysPresentCodec<Scalar> implements Scal
         this.integerCodec = integerCodec;
     }
     public int getLength(byte[] buffer, int offset) {
-        return 0;
+        return integerCodec.getLength(buffer, offset);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (!integerCodec.isNull(buffer, offset)) {
             object.set(index, integerCodec.decode(buffer, offset));
         }
-        return integerCodec.getLength(buffer, offset);
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {

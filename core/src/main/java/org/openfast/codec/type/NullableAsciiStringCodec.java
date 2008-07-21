@@ -5,6 +5,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 import org.openfast.ByteUtil;
 import org.openfast.Fast;
 import org.openfast.Global;
@@ -13,7 +14,7 @@ import org.openfast.error.FastConstants;
 
 public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements StringCodec {
     private final CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
-//    private final CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
+    private final CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
     public String decode(byte[] buffer, int offset) {
         CharBuffer decoded;
         try {
@@ -21,9 +22,11 @@ public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements
             if ((buffer[offset] & Fast.VALUE_BITS) == 0) {
                 if (!ByteUtil.isEmpty(buffer, offset, length))
                     Global.handleError(FastConstants.R9_STRING_OVERLONG, null);
-                if (length > 1 && (buffer[offset+1] & Fast.VALUE_BITS) == 0)
+                if (length == 3 && buffer[offset+1] == 0 && (buffer[offset+2] & Fast.VALUE_BITS) == 0)
                     return Fast.ZERO_TERMINATOR;
-                return "";
+                if (length == 2 && (buffer[offset+1] * Fast.VALUE_BITS) == 0)
+                    return "";
+                return null;
             }
             buffer[length + offset - 1] &= Fast.VALUE_BITS; // remove stop bit
             decoded = decoder.decode(ByteBuffer.wrap(buffer, offset, length));
@@ -35,7 +38,30 @@ public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements
     }
 
     public int encode(byte[] buffer, int offset, String value) {
-        return 0;
+        if (value == null) {
+            buffer[offset] = Fast.NULL;
+            return offset + 1;
+        }
+        if (value.length() == 0) {
+            buffer[offset] = 0;
+            buffer[offset] = Fast.STOP_BIT;
+            return offset + 2;
+        }
+        if (value.startsWith(Fast.ZERO_TERMINATOR)) {
+            buffer[offset] = 0;
+            buffer[offset+1] = 0;
+            buffer[offset+2] = Fast.STOP_BIT;
+            return offset + 3;
+        }
+        ByteBuffer encoded;
+        try {
+            encoded = encoder.encode(CharBuffer.wrap(value));
+        } catch (CharacterCodingException e) {
+            throw new RuntimeException(e);
+        }
+        encoded.get(buffer, offset, encoded.limit());
+        buffer[encoded.limit() - 1 + offset] |= Fast.STOP_BIT;
+        return encoded.limit() + offset;
     }
 
     public boolean isNull(byte[] buffer, int offset) {

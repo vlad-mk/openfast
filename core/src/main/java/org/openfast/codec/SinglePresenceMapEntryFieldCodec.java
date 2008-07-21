@@ -18,7 +18,8 @@ public abstract class SinglePresenceMapEntryFieldCodec<T> implements FieldCodec<
     
     public int decode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorReader reader, Context context) {
         if (reader.read()) {
-            return decode(object, index, buffer, offset, field, context);
+            decode(object, index, buffer, offset, field, context);
+            return offset + getLength(buffer, offset);
         }
         decodeEmpty(object, index, field, context);
         return offset;
@@ -29,7 +30,7 @@ public abstract class SinglePresenceMapEntryFieldCodec<T> implements FieldCodec<
         return 0;
     }
     public abstract int encode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
-    public abstract int decode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
+    public abstract void decode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
     public abstract void decodeEmpty(EObject object, int index, T field, Context context);
     public abstract int getLength(byte[] buffer, int offset);
 }

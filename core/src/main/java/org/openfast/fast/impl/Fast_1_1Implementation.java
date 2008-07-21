@@ -6,8 +6,12 @@ import org.openfast.Fast;
 import org.openfast.codec.BasicCodecFactory;
 import org.openfast.codec.BasicTypeCodecRegistry;
 import org.openfast.codec.CodecFactory;
-import org.openfast.codec.IncrementOperatorCodecFactory;
 import org.openfast.codec.TypeCodecRegistry;
+import org.openfast.codec.operator.ConstantOperatorCodecFactory;
+import org.openfast.codec.operator.CopyOperatorCodecFactory;
+import org.openfast.codec.operator.DefaultOperatorCodecFactory;
+import org.openfast.codec.operator.DeltaOperatorCodecFactory;
+import org.openfast.codec.operator.IncrementOperatorCodecFactory;
 import org.openfast.codec.type.FastTypeCodecs;
 import org.openfast.dictionary.BasicDictionaryTypeRegistry;
 import org.openfast.dictionary.DictionaryTypeRegistry;
@@ -96,7 +100,9 @@ public class Fast_1_1Implementation extends FastImplementation {
             codecFactory = new BasicCodecFactory();
             codecFactory.register("increment", new IncrementOperatorCodecFactory());
             codecFactory.register("copy", new CopyOperatorCodecFactory());
+            codecFactory.register("default", new DefaultOperatorCodecFactory());
             codecFactory.register("delta", new DeltaOperatorCodecFactory());
+            codecFactory.register("constant", new ConstantOperatorCodecFactory());
         }
         return codecFactory;
     }

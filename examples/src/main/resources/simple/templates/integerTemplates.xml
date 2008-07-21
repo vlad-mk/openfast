@@ -5,4 +5,25 @@
         <uInt32 name="incU32OptionalNoDefault" presence="optional"><increment/></uInt32>
         <uInt32 name="incU32OptionalDefault" presence="optional"><increment value="200"/></uInt32>
     </template>
+    <template name="copyU32" id="11">
+        <uInt32 name="copyU32NoDefault"><copy/></uInt32>
+        <uInt32 name="copyU32Default"><copy value="200"/></uInt32>
+        <uInt32 name="copyU32OptionalNoDefault" presence="optional"><copy/></uInt32>
+        <uInt32 name="copyU32OptionalDefault" presence="optional"><copy value="200"/></uInt32>
+    </template>
+    <template name="defaultU32" id="12">
+        <uInt32 name="defaultU32"><default value="200"/></uInt32>
+        <uInt32 name="defaultU32OptionalNull" presence="optional"><default/></uInt32>
+        <uInt32 name="defaultU32Optional" presence="optional"><default value="7192008"/></uInt32>
+    </template>
+    <template name="deltaU32" id="13">
+        <uInt32 name="deltaU32NoDefault"><delta/></uInt32>
+        <uInt32 name="deltaU32Default"><delta value="200"/></uInt32>
+        <uInt32 name="deltaU32OptionalNoDefault" presence="optional"><delta/></uInt32>
+        <uInt32 name="deltaU32OptionalDefault" presence="optional"><delta value="200"/></uInt32>
+    </template>
+    <template name="constantU32" id="14">
+        <uInt32 name="constantU32"><constant value="6600"/></uInt32>
+        <uInt32 name="constantU32Optional" presence="optional"><constant value="3022008"/></uInt32>
+    </template>
 </templates>

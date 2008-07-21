@@ -17,19 +17,18 @@ public class DeltaIntegerCodec extends DictionaryOperatorIntegerCodec implements
     }
     
     public int getLength(byte[] buffer, int offset) {
-        return 0;
+        return integerCodec.getLength(buffer, offset);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (integerCodec.isNull(buffer, offset)) {
-            return offset;
+            return;
         }
         int delta = integerCodec.decode(buffer, offset);
         int previousValue = getPreviousValue(object, context, field);
         int newValue = delta + previousValue;
         object.set(index, newValue);
         dictionaryEntry.set(newValue);
-        return integerCodec.getLength(buffer, offset) + offset;
     }
 
     private int getPreviousValue(EObject object, Context context, Scalar field) {
@@ -51,6 +50,7 @@ public class DeltaIntegerCodec extends DictionaryOperatorIntegerCodec implements
         }
         int value = object.getInt(index);
         int previousValue = getPreviousValue(object, context, field);
+        dictionaryEntry.set(value);
         return integerCodec.encode(buffer, offset, value - previousValue);
     }
 }

@@ -9,7 +9,8 @@ import org.openfast.util.BitVectorReader;
 public abstract class AlwaysPresentCodec<T> implements FieldCodec<T> {
 
     public int decode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorReader reader, Context context) {
-        return decode(object, index, buffer, offset, field, context);
+        decode(object, index, buffer, offset, field, context);
+        return offset + getLength(buffer, offset);
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorBuilder pmapBuilder, Context context) {
@@ -22,6 +23,6 @@ public abstract class AlwaysPresentCodec<T> implements FieldCodec<T> {
     
     public abstract int getLength(byte[] buffer, int offset);
 
-    public abstract int decode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
+    public abstract void decode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
     public abstract int encode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
 }

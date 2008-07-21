@@ -1,0 +1,6 @@
+TemplateID,copyU32NoDefault,copyU32Default,copyU32OptionalNoDefault,copyU32OptionalDefault
+11,100,200, , 
+11,100,200, ,200
+11,101,201,300,200
+11,102,201,300,201
+11,102,205, , 

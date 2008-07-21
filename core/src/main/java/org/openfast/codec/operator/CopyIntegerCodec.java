@@ -16,18 +16,17 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
     }
     
     public int getLength(byte[] buffer, int offset) {
-        throw new UnsupportedOperationException();
+        return integerCodec.getLength(buffer, offset);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (integerCodec.isNull(buffer, offset)) {
             dictionaryEntry.setNull();
-            return offset + 1;
+            return;
         }
         int value = integerCodec.decode(buffer, offset);
         object.set(index, value);
         dictionaryEntry.set(value);
-        return integerCodec.getLength(buffer, offset) + offset;
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {

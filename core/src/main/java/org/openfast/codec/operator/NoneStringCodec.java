@@ -14,14 +14,13 @@ public class NoneStringCodec extends AlwaysPresentCodec<Scalar> implements Scala
         this.stringCodec = stringCodec;
     }
     public int getLength(byte[] buffer, int offset) {
-        return 0;
+        return stringCodec.getLength(buffer, offset);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (!stringCodec.isNull(buffer, offset)) {
             object.set(index, stringCodec.decode(buffer, offset));
         }
-        return stringCodec.getLength(buffer, offset);
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {

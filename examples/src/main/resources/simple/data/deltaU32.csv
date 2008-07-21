@@ -1,0 +1,7 @@
+TemplateID,deltaU32NoDefault,deltaU32Default,deltaU32OptionalNoDefault,deltaU32OptionalDefault
+13,100,200, , 
+13,150,150,100,200
+13,50,250,150,150
+13,25000,35000,50,250
+13,1,1, , 
+13,2,0,1,1

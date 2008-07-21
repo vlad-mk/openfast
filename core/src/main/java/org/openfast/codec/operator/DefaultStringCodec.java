@@ -3,43 +3,41 @@ package org.openfast.codec.operator;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
-import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.ScalarCodec;
 import org.openfast.codec.SinglePresenceMapEntryFieldCodec;
+import org.openfast.codec.StringCodec;
 import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
 
-public class DefaultIntegerCodec extends SinglePresenceMapEntryFieldCodec<Scalar> implements ScalarCodec {
+public class DefaultStringCodec extends SinglePresenceMapEntryFieldCodec<Scalar> implements ScalarCodec {
     private final Operator operator;
-    private final IntegerCodec integerCodec;
-    private final int defaultValue;
+    private final StringCodec stringCodec;
 
-    public DefaultIntegerCodec(Operator operator, IntegerCodec integerCodec) {
+    public DefaultStringCodec(Operator operator, StringCodec stringCodec) {
         this.operator = operator;
-        this.integerCodec = integerCodec;
-        this.defaultValue = operator.hasDefaultValue() ? Integer.parseInt(operator.getDefaultValue()) : 0;
+        this.stringCodec = stringCodec;
     }
     public int getLength(byte[] buffer, int offset) {
-        return integerCodec.getLength(buffer, offset);
+        return stringCodec.getLength(buffer, offset);
     }
 
     public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
-        if (integerCodec.isNull(buffer, offset))
+        if (stringCodec.isNull(buffer, offset))
             return;
-        int value = integerCodec.decode(buffer, offset);
+        String value = stringCodec.decode(buffer, offset);
         object.set(index, value);
     }
 
     public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
         if (operator.hasDefaultValue())
-            object.set(index, defaultValue);
+            object.set(index, operator.getDefaultValue());
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (object.isDefined(index)) {
-            if (operator.hasDefaultValue() && object.getInt(index) == defaultValue)
+            if (operator.hasDefaultValue() && operator.getDefaultValue().equals(object.getString(index)))
                 return offset;
-            return integerCodec.encode(buffer, offset, object.getInt(index));
+            return stringCodec.encode(buffer, offset, object.getString(index));
         } else {
             if (!operator.hasDefaultValue())
                 return offset;

@@ -36,14 +36,12 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         super(dictionaryEntry, operator, integerCodec);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
         if (integerCodec.isNull(buffer, offset))
-            return offset;
-        int length = integerCodec.getLength(buffer, offset);
+            return;
         int value = integerCodec.decode(buffer, offset);
         dictionaryEntry.set(value);
         object.set(index, value);
-        return offset + length;
     }
 
     public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {

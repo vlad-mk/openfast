@@ -1,0 +1,23 @@
+<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+    <template name="copyAscii" id="21">
+        <string name="copyAsciiNoDefault"><copy/></string>
+        <string name="copyAsciiDefault"><copy value="technological"/></string>
+        <string name="copyAsciiOptionalNoDefault" presence="optional"><copy/></string>
+        <string name="copyAsciiOptionalDefault" presence="optional"><copy value="university"/></string>
+    </template>
+    <template name="defaultAscii" id="22">
+        <string name="defaultAscii"><default value="Houghton"/></string>
+        <string name="defaultAsciiOptionalNull" presence="optional"><default/></string>
+        <string name="defaultAsciiOptional" presence="optional"><default value="MTU"/></string>
+    </template>
+    <template name="deltaAscii" id="23">
+        <string name="deltaAsciiNoDefault"><delta/></string>
+        <string name="deltaAsciiDefault"><delta value="CMX"/></string>
+        <string name="deltaAsciiOptionalNoDefault" presence="optional"><delta/></string>
+        <string name="deltaAsciiOptionalDefault" presence="optional"><delta value="michigan"/></string>
+    </template>
+    <template name="constantAscii" id="24">
+        <string name="constantAscii"><constant value="SE"/></string>
+        <string name="constantAsciiOptional" presence="optional"><constant value="CS"/></string>
+    </template>
+</templates>

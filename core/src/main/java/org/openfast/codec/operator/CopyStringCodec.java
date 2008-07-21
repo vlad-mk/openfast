@@ -16,18 +16,17 @@ public class CopyStringCodec extends DictionaryOperatorStringCodec implements Sc
     }
     
     public int getLength(byte[] buffer, int offset) {
-        throw new UnsupportedOperationException();
+        return stringCodec.getLength(buffer, offset);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
         if (stringCodec.isNull(buffer, offset)) {
             dictionaryEntry.setNull();
-            return offset + 1;
+            return;
         }
         String value = stringCodec.decode(buffer, offset);
         object.set(index, value);
         dictionaryEntry.set(value);
-        return stringCodec.getLength(buffer, offset) + offset;
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
@@ -62,9 +61,12 @@ public class CopyStringCodec extends DictionaryOperatorStringCodec implements Sc
     public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
         if (dictionaryEntry.isNull())
             return;
-        if (dictionaryEntry.isDefined())
+        if (dictionaryEntry.isDefined()) {
             object.set(index, dictionaryEntry.getString());
-        else if (operator.hasDefaultValue())
+        }
+        else if (operator.hasDefaultValue()) {
             object.set(index, operator.getDefaultValue());
+            dictionaryEntry.set(operator.getDefaultValue());
+        }
     }
 }
