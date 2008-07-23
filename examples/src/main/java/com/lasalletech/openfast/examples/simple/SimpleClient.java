@@ -13,11 +13,16 @@ import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
+import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketConnector;
 import org.apache.mina.transport.socket.nio.SocketConnectorConfig;
+import org.openfast.Context;
 import org.openfast.Message;
+import org.openfast.MessageHandler;
+import org.openfast.codec.Coder;
 import org.openfast.codec.FastDecoder;
+import org.openfast.template.MessageTemplate;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
 import com.lasalletech.openfast.nio.mina.FastMessageDecoder;
 import com.lasalletech.openfast.nio.mina.FastProtocolCodecFactory;
@@ -52,9 +57,11 @@ public class SimpleClient {
         File[] templateFiles = getFiles("/simple/templates");
         for (File templateFile : templateFiles)
             loader.load(new FileInputStream(templateFile));
+        final MessageTemplate resetTemplate = loader.getTemplateRegistry().get("reset");
         ByteBuffer.setUseDirectBuffers(false);
         SocketConnector connector = new SocketConnector();
         SocketConnectorConfig cfg = new SocketConnectorConfig();
+        cfg.setThreadModel(ThreadModel.MANUAL);
         cfg.getFilterChain().addLast("fast", new ProtocolCodecFilter(new FastProtocolCodecFactory()));
         ConnectFuture connFuture = connector.connect(new InetSocketAddress(host, port), new IoHandlerAdapter() {
             @Override
@@ -62,14 +69,23 @@ public class SimpleClient {
                 Message m = (Message) message;
                 if ("disconnect".equals(m.getTemplate().getName())) {
                     session.close();
-                    System.exit(0);
                 } else
                     System.out.println(m);
             }
 
             @Override
             public void sessionCreated(IoSession session) throws Exception {
-                session.setAttribute(FastMessageDecoder.DECODER, new FastDecoder(loader.getTemplateRegistry()));
+                FastDecoder decoder = new FastDecoder(loader.getTemplateRegistry());
+                decoder.registerMessageHandler(resetTemplate, new MessageHandler() {
+                    public void handleMessage(Message message, Context context, Coder coder) {
+                        coder.reset();
+                    }});
+                session.setAttribute(FastMessageDecoder.DECODER, decoder);
+            }
+            
+            @Override
+            public void sessionClosed(IoSession session) throws Exception {
+                System.exit(0);
             }
 
             @Override

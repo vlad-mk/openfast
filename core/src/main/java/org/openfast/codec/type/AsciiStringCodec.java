@@ -20,11 +20,14 @@ public class AsciiStringCodec extends StopBitEncodedTypeCodec implements StringC
         try {
             int length = getLength(buffer, offset);
             if ((buffer[offset] & Fast.VALUE_BITS) == 0) {
-                if (!ByteUtil.isEmpty(buffer, offset, length))
+                if (!ByteUtil.isEmpty(buffer, offset, length)) { 
                     Global.handleError(FastConstants.R9_STRING_OVERLONG, null);
-                if (length > 1 && (buffer[offset+1] & Fast.VALUE_BITS) == 0)
+                    offset++;
+                }
+                else if (length > 1 && (buffer[offset+1] & Fast.VALUE_BITS) == 0)
                     return Fast.ZERO_TERMINATOR;
-                return "";
+                else
+                    return "";
             }
             buffer[length + offset - 1] &= Fast.VALUE_BITS; // remove stop bit
             decoded = decoder.decode(ByteBuffer.wrap(buffer, offset, length));

@@ -24,7 +24,7 @@ public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements
                     Global.handleError(FastConstants.R9_STRING_OVERLONG, null);
                 if (length == 3 && buffer[offset+1] == 0 && (buffer[offset+2] & Fast.VALUE_BITS) == 0)
                     return Fast.ZERO_TERMINATOR;
-                if (length == 2 && (buffer[offset+1] * Fast.VALUE_BITS) == 0)
+                if (length == 2 && (buffer[offset+1] & Fast.VALUE_BITS) == 0)
                     return "";
                 return null;
             }
@@ -44,7 +44,7 @@ public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements
         }
         if (value.length() == 0) {
             buffer[offset] = 0;
-            buffer[offset] = Fast.STOP_BIT;
+            buffer[offset + 1] = Fast.STOP_BIT;
             return offset + 2;
         }
         if (value.startsWith(Fast.ZERO_TERMINATOR)) {

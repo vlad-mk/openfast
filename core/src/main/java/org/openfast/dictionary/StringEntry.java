@@ -32,4 +32,26 @@ public class StringEntry extends AbstractDictionaryEntry implements DictionaryEn
     public int getInt() {
         return Integer.parseInt(value);
     }
+    
+    @Override
+    public void reset() {
+        super.reset();
+        value = null;
+    }
+
+    public Object get() {
+        throw new UnsupportedOperationException();
+    }
+
+    public long getLong() {
+        return Long.parseLong(value);
+    }
+
+    public void set(long value) {
+        this.value = String.valueOf(value);
+    }
+
+    public void set(Object value) {
+        this.value = value.toString();
+    }
 }

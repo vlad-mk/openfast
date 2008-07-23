@@ -15,10 +15,10 @@ import org.openfast.test.OpenFastTestCase;
 
 public class CopyIntegerCodecTest extends OpenFastTestCase {
     DictionaryOperator noDefaultOp = new CopyOperator(KEY, Fast.GLOBAL, null);
-    Scalar noDefaultScalar = new Scalar("", FastTypes.U32, noDefaultOp, true);
+    Scalar noDefaultScalar = new Scalar("", FastTypes.I32, noDefaultOp, true);
     
     DictionaryOperator defaultOp = new CopyOperator(FastOperatorTestHarness.KEY, Fast.GLOBAL, "22");
-    Scalar defaultScalar = new Scalar("", FastTypes.U32, defaultOp, true);
+    Scalar defaultScalar = new Scalar("", FastTypes.I32, defaultOp, true);
     
     byte[] buffer = new byte[4];
     Context context = new Context();

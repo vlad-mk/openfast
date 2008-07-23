@@ -1,0 +1,6 @@
+TemplateID,deltaAsciiNoDefault,deltaAsciiDefault,deltaAsciiOptionalNoDefault,deltaAsciiOptionalDefault
+25,A123,M, ,
+25,A124,MTU,123456789,Silver
+25,A125,MTU.EDU,123412345,Silver and Gold
+25,A126,MTU.EDU,123445678
+25,A135,MTU.EDU,123498765,Silver and Gold and Black

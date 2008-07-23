@@ -23,7 +23,7 @@ package org.openfast.template.type;
 import org.lasalletech.entity.EObject;
 
 
-public class StringType extends Type {
+public class StringType extends AbstractType {
     private static final long serialVersionUID = 1L;
 
     public StringType(String typeName) {

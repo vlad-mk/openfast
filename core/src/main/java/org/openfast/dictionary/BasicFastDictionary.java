@@ -5,7 +5,7 @@ import org.openfast.template.type.IntegerType;
 import org.openfast.template.type.StringType;
 import org.openfast.template.Type;
 
-public class GlobalFastDictionary implements FastDictionary {
+public class BasicFastDictionary implements FastDictionary {
     // Use power of 2 for size so that hashes can be calculated quickly
     private DictionaryEntry[] entries = new DictionaryEntry[256];
     

@@ -12,4 +12,6 @@ public class Fast {
     public static final String GLOBAL = "global";
     public static final String TEMPLATE = "template";
     public static final MessageTemplateFactory SIMPLE = new SimpleMessageTemplateFactory();
+    public static final String SCP_1_1_NAMESPACE = "http://www.fixprotocol.org/ns/fast/scp/1.1";
+    public static final byte SIGN_BIT = 0x40;
 }

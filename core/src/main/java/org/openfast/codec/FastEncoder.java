@@ -1,10 +1,14 @@
 package org.openfast.codec;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.openfast.Context;
 import org.openfast.Message;
+import org.openfast.MessageHandler;
 import org.openfast.dictionary.BasicDictionaryRegistry;
 import org.openfast.dictionary.DictionaryRegistry;
 import org.openfast.fast.impl.FastImplementation;
+import org.openfast.template.MessageTemplate;
 import org.openfast.template.TemplateRegistry;
 
 public class FastEncoder implements Coder {
@@ -13,6 +17,7 @@ public class FastEncoder implements Coder {
     private final FastImplementation implementation;
     private final DictionaryRegistry dictionaryRegistry;
     private MessageCodecRegistry codecRegistry = new BasicCodecRegistry();
+    private Map<MessageTemplate, MessageHandler> handlers = new HashMap<MessageTemplate, MessageHandler>();
 
     public FastEncoder(TemplateRegistry templateRegistry) {
         this(FastImplementation.getDefaultVersion(), templateRegistry);
@@ -25,12 +30,13 @@ public class FastEncoder implements Coder {
         codecFactory = implementation.getCodecFactory();
     }
 
-    public void setFastImplementation(FastImplementation implementation) {
-    }
-
     public int encode(byte[] buffer, int offset, Message message) {
         MessageCodec encoder = getEncoder(message);
-        return encoder.encode(buffer, offset, message, context);
+        int encoded = encoder.encode(buffer, offset, message, context);
+        if (handlers.containsKey(message.getTemplate())) {
+            handlers.get(message.getTemplate()).handleMessage(message, context, this);
+        }
+        return encoded;
     }
     
     public void reset() {
@@ -43,5 +49,9 @@ public class FastEncoder implements Coder {
             codecRegistry.register(id, codecFactory.createMessageCodec(id, message.getTemplate(), implementation, dictionaryRegistry));
         }
         return codecRegistry.get(id);
+    }
+
+    public void registerMessageHandler(MessageTemplate template, MessageHandler messageHandler) {
+        handlers.put(template, messageHandler);
     }
 }

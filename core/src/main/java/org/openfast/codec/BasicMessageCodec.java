@@ -1,6 +1,5 @@
 package org.openfast.codec;
 
-import org.openfast.ByteUtil;
 import org.openfast.Context;
 import org.openfast.Message;
 import org.openfast.dictionary.DictionaryRegistry;
@@ -15,14 +14,14 @@ import org.openfast.util.BitVectorReader;
 
 public class BasicMessageCodec implements MessageCodec {
     private final int templateId;
-    private final IntegerCodec uintCodec;
+    private final LongCodec uintCodec;
     private final BitVectorCodec bitVectorCodec;
     @SuppressWarnings("unchecked")
     private final FieldCodec[] fieldCodecs;
 
     public BasicMessageCodec(int id, MessageTemplate template, FastImplementation implementation, DictionaryRegistry dictionaryRegistry, CodecFactory codecFactory) {
         this.templateId = id;
-        this.uintCodec = implementation.getTypeCodecRegistry().getIntegerCodec(FastTypes.U32);
+        this.uintCodec = implementation.getTypeCodecRegistry().getLongCodec(FastTypes.U32);
         this.bitVectorCodec = implementation.getTypeCodecRegistry().getBitVectorCodec(FastTypes.BIT_VECTOR);
         this.fieldCodecs = new FieldCodec[template.getFieldCount()];
         int index = 0;
@@ -59,7 +58,6 @@ public class BasicMessageCodec implements MessageCodec {
         } finally {
             context.discardTemporaryBuffer(temp);
         }
-        System.out.println(ByteUtil.convertByteArrayToBitString(buffer, offset + pmapLen + index));
         return offset + pmapLen + index;
     }
 

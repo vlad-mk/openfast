@@ -1,6 +1,8 @@
 package org.openfast.codec.type;
 
-public class StopBitEncodedTypeCodec {
+import org.openfast.codec.TypeCodec;
+
+public abstract class StopBitEncodedTypeCodec implements TypeCodec {
     public int getLength(byte[] buffer, int offset) {
         if (offset >= buffer.length) return -1;
         int length = 1;

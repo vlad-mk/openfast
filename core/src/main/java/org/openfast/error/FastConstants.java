@@ -61,6 +61,7 @@ public interface FastConstants {
     ErrorCode R4_NUMERIC_VALUE_TOO_LARGE = new ErrorCode(REPORTABLE, 4, "ERR R4", "The value is too large.", WARN);
     ErrorCode R5_DECIMAL_CANT_CONVERT_TO_INT = new ErrorCode(REPORTABLE, 5, "ERR R5",
             "The decimal value cannot convert to an integer because of trailing decimal part.", WARN);
+    ErrorCode R6_OVERLONG_INT = new ErrorCode(REPORTABLE, 6, "ERR R6", "Overlong integer encountered in stream.", WARN);
     ErrorCode R7_PMAP_OVERLONG = new ErrorCode(REPORTABLE, 7, "ERR R7", "The presence map is overlong.", WARN);
     ErrorCode R8_PMAP_TOO_MANY_BITS = new ErrorCode(REPORTABLE, 8, "ERR R8", "The presence map has too many bits.", WARN);
     ErrorCode R9_STRING_OVERLONG = new ErrorCode(REPORTABLE, 9, "ERR R9", "The string is overlong.", ERROR);

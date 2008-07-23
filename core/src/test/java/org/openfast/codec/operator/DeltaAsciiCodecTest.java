@@ -26,6 +26,6 @@ public class DeltaAsciiCodecTest extends TestCase {
         harness.assertEncode("10000001 01000001 01000010 01000011 11000100", NO_INITIAL_VALUE, UNDEFINED, "ABCD");
         harness.assertEncode("10000001 01000101 01000110 01000111 11001000", INITIAL_VALUE, UNDEFINED, "ABCDEFGH");
         harness.assertEncode("10000011 01000101 11000110", INITIAL_VALUE, UNDEFINED, "ABEF");
-        harness.assertEncode("11111111 10000000", INITIAL_VALUE, UNDEFINED, "BCD");
+        harness.assertEncode("11111110 10000000", INITIAL_VALUE, UNDEFINED, "BCD");
     }
 }

@@ -31,7 +31,7 @@ public class DeltaAsciiCodec extends DictionaryOperatorStringCodec implements Sc
             return;
         }
         int subtractionLength = integerCodec.decode(buffer, offset);
-        offset = integerCodec.getLength(buffer, offset);
+        offset += integerCodec.getLength(buffer, offset);
         String delta = stringCodec.decode(buffer, offset);
         String value = new StringDelta(subtractionLength, delta).applyTo(getPreviousValue(object, field, context));
         dictionaryEntry.set(value);
@@ -57,8 +57,11 @@ public class DeltaAsciiCodec extends DictionaryOperatorStringCodec implements Sc
             buffer[offset] = Fast.NULL;
             return offset + 1;
         }
-        StringDelta diff = StringDelta.diff(object.getString(index), getPreviousValue(object, field, context));
-        int newOffset = integerCodec.encode(buffer, offset, diff.getSubtractionLength());
+        String value = object.getString(index);
+        StringDelta diff = StringDelta.diff(value, getPreviousValue(object, field, context));
+        int subtractionLength = diff.getSubtractionLength();
+        int newOffset = integerCodec.encode(buffer, offset, subtractionLength);
+        dictionaryEntry.set(value);
         return stringCodec.encode(buffer, newOffset, diff.getValue());
     }
 }

@@ -20,6 +20,10 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 */
 package org.openfast.codec;
 
+import org.openfast.MessageHandler;
+import org.openfast.template.MessageTemplate;
+
 public interface Coder {
     void reset();
+    void registerMessageHandler(MessageTemplate template, MessageHandler messageHandler);
 }

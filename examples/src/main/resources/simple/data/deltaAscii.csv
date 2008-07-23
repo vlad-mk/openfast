@@ -1,0 +1,7 @@
+TemplateID,deltaAsciiNoDefault,deltaAsciiDefault,deltaAsciiOptionalNoDefault,deltaAsciiOptionalDefault
+23,ABCD,CMX, , 
+23,A,CMX-MSP,1,michigan
+23,ABCD,CMX,1234
+23,DEFG,C,12,upper michigan
+1
+23,A,A,A,A

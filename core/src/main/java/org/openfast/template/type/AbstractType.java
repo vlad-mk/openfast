@@ -22,12 +22,13 @@ package org.openfast.template.type;
 
 import java.io.Serializable;
 import org.lasalletech.entity.QName;
+import org.openfast.template.Type;
 
-public abstract class Type implements org.openfast.template.Type, Serializable {
+public abstract class AbstractType implements Type, Serializable {
     private static final long serialVersionUID = 1L;
     private final QName name;
 
-    public Type(String typeName) {
+    public AbstractType(String typeName) {
         this.name = new QName(typeName);
     }
     
@@ -58,9 +59,10 @@ public abstract class Type implements org.openfast.template.Type, Serializable {
     }
 
     public boolean equals(Object obj) {
-        if (obj == null)
+        if (obj == this) return true;
+        if (obj == null || !obj.getClass().equals(this.getClass()))
             return false;
-        return obj.getClass().equals(this.getClass());
+        return name.equals(((Type) obj).getName());
     }
     public int hashCode() {
         return name.hashCode();

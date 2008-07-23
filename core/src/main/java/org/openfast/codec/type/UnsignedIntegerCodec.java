@@ -2,11 +2,15 @@ package org.openfast.codec.type;
 
 import static org.openfast.Fast.STOP_BIT;
 import static org.openfast.Fast.VALUE_BITS;
+import org.openfast.Global;
 import org.openfast.codec.IntegerCodec;
+import org.openfast.error.FastConstants;
 
 
 public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
     public int decode(byte[] buffer, int offset) {
+        if (buffer[offset] == 0)
+            Global.handleError(FastConstants.R6_OVERLONG_INT, "Encountered overlong integer.");
         int value = 0;
         int index = offset - 1;
         do {
@@ -31,7 +35,7 @@ public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements Int
      *            The long to determine the unsigned integer
      * @return Returns an unsigned integer
      */
-    public static int getUnsignedIntegerSize(long value) {
+    public static int getUnsignedIntegerSize(int value) {
         if (value < 128) {
             return 1; // 2 ^ 7
         }
@@ -44,19 +48,7 @@ public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements Int
         if (value <= 268435456) {
             return 4; // 2 ^ 28
         }
-        if (value <= 34359738368L) {
-            return 5; // 2 ^ 35
-        }
-        if (value <= 4398046511104L) {
-            return 6; // 2 ^ 42
-        }
-        if (value <= 562949953421312L) {
-            return 7; // 2 ^ 49
-        }
-        if (value <= 72057594037927936L) {
-            return 8; // 2 ^ 56
-        }
-        return 9;
+        return 5;
     }
 
     public boolean isNull(byte[] buffer, int offset) {

@@ -23,7 +23,7 @@ package org.openfast.template.type;
 import org.lasalletech.entity.EObject;
 
 
-public final class ByteVectorType extends Type {
+public final class ByteVectorType extends AbstractType {
     private static final long serialVersionUID = 1L;
 
     public ByteVectorType() {

@@ -1,4 +1,7 @@
-<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
-    <template name="reset" id="1"/>
+<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1" xmlns:scp="http://www.fixprotocol.org/ns/fast/scp/1.1">
+    <template name="reset" id="1" scp:reset="yes"/>
     <template name="disconnect" id="2"/>
+    <template name="testFile" id="3">
+        <string name="fileName"><delta/></string>
+    </template>
 </templates>

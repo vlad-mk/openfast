@@ -14,16 +14,22 @@ public class FastMessageDecoder implements MessageDecoder {
     public MessageDecoderResult decodable(IoSession session, ByteBuffer buffer) {
         FastDecoder decoder = (FastDecoder) session.getAttribute(DECODER);
         byte[] bytes = buffer.array();
-        int length = decoder.getNextMessageLength(bytes, buffer.position());
-        if (length < 0) {
-            return MessageDecoderResult.NEED_DATA;
+        try {
+            int length = decoder.getNextMessageLength(bytes, buffer.position());
+            if (length < 0) {
+                return MessageDecoderResult.NEED_DATA;
+            }
+            session.setAttribute(NEXT_MESSAGE_LENGTH, length);
+        } catch (Exception e) {
+            System.out.println("bytes: " + bytes.length + " position: " + buffer.position());
+            e.printStackTrace();
+            return MessageDecoderResult.NOT_OK;
         }
-        session.setAttribute(NEXT_MESSAGE_LENGTH, length);
         return MessageDecoderResult.OK;
     }
     public MessageDecoderResult decode(IoSession session, ByteBuffer buffer, ProtocolDecoderOutput out) throws Exception {
         FastDecoder decoder = (FastDecoder) session.getAttribute(DECODER);
-        int nextMessageLength = ((Integer)session.getAttribute(NEXT_MESSAGE_LENGTH)).intValue();
+        int nextMessageLength = ((Integer)session.removeAttribute(NEXT_MESSAGE_LENGTH)).intValue();
         byte[] arr = new byte[nextMessageLength];
         System.out.println("Reading message: " + buffer.position() + "-" + (nextMessageLength + buffer.position()) + " (remaining=" + buffer.remaining() + ")");
         buffer.get(arr, 0, nextMessageLength);

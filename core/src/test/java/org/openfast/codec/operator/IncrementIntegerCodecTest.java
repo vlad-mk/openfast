@@ -12,7 +12,7 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
 //        SimpleEntity entity = new SimpleEntity("yeah");
 //        entity.add(new SimpleField("anything", null));
 //        EObject object = entity.newObject();
-//        Scalar scalar = new Scalar("1", Type.U32, null, true);
+//        Scalar scalar = new Scalar("1", AbstractType.U32, null, true);
 //        Context context = new Context();
 //        byte[] buffer = new byte[1];
 //        
@@ -44,7 +44,7 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
 //        SimpleEntity entity = new SimpleEntity("yeah");
 //        entity.add(new SimpleField("anything", null));
 //        EObject object = entity.newObject();
-//        Scalar scalar = new Scalar("1", Type.U32, null, true);
+//        Scalar scalar = new Scalar("1", AbstractType.U32, null, true);
 //        Context context = new Context();
 //        
 //        noDefaultSignedCodec.decodeEmpty(object, 0, scalar, context);
@@ -62,8 +62,8 @@ public class IncrementIntegerCodecTest extends OpenFastTestCase {
 //        SimpleEntity entity = new SimpleEntity("yeah");
 //        entity.add(new SimpleField("anything", null));
 //        EObject object = entity.newObject();
-//        Scalar scalar = new Scalar("1", Type.U32, null, true);
-//        FastDictionary dictionary = new GlobalFastDictionary();
+//        Scalar scalar = new Scalar("1", AbstractType.U32, null, true);
+//        FastDictionary dictionary = new BasicFastDictionary();
 //        
 //        noDefaultSignedCodec.decode(object, 0, bytes("10000001"), 0, scalar, new Context());
 //        assertEquals(1, object.getInt(0));

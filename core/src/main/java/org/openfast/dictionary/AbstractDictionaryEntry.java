@@ -2,7 +2,7 @@ package org.openfast.dictionary;
 
 import org.lasalletech.entity.QName;
 
-public abstract class AbstractDictionaryEntry {
+public abstract class AbstractDictionaryEntry implements DictionaryEntry {
     protected final QName key;
     protected DictionaryEntry next;
     protected boolean isNull;
@@ -49,5 +49,14 @@ public abstract class AbstractDictionaryEntry {
     public void reset() {
         isDefined = false;
         isNull = false;
+    }
+    
+    @Override
+    public String toString() {
+        if (isNull())
+            return key + "=" + "[NULL]";
+        else if (!isDefined())
+            return key + "=" + "[UNDEFINED]";
+        return key + "=" + getString();
     }
 }

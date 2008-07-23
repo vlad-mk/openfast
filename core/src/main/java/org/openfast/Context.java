@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import org.lasalletech.entity.QName;
 import org.openfast.dictionary.FastDictionary;
-import org.openfast.dictionary.GlobalFastDictionary;
+import org.openfast.dictionary.BasicFastDictionary;
 import org.openfast.error.ErrorHandler;
 import org.openfast.error.FastConstants;
 import org.openfast.template.BasicTemplateRegistry;
@@ -50,7 +50,7 @@ public class Context {
     private byte[] tempBuffer = new byte[1024 * 32]; // max 32 kB message size
 
     public Context() {
-        dictionaries.put("global", new GlobalFastDictionary());
+        dictionaries.put("global", new BasicFastDictionary());
     }
     public int getTemplateId(MessageTemplate template) {
         if (!templateRegistry.isRegistered(template)) {

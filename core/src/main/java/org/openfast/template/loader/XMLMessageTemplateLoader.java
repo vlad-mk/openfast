@@ -49,7 +49,7 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
     static final ErrorCode XML_PARSING_ERROR = new ErrorCode(FastConstants.STATIC, -1, "XMLPARSEERR", "XML Parsing Error",
             FastAlertSeverity.ERROR);
 
-    static final ErrorCode INVALID_TYPE = new ErrorCode(FastConstants.STATIC, -1, "INVALIDTYPE", "Invalid Type",
+    static final ErrorCode INVALID_TYPE = new ErrorCode(FastConstants.STATIC, -1, "INVALIDTYPE", "Invalid AbstractType",
             FastAlertSeverity.ERROR);
 
     // IMMUTABLE

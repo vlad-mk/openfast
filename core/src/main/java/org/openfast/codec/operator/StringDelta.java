@@ -23,6 +23,8 @@ public class StringDelta {
             int length = (-1 * subtractionLength) - 1;
             return value + previousValue.substring(length, previousValue.length());
         }
+        if (subtractionLength > previousValue.length())
+            throw new IllegalArgumentException("The delta " + this + " cannot be applied to value \""+ previousValue + "\".");
         return previousValue.substring(0, previousValue.length() - subtractionLength) + value;
     }
     

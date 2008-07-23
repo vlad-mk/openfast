@@ -1,11 +1,34 @@
 package org.openfast.codec.type;
 
 import java.util.Arrays;
-import org.openfast.codec.type.SignedIntegerCodec;
+import org.openfast.Global;
+import org.openfast.error.ErrorHandler;
+import org.openfast.error.FastConstants;
+import org.openfast.error.FastException;
 import org.openfast.test.OpenFastTestCase;
 
 public class SignedIntegerCodecTest extends OpenFastTestCase {
     SignedIntegerCodec codec = new SignedIntegerCodec();
+    byte[] buffer = new byte[10];
+    public void testOverlongInteger() {
+        try {
+            decode("00000000 10000001");
+            fail();
+        } catch (FastException e) {
+            assertEquals(FastConstants.R6_OVERLONG_INT, e.getCode());
+        }
+    }
+    
+    public void testOverlongIgnored() {
+        Global.setErrorHandler(ErrorHandler.NULL);
+        assertEquals(1, decode("00000000 10000001"));
+        Global.setErrorHandler(ErrorHandler.DEFAULT);
+    }
+    
+    public void testBoundaries() {
+        assertEquals("01111000 00000000 00000000 00000000 10000000", encode(Integer.MIN_VALUE), 5);
+        assertEquals("00000111 01111111 01111111 01111111 11111111", encode(Integer.MAX_VALUE), 5);
+    }
     
     public void testDecode() {
         assertEquals(63, codec.decode(bytes("10111111"), 0));
@@ -46,5 +69,14 @@ public class SignedIntegerCodecTest extends OpenFastTestCase {
     public void testGetLength() {
         assertEquals(1, codec.getLength(bytes("10000000 01010101 10000000"), 0));
         assertEquals(2, codec.getLength(bytes("00100000 10000000 00001111"), 0));
+    }
+
+    private int decode(String bits) {
+        return codec.decode(bytes(bits), 0);
+    }
+
+    private byte[] encode(int value) {
+        codec.encode(buffer, 0, value);
+        return buffer;
     }
 }

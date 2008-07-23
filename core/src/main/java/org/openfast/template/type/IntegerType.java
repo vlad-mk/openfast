@@ -21,7 +21,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast.template.type;
 
 
-public abstract class IntegerType extends Type {
+public abstract class IntegerType extends AbstractType {
     private static final long serialVersionUID = 1L;
     protected final long minValue;
     protected final long maxValue;
@@ -30,5 +30,13 @@ public abstract class IntegerType extends Type {
         super(typeName);
         this.minValue = minValue;
         this.maxValue = maxValue;
+    }
+
+    public long getMinValue() {
+        return minValue;
+    }
+
+    public long getMaxValue() {
+        return maxValue;
     }
 }

@@ -43,6 +43,12 @@ public abstract class OpenFastTestCase extends TestCase {
     public static void assertEquals(String bitString, byte[] encoding, int length) {
         TestUtil.assertBitVectorEquals(bitString, encoding, length);
     }
+    
+    public static void assertEquals(byte[] expected, byte[] actual) {
+        assertEquals(expected.length, actual.length);
+        for (int i=0; i<expected.length;i++)
+            assertEquals(expected[i], actual[i]);
+    }
 
 //    protected static void assertEncodeDecode(ScalarValue value, String bitString, TypeCodec type) {
 //        assertEquals(bitString, type.encode(value == null ? ScalarValue.NULL : value));

@@ -1,6 +1,7 @@
 package org.openfast.fast.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.openfast.Fast;
 import org.openfast.codec.BasicCodecFactory;
@@ -12,6 +13,7 @@ import org.openfast.codec.operator.CopyOperatorCodecFactory;
 import org.openfast.codec.operator.DefaultOperatorCodecFactory;
 import org.openfast.codec.operator.DeltaOperatorCodecFactory;
 import org.openfast.codec.operator.IncrementOperatorCodecFactory;
+import org.openfast.codec.operator.TailOperatorCodecFactory;
 import org.openfast.codec.type.FastTypeCodecs;
 import org.openfast.dictionary.BasicDictionaryTypeRegistry;
 import org.openfast.dictionary.DictionaryTypeRegistry;
@@ -69,6 +71,7 @@ public class Fast_1_1Implementation extends FastImplementation {
             operatorParsers.add(new ConstantOperatorParser());
             operatorParsers.add(new IncrementOperatorParser());
             operatorParsers.add(new CopyOperatorParser());
+            operatorParsers = Collections.unmodifiableList(operatorParsers);
         }
         return operatorParsers;
     }
@@ -103,6 +106,7 @@ public class Fast_1_1Implementation extends FastImplementation {
             codecFactory.register("default", new DefaultOperatorCodecFactory());
             codecFactory.register("delta", new DeltaOperatorCodecFactory());
             codecFactory.register("constant", new ConstantOperatorCodecFactory());
+            codecFactory.register("tail", new TailOperatorCodecFactory());
         }
         return codecFactory;
     }
@@ -121,12 +125,12 @@ public class Fast_1_1Implementation extends FastImplementation {
             typeCodecRegistry.register(FastTypes.I64, true, FastTypeCodecs.NULLABLE_SIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U8,  FastTypeCodecs.UNSIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U16, FastTypeCodecs.UNSIGNED_INTEGER);
-            typeCodecRegistry.register(FastTypes.U32, FastTypeCodecs.UNSIGNED_INTEGER);
-            typeCodecRegistry.register(FastTypes.U64, FastTypeCodecs.UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.U32, FastTypeCodecs.UNSIGNED_LONG);
+            typeCodecRegistry.register(FastTypes.U64, FastTypeCodecs.ULONG);
             typeCodecRegistry.register(FastTypes.U8,  true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
             typeCodecRegistry.register(FastTypes.U16, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
-            typeCodecRegistry.register(FastTypes.U32, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
-            typeCodecRegistry.register(FastTypes.U64, true, FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER);
+            typeCodecRegistry.register(FastTypes.U32, true, FastTypeCodecs.NULLABLE_UNSIGNED_LONG);
+            typeCodecRegistry.register(FastTypes.U64, true, FastTypeCodecs.NULLABLE_ULONG);
             typeCodecRegistry.register(FastTypes.ASCII, FastTypeCodecs.ASCII_STRING);
             typeCodecRegistry.register(FastTypes.ASCII, true, FastTypeCodecs.NULLABLE_ASCII_STRING);
             typeCodecRegistry.register(FastTypes.BIT_VECTOR, false, FastTypeCodecs.BIT_VECTOR);

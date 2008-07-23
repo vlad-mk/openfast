@@ -23,7 +23,7 @@ package org.openfast.template.type;
 import org.lasalletech.entity.EObject;
 
 
-public final class DecimalType extends Type {
+public final class DecimalType extends AbstractType {
     private static final long serialVersionUID = 1L;
 
     public DecimalType() {

@@ -16,10 +16,14 @@ import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.SimpleByteBufferAllocator;
+import org.apache.mina.common.ThreadModel;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+import org.openfast.Context;
 import org.openfast.Message;
+import org.openfast.MessageHandler;
+import org.openfast.codec.Coder;
 import org.openfast.codec.FastEncoder;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
@@ -52,7 +56,10 @@ public class SimpleServer {
         for (File templateFile : templateFiles)
             loader.load(new FileInputStream(templateFile));
         final MessageTemplate disconnectTemplate = loader.getTemplateRegistry().get("disconnect");
+        final MessageTemplate resetTemplate = loader.getTemplateRegistry().get("reset");
+        final MessageTemplate testFileTemplate = loader.getTemplateRegistry().get("testFile");
         final Message disconnect = disconnectTemplate.newObject();
+        final Message reset = resetTemplate.newObject();
         final CsvParser csvParser = new CsvParser(loader.getTemplateRegistry());
         
         ByteBuffer.setUseDirectBuffers(false);
@@ -61,6 +68,7 @@ public class SimpleServer {
         IoAcceptor acceptor = new SocketAcceptor();
         SocketAcceptorConfig cfg = new SocketAcceptorConfig();
         cfg.getFilterChain().addFirst( "codec", new ProtocolCodecFilter( new FastProtocolCodecFactory()));
+        cfg.setThreadModel(ThreadModel.MANUAL);
 
         try {
             acceptor.bind(new InetSocketAddress(port), new IoHandlerAdapter() {
@@ -75,16 +83,24 @@ public class SimpleServer {
                 }
                 @Override
                 public void sessionCreated(IoSession session) throws Exception {
-                    session.setAttribute(FastMessageEncoder.ENCODER, new FastEncoder(loader.getTemplateRegistry()));
+                    FastEncoder encoder = new FastEncoder(loader.getTemplateRegistry());
+                    encoder.registerMessageHandler(resetTemplate, new MessageHandler() {
+                        public void handleMessage(Message message, Context context, Coder coder) {
+                            coder.reset();
+                        }});
+                    session.setAttribute(FastMessageEncoder.ENCODER, encoder);
                     System.out.println("Client connected.");
                     File[] csvFiles = getFiles("/simple/data");
                     for (File csvFile : csvFiles) {
+                        session.write(reset);
+                        Message fileName = testFileTemplate.newObject();
+                        fileName.set(0, csvFile.getName());
+                        session.write(fileName);
                         List<Message> messages = csvParser.parse(new FileInputStream(csvFile));
                         for (Message message : messages) {
                             System.out.println(message);
                             session.write(message);
                         }
-                        ((FastEncoder)session.getAttribute(FastMessageEncoder.ENCODER)).reset();
                     }
                     System.out.println(disconnect);
                     session.write(disconnect);

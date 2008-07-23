@@ -84,7 +84,7 @@ public interface Sequence extends Composite<FastObject> {
 //     * @return A Scalar value
 //     */
 //    private static Scalar createLength(QName name, boolean optional) {
-//        return new Scalar(Global.createImplicitName(name), Type.U32, null, optional);
+//        return new Scalar(Global.createImplicitName(name), AbstractType.U32, null, optional);
 //    }
 //
 //    /**

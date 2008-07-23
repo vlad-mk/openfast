@@ -20,4 +20,10 @@
         <string name="constantAscii"><constant value="SE"/></string>
         <string name="constantAsciiOptional" presence="optional"><constant value="CS"/></string>
     </template>
+    <template name="tailAscii" id="25">
+        <string name="tailAsciiNoDefault"><tail/></string>
+        <string name="tailAsciiDefault"><tail value="M"/></string>
+        <string name="tailAsciiOptionalNoDefault" presence="optional"><tail/></string>
+        <string name="tailAsciiOptionalDefault" presence="optional"><tail value="Silver"/></string>
+    </template>
 </templates>

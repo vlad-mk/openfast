@@ -24,5 +24,5 @@ import org.openfast.codec.Coder;
 
 
 public interface MessageHandler {
-    void handleMessage(Message readMessage, Context context, Coder coder);
+    void handleMessage(Message message, Context context, Coder coder);
 }

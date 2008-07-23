@@ -32,4 +32,24 @@ public class IntegerEntry extends AbstractDictionaryEntry implements DictionaryE
     public void set(String value) {
         set(Integer.parseInt(value));
     }
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    public Object get() {
+        throw new UnsupportedOperationException();
+    }
+
+    public long getLong() {
+        return value;
+    }
+
+    public void set(long value) {
+        this.value = (int) value;
+    }
+
+    public void set(Object value) {
+        throw new UnsupportedOperationException();
+    }
 }
