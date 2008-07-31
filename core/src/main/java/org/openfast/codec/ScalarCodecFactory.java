@@ -6,5 +6,5 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 
 public interface ScalarCodecFactory {
-    ScalarCodec createCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation, DictionaryRegistry dictionaryRegistry);
+    FieldCodec createCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation, DictionaryRegistry dictionaryRegistry);
 }

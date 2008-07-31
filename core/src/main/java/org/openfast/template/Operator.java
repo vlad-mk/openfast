@@ -32,9 +32,13 @@ public interface Operator extends Copyable<Operator>, Serializable {
         public Operator copy() {
             return this;
         }
+        public boolean isPrimitive() {
+            return true;
+        }
     };
     String getName();
     String getDefaultValue();
     boolean hasDefaultValue();
     Operator copy();
+    boolean isPrimitive();
 }

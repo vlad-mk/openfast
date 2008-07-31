@@ -21,11 +21,11 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
 package org.openfast;
 
 import org.lasalletech.entity.EObject;
+import org.openfast.template.Composite;
 import org.openfast.template.Field;
-import org.openfast.template.Group;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Type;
 
-public interface Message extends EObject<MessageTemplate, Message, Type, Field, MessageTemplate, Message, Group, FastObject> {
+public interface Message extends EObject<MessageTemplate, Message, Type, Field, MessageTemplate, Message, Composite<FastObject>, FastObject> {
     MessageTemplate getTemplate();
 }

@@ -22,21 +22,20 @@ package org.openfast.codec.operator;
 
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.IntegerCodec;
-import org.openfast.codec.ScalarCodec;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.error.FastConstants;
-import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec implements ScalarCodec {
+public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec implements FieldCodec {
     private static final long serialVersionUID = 1L;
 
     public IncrementIntegerCodec(DictionaryEntry dictionaryEntry, DictionaryOperator operator, IntegerCodec integerCodec) {
         super(dictionaryEntry, operator, integerCodec);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (integerCodec.isNull(buffer, offset))
             return;
         int value = integerCodec.decode(buffer, offset);
@@ -44,7 +43,7 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         object.set(index, value);
     }
 
-    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
+    public void decodeEmpty(EObject object, int index, Context context) {
         if (dictionaryEntry.isNull()) {
             // leave object value set to null
             dictionaryEntry.setNull();
@@ -53,12 +52,12 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
                 object.set(index, initialValue);
                 dictionaryEntry.set(initialValue);
             } else {
-                if (!scalar.isOptional()) {
-                    throw new IllegalStateException("Field with operator increment must send a value if no previous value existed.");
-                } else {
+//                if (!scalar.isOptional()) {
+//                    throw new IllegalStateException("Field with operator increment must send a value if no previous value existed.");
+//                } else {
                     // leave object value set to null
                     dictionaryEntry.setNull();
-                }
+//                }
             }
         } else {
             int previousValue = dictionaryEntry.getInt();
@@ -71,15 +70,12 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         return integerCodec.getLength(buffer, offset);
     }
 
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (!object.isDefined(index)) {
-            if (!scalar.isOptional()) {
-                // TODO - error when value is null and scalar is mandatory
-            }
             if (dictionaryEntry.isNull())
                 return offset;
             else {
-                return encodeNull(buffer, offset, context, scalar);
+                return encodeNull(buffer, offset, context);
             }
         }
         int value = object.getInt(index);
@@ -108,7 +104,7 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         return integerCodec.encode(buffer, offset, value);
     }
 
-    private int encodeNull(byte[] buffer, int offset, Context context, Scalar scalar) {
+    private int encodeNull(byte[] buffer, int offset, Context context) {
         buffer[offset] = FastConstants.NULL_BYTE;
         dictionaryEntry.setNull();
         return offset + 1;

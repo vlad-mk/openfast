@@ -54,4 +54,8 @@ public class StringEntry extends AbstractDictionaryEntry implements DictionaryEn
     public void set(Object value) {
         this.value = value.toString();
     }
+
+    public Object getObject() {
+        return value;
+    }
 }

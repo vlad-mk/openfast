@@ -7,7 +7,7 @@ public class ScalarBuilder {
     private Type type;
     private String name;
     private boolean optional;
-    private Operator operator;
+    private Operator operator = Operator.NONE;
 
     private ScalarBuilder(String name, Type type) {
         this.name = name;

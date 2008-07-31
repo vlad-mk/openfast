@@ -1,0 +1,13 @@
+<templates>
+    <template name="element">
+        <string name="nodeName"><cache name="names" size="256"/></string>
+        <sequence name="attributes" presence="optional">
+            <string name="name"><cache name="names" size="256"/></string>
+            <string name="value"><cache name="values" size="256"/></string>
+        </sequence>
+        <sequence name="children" presence="optional">
+            <templateRef/>
+        </sequence>
+        <string name="value" presence="optional" size="256"/>
+    </template>
+</templates>

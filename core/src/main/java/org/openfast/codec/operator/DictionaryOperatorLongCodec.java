@@ -1,13 +1,12 @@
 package org.openfast.codec.operator;
 
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.LongCodec;
-import org.openfast.codec.ScalarCodec;
 import org.openfast.codec.SinglePresenceMapEntryFieldCodec;
 import org.openfast.dictionary.DictionaryEntry;
-import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public abstract class DictionaryOperatorLongCodec extends SinglePresenceMapEntryFieldCodec<Scalar> implements ScalarCodec {
+public abstract class DictionaryOperatorLongCodec extends SinglePresenceMapEntryFieldCodec implements FieldCodec {
     protected final LongCodec longCodec;
     protected final DictionaryOperator operator;
     protected final long initialValue;

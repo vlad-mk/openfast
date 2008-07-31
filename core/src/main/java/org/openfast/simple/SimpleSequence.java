@@ -2,9 +2,6 @@ package org.openfast.simple;
 
 import org.lasalletech.entity.QName;
 import org.openfast.FastObject;
-import org.openfast.Global;
-import org.openfast.fast.FastTypes;
-import org.openfast.template.Operator;
 import org.openfast.template.Scalar;
 import org.openfast.template.Sequence;
 
@@ -17,7 +14,7 @@ public class SimpleSequence extends SimpleComposite<FastObject> implements Seque
     }
 
     public FastObject newObject() {
-        return null;
+        return new SimpleFastObject(this);
     }
 
     public Scalar getLength() {

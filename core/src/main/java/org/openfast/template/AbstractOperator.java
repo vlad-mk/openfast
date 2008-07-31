@@ -8,4 +8,8 @@ public abstract class AbstractOperator implements Operator {
     public String toString() {
         return getName();
     }
+    
+    public boolean isPrimitive() {
+        return true;
+    }
 }

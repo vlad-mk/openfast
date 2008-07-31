@@ -52,4 +52,8 @@ public class LongEntry extends AbstractDictionaryEntry implements DictionaryEntr
     public void set(Object value) {
         throw new UnsupportedOperationException();
     }
+
+    public Object getObject() {
+        throw new UnsupportedOperationException();
+    }
 }

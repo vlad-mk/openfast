@@ -16,6 +16,8 @@ import org.openfast.template.Field;
 import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 import org.openfast.test.OpenFastTestCase;
+import org.openfast.util.BitVectorBuilder;
+import org.openfast.util.BitVectorReader;
 
 public class FastStringOperatorTestHarness {
 
@@ -26,58 +28,61 @@ public class FastStringOperatorTestHarness {
     public static final int INITIAL_VALUE = Integer.MIN_VALUE + 3;
     private final Scalar noDefaultScalar;
     private final Scalar defaultScalar;
-    private final SinglePresenceMapEntryFieldCodec<Scalar> noDefaultCodec;
-    private final SinglePresenceMapEntryFieldCodec<Scalar>  defaultCodec;
+    private final SinglePresenceMapEntryFieldCodec noDefaultCodec;
+    private final SinglePresenceMapEntryFieldCodec  defaultCodec;
     private final DictionaryRegistry dictionaryRegistry;
     
-    @SuppressWarnings("unchecked")
     public FastStringOperatorTestHarness(Scalar noDefaultScalar, Scalar defaultScalar) {
+        this(noDefaultScalar, defaultScalar, FastImplementation.getDefaultVersion());
+    }
+    
+    public FastStringOperatorTestHarness(Scalar noDefaultScalar, Scalar defaultScalar, FastImplementation implementation) {
         this.dictionaryRegistry = new BasicDictionaryRegistry(FastImplementation.getDefaultVersion().getDictionaryTypeRegistry());
         this.noDefaultScalar = noDefaultScalar;
-        this.noDefaultCodec = (SinglePresenceMapEntryFieldCodec<Scalar>) FastImplementation.getDefaultVersion().getCodecFactory().createScalarCodec(null, noDefaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
+        this.noDefaultCodec = (SinglePresenceMapEntryFieldCodec) implementation.getCodecFactory().createScalarCodec(null, noDefaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
         this.defaultScalar = new Scalar(defaultScalar);
-        this.defaultCodec = (SinglePresenceMapEntryFieldCodec<Scalar>) FastImplementation.getDefaultVersion().getCodecFactory().createScalarCodec(null, defaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
+        this.defaultCodec = (SinglePresenceMapEntryFieldCodec) implementation.getCodecFactory().createScalarCodec(null, defaultScalar, FastImplementation.getDefaultVersion(), dictionaryRegistry);
     }
 
     public void assertDecodeNull(int initialValue, String dictionaryState) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
-        codec.decodeEmpty(message, 0, null, context);
+        codec.decodeEmpty(message, 0, context);
         Assert.assertFalse(message.isDefined(0));
     }
 
     public void assertDecodeNull(int initialValue, String dictionaryState, String encoded) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
-        codec.decode(message, 0, encodedBytes, 0, null, context);
+        codec.decode(message, 0, encodedBytes, 0, BitVectorReader.INFINITE_TRUE, context);
         Assert.assertFalse(message.isDefined(0));
     }
 
     public void assertDecode(String expectedValue, int initialValue, String dictionaryState) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
-        codec.decodeEmpty(message, 0, null, context);
+        codec.decodeEmpty(message, 0, context);
         Assert.assertEquals(expectedValue, message.getString(0));
     }
 
     public void assertDecode(String expectedValue, int initialValue, String dictionaryState, String encoded) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
-        codec.decode(message, 0, encodedBytes, 0, null, context);
+        codec.decode(message, 0, encodedBytes, 0, BitVectorReader.INFINITE_TRUE, context);
         Assert.assertEquals(expectedValue, message.getString(0));
         
     }
@@ -92,8 +97,8 @@ public class FastStringOperatorTestHarness {
         }
     }
 
-    private SinglePresenceMapEntryFieldCodec<Scalar> getCodec(int initialValue) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec;
+    private SinglePresenceMapEntryFieldCodec getCodec(int initialValue) {
+        SinglePresenceMapEntryFieldCodec codec;
         if (initialValue == NO_INITIAL_VALUE) {
             codec = noDefaultCodec;
         } else {
@@ -110,40 +115,40 @@ public class FastStringOperatorTestHarness {
     }
 
     public void assertEncode(String encoded, int initialValue, String dictionaryState) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
         byte[] buffer = new byte[32];
-        int offset = codec.encode(message, 0, buffer, 0, null, context);
+        int offset = codec.encode(message, 0, buffer, 0, new BitVectorBuilder(7), context);
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
         Assert.assertEquals(encodedBytes.length, offset);
         OpenFastTestCase.assertEquals(encoded, buffer, offset);
     }
     
     public void assertEncode(String encoded, int initialValue, String dictionaryState, String value) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
         message.set(0, value);
         byte[] buffer = new byte[32];
-        int offset = codec.encode(message, 0, buffer, 0, null, context);
+        int offset = codec.encode(message, 0, buffer, 0, new BitVectorBuilder(7), context);
         byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
         Assert.assertEquals(encodedBytes.length, offset);
         OpenFastTestCase.assertEquals(encoded, buffer, offset);
     }
     public void assertEncodeEmpty(int initialValue, String dictionaryState, String value) {
-        SinglePresenceMapEntryFieldCodec<Scalar> codec = getCodec(initialValue);
+        SinglePresenceMapEntryFieldCodec codec = getCodec(initialValue);
         Context context = new Context();
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
         message.set(0, value);
         byte[] buffer = new byte[32];
-        int offset = codec.encode(message, 0, buffer, 0, null, context);
+        int offset = codec.encode(message, 0, buffer, 0, new BitVectorBuilder(7), context);
         Assert.assertEquals(0, offset);
     }
 

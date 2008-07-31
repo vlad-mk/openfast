@@ -5,7 +5,7 @@ import org.openfast.Context;
 import org.openfast.util.BitVectorBuilder;
 import org.openfast.util.BitVectorReader;
 
-public interface FieldCodec<T> {
+public interface FieldCodec {
     
     /**
      * @param object       the message to decode the field value into
@@ -15,10 +15,10 @@ public interface FieldCodec<T> {
      * @param field        the field definition that this codec was built from
      * @param pmapReader   the presence map reader
      * @param context      the current decoding context
-     * @return             the new offset in the encoded buffer
+     * @return             the new offset in the decoded buffer
      */
     @SuppressWarnings("unchecked")
-    int decode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorReader pmapReader, Context context);
+    int decode(EObject object, int index, byte[] buffer, int offset, BitVectorReader pmapReader, Context context);
     /**
      * @param object
      * @param index
@@ -30,6 +30,6 @@ public interface FieldCodec<T> {
      * @return             the new offset in the encoded buffer
      */
     @SuppressWarnings("unchecked")
-    int encode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorBuilder pmapBuilder, Context context);
+    int encode(EObject object, int index, byte[] buffer, int offset, BitVectorBuilder pmapBuilder, Context context);
     int getLength(byte[] buffer, int offset, BitVectorReader reader);
 }

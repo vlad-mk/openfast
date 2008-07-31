@@ -1,8 +1,8 @@
 package org.openfast.codec.operator;
 
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.codec.LongCodec;
-import org.openfast.codec.ScalarCodec;
 import org.openfast.codec.ScalarCodecFactory;
 import org.openfast.codec.ULongCodec;
 import org.openfast.dictionary.DictionaryEntry;
@@ -14,7 +14,7 @@ import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
 public class IncrementOperatorCodecFactory implements ScalarCodecFactory {
-    public ScalarCodec createCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation,
+    public FieldCodec createCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation,
             DictionaryRegistry dictionaryRegistry) {
         DictionaryOperator operator = (DictionaryOperator) scalar.getOperator();
         DictionaryEntry entry = dictionaryRegistry.get(((DictionaryOperator)scalar.getOperator()).getDictionary()).getEntry(scalar);

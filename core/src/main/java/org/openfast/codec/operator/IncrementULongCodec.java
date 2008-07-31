@@ -23,14 +23,13 @@ package org.openfast.codec.operator;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.ULong;
-import org.openfast.codec.ScalarCodec;
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.ULongCodec;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.error.FastConstants;
-import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public final class IncrementULongCodec extends DictionaryOperatorULongCodec implements ScalarCodec {
+public final class IncrementULongCodec extends DictionaryOperatorULongCodec implements FieldCodec {
     private static final long serialVersionUID = 1L;
 
     public IncrementULongCodec(DictionaryEntry dictionaryEntry, DictionaryOperator operator, ULongCodec longCodec) {
@@ -38,7 +37,7 @@ public final class IncrementULongCodec extends DictionaryOperatorULongCodec impl
         
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (longCodec.isNull(buffer, offset))
             return;
         ULong value = longCodec.decode(buffer, offset);
@@ -46,7 +45,7 @@ public final class IncrementULongCodec extends DictionaryOperatorULongCodec impl
         object.set(index, value);
     }
 
-    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
+    public void decodeEmpty(EObject object, int index, Context context) {
         if (dictionaryEntry.isNull()) {
             // leave object value set to null
             dictionaryEntry.setNull();
@@ -55,12 +54,7 @@ public final class IncrementULongCodec extends DictionaryOperatorULongCodec impl
                 object.set(index, initialValue);
                 dictionaryEntry.set(initialValue);
             } else {
-                if (!scalar.isOptional()) {
-                    throw new IllegalStateException("Field with operator increment must send a value if no previous value existed.");
-                } else {
-                    // leave object value set to null
-                    dictionaryEntry.setNull();
-                }
+                dictionaryEntry.setNull();
             }
         } else {
             long previousValue = dictionaryEntry.getLong();
@@ -73,15 +67,12 @@ public final class IncrementULongCodec extends DictionaryOperatorULongCodec impl
         return longCodec.getLength(buffer, offset);
     }
 
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar scalar, Context context) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (!object.isDefined(index)) {
-            if (!scalar.isOptional()) {
-                // TODO - error when value is null and scalar is mandatory
-            }
             if (dictionaryEntry.isNull())
                 return offset;
             else {
-                return encodeNull(buffer, offset, context, scalar);
+                return encodeNull(buffer, offset, context);
             }
         }
         long value = object.getLong(index);
@@ -110,7 +101,7 @@ public final class IncrementULongCodec extends DictionaryOperatorULongCodec impl
         return longCodec.encode(buffer, offset, new ULong(value));
     }
 
-    private int encodeNull(byte[] buffer, int offset, Context context, Scalar scalar) {
+    private int encodeNull(byte[] buffer, int offset, Context context) {
         buffer[offset] = FastConstants.NULL_BYTE;
         dictionaryEntry.setNull();
         return offset + 1;

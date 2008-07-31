@@ -30,6 +30,9 @@ public class BasicMessageCodec implements MessageCodec {
                 Scalar scalar = (Scalar) field;
                 fieldCodecs[index] = codecFactory.createScalarCodec(template, scalar, implementation, dictionaryRegistry);
                 index++;
+            } else {
+                fieldCodecs[index] = codecFactory.createCompositeCodec(template, field, implementation, dictionaryRegistry);
+                index++;
             }
         }
     }
@@ -49,7 +52,7 @@ public class BasicMessageCodec implements MessageCodec {
                 pmapBuilder.skip();
             }
             for (int i=0; i<fieldCodecs.length; i++) {
-                index = fieldCodecs[i].encode(message, i, temp, index, message.getTemplate().getField(i), pmapBuilder, context);
+                index = fieldCodecs[i].encode(message, i, temp, index, pmapBuilder, context);
             }
             pmapLen = bitVectorCodec.encode(buffer, offset, pmapBuilder.getBitVector());
             System.arraycopy(temp, 0, buffer, offset + pmapLen, index);
@@ -74,7 +77,7 @@ public class BasicMessageCodec implements MessageCodec {
     @SuppressWarnings("unchecked")
     public void decode(Message message, byte[] buffer, int offset, BitVectorReader reader, Context context) {
         for (int i=0; i<fieldCodecs.length; i++) {
-            offset = fieldCodecs[i].decode(message, i, buffer, offset, message.getTemplate().getField(i), reader, context);
+            offset = fieldCodecs[i].decode(message, i, buffer, offset, reader, context);
         }
     }
 }

@@ -52,4 +52,8 @@ public class IntegerEntry extends AbstractDictionaryEntry implements DictionaryE
     public void set(Object value) {
         throw new UnsupportedOperationException();
     }
+
+    public Object getObject() {
+        throw new UnsupportedOperationException();
+    }
 }

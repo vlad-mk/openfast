@@ -5,10 +5,10 @@ import org.openfast.Context;
 import org.openfast.util.BitVectorBuilder;
 import org.openfast.util.BitVectorReader;
 
-public abstract class SinglePresenceMapEntryFieldCodec<T> implements FieldCodec<T> {
+public abstract class SinglePresenceMapEntryFieldCodec implements FieldCodec {
     
-    public int encode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorBuilder pmapBuilder, Context context) {
-        int newOffset = encode(object, index, buffer, offset, field, context);
+    public int encode(EObject object, int index, byte[] buffer, int offset, BitVectorBuilder pmapBuilder, Context context) {
+        int newOffset = encode(object, index, buffer, offset, context);
         if (newOffset == offset)
             pmapBuilder.skip();
         else
@@ -16,12 +16,12 @@ public abstract class SinglePresenceMapEntryFieldCodec<T> implements FieldCodec<
         return newOffset;
     };
     
-    public int decode(EObject object, int index, byte[] buffer, int offset, T field, BitVectorReader reader, Context context) {
+    public int decode(EObject object, int index, byte[] buffer, int offset, BitVectorReader reader, Context context) {
         if (reader.read()) {
-            decode(object, index, buffer, offset, field, context);
+            decode(object, index, buffer, offset, context);
             return offset + getLength(buffer, offset);
         }
-        decodeEmpty(object, index, field, context);
+        decodeEmpty(object, index, context);
         return offset;
     }
     public int getLength(byte[] buffer, int offset, BitVectorReader reader) {
@@ -29,8 +29,8 @@ public abstract class SinglePresenceMapEntryFieldCodec<T> implements FieldCodec<
             return getLength(buffer, offset);
         return 0;
     }
-    public abstract int encode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
-    public abstract void decode(EObject object, int index, byte[] buffer, int offset, T field, Context context);
-    public abstract void decodeEmpty(EObject object, int index, T field, Context context);
+    public abstract int encode(EObject object, int index, byte[] buffer, int offset, Context context);
+    public abstract void decode(EObject object, int index, byte[] buffer, int offset, Context context);
+    public abstract void decodeEmpty(EObject object, int index, Context context);
     public abstract int getLength(byte[] buffer, int offset);
 }

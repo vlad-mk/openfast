@@ -68,8 +68,12 @@ public class XMLMessageTemplateLoader implements MessageTemplateLoader {
     }
 
     public XMLMessageTemplateLoader(boolean namespaceAwareness) {
+        this(FastImplementation.getDefaultVersion(), namespaceAwareness);
+    }
+    
+    public XMLMessageTemplateLoader(FastImplementation implementation, boolean namespaceAwareness) {
         this.namespaceAwareness = namespaceAwareness;
-        this.implementation = FastImplementation.getDefaultVersion();
+        this.implementation = implementation;
         this.initialContext = createInitialContext(implementation);
     }
 

@@ -3,23 +3,20 @@ package org.openfast.codec.operator;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
-import org.openfast.codec.ScalarCodec;
 import org.openfast.codec.StringCodec;
 import org.openfast.dictionary.DictionaryEntry;
-import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public class CopyStringCodec extends DictionaryOperatorStringCodec implements ScalarCodec {
-
+public class CopyStringCodec extends DictionaryOperatorStringCodec {
     public CopyStringCodec(DictionaryEntry dictionaryEntry, DictionaryOperator operator, StringCodec stringCodec) {
         super(dictionaryEntry, operator, stringCodec);
     }
-    
+
     public int getLength(byte[] buffer, int offset) {
         return stringCodec.getLength(buffer, offset);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (stringCodec.isNull(buffer, offset)) {
             dictionaryEntry.setNull();
             return;
@@ -29,7 +26,7 @@ public class CopyStringCodec extends DictionaryOperatorStringCodec implements Sc
         dictionaryEntry.set(value);
     }
 
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {
         boolean dictionaryUndefined = !dictionaryEntry.isDefined();
         boolean dictionaryNull = dictionaryEntry.isNull();
         if (!object.isDefined(index)) {
@@ -38,7 +35,7 @@ public class CopyStringCodec extends DictionaryOperatorStringCodec implements Sc
                 return offset;
             } else {
                 buffer[offset] = Fast.NULL;
-                return offset+1;
+                return offset + 1;
             }
         }
         String value = object.getString(index);
@@ -58,15 +55,13 @@ public class CopyStringCodec extends DictionaryOperatorStringCodec implements Sc
         return newOffset;
     }
 
-    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
+    public void decodeEmpty(EObject object, int index, Context context) {
         if (dictionaryEntry.isNull())
             return;
         if (dictionaryEntry.isDefined()) {
             object.set(index, dictionaryEntry.getString());
-        }
-        else if (operator.hasDefaultValue()) {
+        } else if (operator.hasDefaultValue())
             object.set(index, operator.getDefaultValue());
-            dictionaryEntry.set(operator.getDefaultValue());
-        }
+        dictionaryEntry.set(operator.getDefaultValue());
     }
 }

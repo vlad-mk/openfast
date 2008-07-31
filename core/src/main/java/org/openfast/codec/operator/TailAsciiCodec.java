@@ -3,20 +3,19 @@ package org.openfast.codec.operator;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
-import org.openfast.codec.ScalarCodec;
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.StringCodec;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.error.FastConstants;
-import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public class TailAsciiCodec extends DictionaryOperatorStringCodec implements ScalarCodec {
+public class TailAsciiCodec extends DictionaryOperatorStringCodec implements FieldCodec {
     protected TailAsciiCodec(DictionaryEntry dictionaryEntry, DictionaryOperator operator, StringCodec stringCodec) {
         super(dictionaryEntry, operator, stringCodec);
     }
 
     @Override
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (stringCodec.isNull(buffer, offset)) {
             dictionaryEntry.setNull();
             return;
@@ -33,12 +32,12 @@ public class TailAsciiCodec extends DictionaryOperatorStringCodec implements Sca
     }
 
     @Override
-    public void decodeEmpty(EObject object, int index, Scalar field, Context context) {
+    public void decodeEmpty(EObject object, int index, Context context) {
         object.set(index, getBaseValue());
     }
 
     @Override
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (!object.isDefined(index)) {
             buffer[offset] = Fast.NULL;
             dictionaryEntry.setNull();

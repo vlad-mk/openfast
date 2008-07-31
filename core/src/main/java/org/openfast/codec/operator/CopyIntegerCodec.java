@@ -3,13 +3,13 @@ package org.openfast.codec.operator;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.IntegerCodec;
-import org.openfast.codec.ScalarCodec;
 import org.openfast.dictionary.DictionaryEntry;
 import org.openfast.template.Scalar;
 import org.openfast.template.operator.DictionaryOperator;
 
-public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements ScalarCodec {
+public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements FieldCodec {
 
     public CopyIntegerCodec(DictionaryEntry entry, DictionaryOperator operator, IntegerCodec integerCodec) {
         super(entry, operator, integerCodec);
@@ -19,7 +19,7 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
         return integerCodec.getLength(buffer, offset);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (integerCodec.isNull(buffer, offset)) {
             dictionaryEntry.setNull();
             return;
@@ -29,7 +29,7 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
         dictionaryEntry.set(value);
     }
 
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {
         boolean dictionaryUndefined = !dictionaryEntry.isDefined();
         boolean dictionaryNull = dictionaryEntry.isNull();
         if (!object.isDefined(index)) {
@@ -58,7 +58,7 @@ public class CopyIntegerCodec extends DictionaryOperatorIntegerCodec implements 
         return newOffset;
     }
 
-    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
+    public void decodeEmpty(EObject object, int index, Context context) {
         if (dictionaryEntry.isNull())
             return;
         if (dictionaryEntry.isDefined())

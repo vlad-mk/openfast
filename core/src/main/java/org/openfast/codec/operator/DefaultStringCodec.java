@@ -3,13 +3,12 @@ package org.openfast.codec.operator;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
-import org.openfast.codec.ScalarCodec;
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.SinglePresenceMapEntryFieldCodec;
 import org.openfast.codec.StringCodec;
 import org.openfast.template.Operator;
-import org.openfast.template.Scalar;
 
-public class DefaultStringCodec extends SinglePresenceMapEntryFieldCodec<Scalar> implements ScalarCodec {
+public class DefaultStringCodec extends SinglePresenceMapEntryFieldCodec implements FieldCodec {
     private final Operator operator;
     private final StringCodec stringCodec;
 
@@ -21,19 +20,19 @@ public class DefaultStringCodec extends SinglePresenceMapEntryFieldCodec<Scalar>
         return stringCodec.getLength(buffer, offset);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (stringCodec.isNull(buffer, offset))
             return;
         String value = stringCodec.decode(buffer, offset);
         object.set(index, value);
     }
 
-    public void decodeEmpty(EObject object, int index, Scalar scalar, Context context) {
+    public void decodeEmpty(EObject object, int index, Context context) {
         if (operator.hasDefaultValue())
             object.set(index, operator.getDefaultValue());
     }
 
-    public int encode(EObject object, int index, byte[] buffer, int offset, Scalar field, Context context) {
+    public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {
         if (object.isDefined(index)) {
             if (operator.hasDefaultValue() && operator.getDefaultValue().equals(object.getString(index)))
                 return offset;

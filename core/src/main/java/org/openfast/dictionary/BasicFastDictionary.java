@@ -101,7 +101,7 @@ public class BasicFastDictionary implements FastDictionary {
         } else if (type instanceof StringType) {
             return new StringEntry(key);
         }
-        return null;
+        return new ObjectEntry(key);
     }
 
     private void storeEntry(DictionaryEntry e) {

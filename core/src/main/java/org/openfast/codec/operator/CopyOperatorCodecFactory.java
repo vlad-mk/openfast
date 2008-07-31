@@ -1,7 +1,7 @@
 package org.openfast.codec.operator;
 
+import org.openfast.codec.FieldCodec;
 import org.openfast.codec.IntegerCodec;
-import org.openfast.codec.ScalarCodec;
 import org.openfast.codec.ScalarCodecFactory;
 import org.openfast.codec.StringCodec;
 import org.openfast.dictionary.DictionaryEntry;
@@ -14,7 +14,7 @@ import org.openfast.template.operator.DictionaryOperator;
 import org.openfast.template.type.IntegerType;
 
 public class CopyOperatorCodecFactory implements ScalarCodecFactory {
-    public ScalarCodec createCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation,
+    public FieldCodec createCodec(MessageTemplate template, Scalar scalar, FastImplementation implementation,
             DictionaryRegistry dictionaryRegistry) {
         DictionaryEntry entry = dictionaryRegistry.get(((DictionaryOperator)scalar.getOperator()).getDictionary()).getEntry(scalar);
         if (FastTypes.ASCII.equals(scalar.getType())) {
