@@ -20,6 +20,7 @@ Contributor(s): Jacob Northey <jacob@lasalletech.com>
  */
 package org.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.codec.FieldCodec;
@@ -35,10 +36,10 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         super(dictionaryEntry, operator, integerCodec);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
-        if (integerCodec.isNull(buffer, offset))
+    public void decode(EObject object, int index, ByteBuffer buffer, Context context) {
+        if (integerCodec.isNull(buffer))
             return;
-        int value = integerCodec.decode(buffer, offset);
+        int value = integerCodec.decode(buffer);
         dictionaryEntry.set(value);
         object.set(index, value);
     }
@@ -66,8 +67,8 @@ public final class IncrementIntegerCodec extends DictionaryOperatorIntegerCodec 
         }
     }
 
-    public int getLength(byte[] buffer, int offset) {
-        return integerCodec.getLength(buffer, offset);
+    public int getLength(ByteBuffer buffer) {
+        return integerCodec.getLength(buffer);
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, Context context) {

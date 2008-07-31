@@ -1,5 +1,6 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
 import org.openfast.Context;
 import org.openfast.Message;
 import org.openfast.dictionary.DictionaryRegistry;
@@ -16,7 +17,6 @@ public class BasicMessageCodec implements MessageCodec {
     private final int templateId;
     private final LongCodec uintCodec;
     private final BitVectorCodec bitVectorCodec;
-    @SuppressWarnings("unchecked")
     private final FieldCodec[] fieldCodecs;
 
     public BasicMessageCodec(int id, MessageTemplate template, FastImplementation implementation, DictionaryRegistry dictionaryRegistry, CodecFactory codecFactory) {
@@ -37,7 +37,6 @@ public class BasicMessageCodec implements MessageCodec {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public int encode(byte[] buffer, int offset, Message message, Context context) {
         byte[] temp = context.getTemporaryBuffer();
         int index = 0;
@@ -64,20 +63,17 @@ public class BasicMessageCodec implements MessageCodec {
         return offset + pmapLen + index;
     }
 
-    public int getLength(byte[] buffer, int offset, BitVectorReader reader, Context context) {
+    public int getLength(ByteBuffer buffer, BitVectorReader reader, Context context) {
         int length = 0;
         for (int i=0; i<fieldCodecs.length; i++) {
-            int fieldLength = fieldCodecs[i].getLength(buffer, offset, reader);
-            length += fieldLength;
-            offset += fieldLength;
+            length += fieldCodecs[i].getLength(buffer, reader);
         }
         return length;
     }
 
-    @SuppressWarnings("unchecked")
-    public void decode(Message message, byte[] buffer, int offset, BitVectorReader reader, Context context) {
+    public void decode(Message message, ByteBuffer buffer, BitVectorReader reader, Context context) {
         for (int i=0; i<fieldCodecs.length; i++) {
-            offset = fieldCodecs[i].decode(message, i, buffer, offset, reader, context);
+            fieldCodecs[i].decode(message, i, buffer, reader, context);
         }
     }
 }

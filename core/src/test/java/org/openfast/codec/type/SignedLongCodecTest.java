@@ -32,17 +32,17 @@ public class SignedLongCodecTest extends OpenFastTestCase {
     }
     
     public void testDecode() {
-        assertEquals(63, codec.decode(bytes("10111111"), 0));
-        assertEquals(64, codec.decode(bytes("00000000 11000000"), 0));
-        assertEquals(-1, codec.decode(bytes("11111111"), 0));
-        assertEquals(-2, codec.decode(bytes("11111110"), 0));
-        assertEquals(-64, codec.decode(bytes("11000000"), 0));
-        assertEquals(-65, codec.decode(bytes("01111111 10111111"), 0));
-        assertEquals(639, codec.decode(bytes("00000100 11111111"), 0));
-        assertEquals(942755, codec.decode(bytes("00111001 01000101 10100011"), 0));
-        assertEquals(-942755, codec.decode(bytes("01000110 00111010 11011101"), 0));
-        assertEquals(8193, codec.decode(bytes("00000000 01000000 10000001"), 0));
-        assertEquals(-8193, codec.decode(bytes("01111111 00111111 11111111"), 0));
+        assertEquals(63, codec.decode(buffer("10111111")));
+        assertEquals(64, codec.decode(buffer("00000000 11000000")));
+        assertEquals(-1, codec.decode(buffer("11111111")));
+        assertEquals(-2, codec.decode(buffer("11111110")));
+        assertEquals(-64, codec.decode(buffer("11000000")));
+        assertEquals(-65, codec.decode(buffer("01111111 10111111")));
+        assertEquals(639, codec.decode(buffer("00000100 11111111")));
+        assertEquals(942755, codec.decode(buffer("00111001 01000101 10100011")));
+        assertEquals(-942755, codec.decode(buffer("01000110 00111010 11011101")));
+        assertEquals(8193, codec.decode(buffer("00000000 01000000 10000001")));
+        assertEquals(-8193, codec.decode(buffer("01111111 00111111 11111111")));
     }
     
     public void testEncode() {
@@ -68,12 +68,12 @@ public class SignedLongCodecTest extends OpenFastTestCase {
     }
 
     public void testGetLength() {
-        assertEquals(1, codec.getLength(bytes("10000000 01010101 10000000"), 0));
-        assertEquals(2, codec.getLength(bytes("00100000 10000000 00001111"), 0));
+        assertEquals(1, codec.getLength(buffer("10000000 01010101 10000000")));
+        assertEquals(2, codec.getLength(buffer("00100000 10000000 00001111")));
     }
 
     private long decode(String bits) {
-        return codec.decode(bytes(bits), 0);
+        return codec.decode(buffer(bits));
     }
 
     private byte[] encode(long value) {

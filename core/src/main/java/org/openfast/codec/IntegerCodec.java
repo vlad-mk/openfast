@@ -1,7 +1,9 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
+
 public interface IntegerCodec extends TypeCodec {
-    int decode(byte[] buffer, int offset);
+    int decode(ByteBuffer buffer);
     
     /**
      * Encodes the value into the FAST encoded buffer

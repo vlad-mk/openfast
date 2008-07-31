@@ -13,7 +13,7 @@ public class NullableUnicodeStringCodecTest extends OpenFastTestCase {
     }
 
     private String decode(String bits) {
-        return codec.decode(bytes(bits), 0);
+        return codec.decode(buffer(bits));
     }
 
     public void testEncode() {

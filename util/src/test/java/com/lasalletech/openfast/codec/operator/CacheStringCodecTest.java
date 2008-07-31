@@ -2,6 +2,7 @@ package com.lasalletech.openfast.codec.operator;
 
 import static org.openfast.codec.type.FastTypeCodecs.ASCII_STRING;
 import static org.openfast.codec.type.FastTypeCodecs.NULLABLE_UNSIGNED_INTEGER;
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.QName;
 import org.openfast.Context;
 import org.openfast.Fast;
@@ -28,15 +29,15 @@ public class CacheStringCodecTest extends OpenFastTestCase {
     MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { field });
     public void testDecode() {
         Message message = template.newObject();
-        byte[] encodedBytes = bytes("11000001");
+        ByteBuffer encodedBytes = buffer("11000001");
         BitVectorReader reader = new BitVectorReader(new BitVector(bytes("11000000")));
-        nullable.decode(message, 0, encodedBytes, 0, reader, context);
+        nullable.decode(message, 0, encodedBytes, reader, context);
         assertEquals("A", message.getString(0));
         
         message = template.newObject();
         reader = new BitVectorReader(new BitVector(bytes("10000000")));
-        encodedBytes = bytes("10000001");
-        nullable.decode(message, 0, encodedBytes, 0, reader, context);
+        encodedBytes = buffer("10000001");
+        nullable.decode(message, 0, encodedBytes, reader, context);
         assertEquals("A", message.getString(0));
     }
 

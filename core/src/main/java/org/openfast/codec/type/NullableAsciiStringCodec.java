@@ -15,22 +15,24 @@ import org.openfast.error.FastConstants;
 public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements StringCodec {
     private final CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
     private final CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
-    public String decode(byte[] buffer, int offset) {
+    public String decode(ByteBuffer bbuf) {
         CharBuffer decoded;
         try {
-            int length = getLength(buffer, offset);
-            if ((buffer[offset] & Fast.VALUE_BITS) == 0) {
-                if (!ByteUtil.isEmpty(buffer, offset, length))
+            int length = getLength(bbuf);
+            byte[] buffer = new byte[length];
+            bbuf.get(buffer);
+            if ((buffer[0] & Fast.VALUE_BITS) == 0) {
+                if (!ByteUtil.isEmpty(buffer, 0, length))
                     Global.handleError(FastConstants.R9_STRING_OVERLONG, null);
-                if (length == 3 && buffer[offset+1] == 0 && (buffer[offset+2] & Fast.VALUE_BITS) == 0)
+                if (length == 3 && buffer[1] == 0 && (buffer[2] & Fast.VALUE_BITS) == 0)
                     return Fast.ZERO_TERMINATOR;
-                if (length == 2 && (buffer[offset+1] & Fast.VALUE_BITS) == 0)
+                if (length == 2 && (buffer[1] & Fast.VALUE_BITS) == 0)
                     return "";
                 return null;
             }
-            buffer[length + offset - 1] &= Fast.VALUE_BITS; // remove stop bit
-            decoded = decoder.decode(ByteBuffer.wrap(buffer, offset, length));
-            buffer[length + offset - 1] |= Fast.STOP_BIT; // replace stop bit to prevent side effects
+            buffer[length - 1] &= Fast.VALUE_BITS; // remove stop bit
+            decoded = decoder.decode(ByteBuffer.wrap(buffer));
+            buffer[length - 1] |= Fast.STOP_BIT; // replace stop bit to prevent side effects
             return decoded.toString();
         } catch (CharacterCodingException e) {
             throw new RuntimeException(e);
@@ -64,7 +66,7 @@ public class NullableAsciiStringCodec extends StopBitEncodedTypeCodec implements
         return encoded.limit() + offset;
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
-        return buffer[offset] == Fast.NULL;
+    public boolean isNull(ByteBuffer buffer) {
+        return buffer.get(0) == Fast.NULL;
     }
 }

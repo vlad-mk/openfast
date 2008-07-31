@@ -1,5 +1,6 @@
 package org.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import junit.framework.Assert;
 import org.lasalletech.entity.QName;
 import org.openfast.ByteUtil;
@@ -17,7 +18,6 @@ import org.openfast.template.MessageTemplate;
 import org.openfast.template.Scalar;
 import org.openfast.test.OpenFastTestCase;
 import org.openfast.util.BitVectorBuilder;
-import org.openfast.util.BitVectorReader;
 
 public class FastStringOperatorTestHarness {
 
@@ -60,8 +60,8 @@ public class FastStringOperatorTestHarness {
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
-        byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
-        codec.decode(message, 0, encodedBytes, 0, BitVectorReader.INFINITE_TRUE, context);
+        ByteBuffer encodedBytes = ByteBuffer.wrap(ByteUtil.convertBitStringToFastByteArray(encoded));
+        codec.decode(message, 0, encodedBytes, context);
         Assert.assertFalse(message.isDefined(0));
     }
 
@@ -81,8 +81,8 @@ public class FastStringOperatorTestHarness {
         initDictionary(context, getScalar(initialValue), dictionaryState);
         MessageTemplate template = Fast.SIMPLE.createMessageTemplate(QName.NULL, new Field[] { new Scalar(QName.NULL, FastTypes.U32, null, true) });
         Message message = template.newObject();
-        byte[] encodedBytes = ByteUtil.convertBitStringToFastByteArray(encoded);
-        codec.decode(message, 0, encodedBytes, 0, BitVectorReader.INFINITE_TRUE, context);
+        ByteBuffer encodedBytes = ByteBuffer.wrap(ByteUtil.convertBitStringToFastByteArray(encoded));
+        codec.decode(message, 0, encodedBytes, context);
         Assert.assertEquals(expectedValue, message.getString(0));
         
     }

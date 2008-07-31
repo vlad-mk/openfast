@@ -2,21 +2,22 @@ package org.openfast.codec.type;
 
 import static org.openfast.Fast.STOP_BIT;
 import static org.openfast.Fast.VALUE_BITS;
+import java.nio.ByteBuffer;
 import org.openfast.Global;
 import org.openfast.codec.IntegerCodec;
 import org.openfast.error.FastConstants;
 
 
 public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
-    public int decode(byte[] buffer, int offset) {
-        if (buffer[offset] == 0)
+    public int decode(ByteBuffer buffer) {
+        if (buffer.get(0) == 0)
             Global.handleError(FastConstants.R6_OVERLONG_INT, "Encountered overlong integer.");
         int value = 0;
-        int index = offset - 1;
+        byte byt;
         do {
-            index++;
-            value = (value << 7) | (buffer[index] & VALUE_BITS);
-        } while ((buffer[index] & STOP_BIT) == 0);
+            byt = buffer.get();
+            value = (value << 7) | (byt & VALUE_BITS);
+        } while ((byt & STOP_BIT) == 0);
         return value;
     }
 
@@ -51,7 +52,7 @@ public class UnsignedIntegerCodec extends StopBitEncodedTypeCodec implements Int
         return 5;
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
+    public boolean isNull(ByteBuffer buffer) {
         return false;
     }
 }

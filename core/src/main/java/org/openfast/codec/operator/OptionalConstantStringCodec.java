@@ -1,5 +1,6 @@
 package org.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.codec.FieldCodec;
@@ -12,10 +13,9 @@ public class OptionalConstantStringCodec implements FieldCodec {
     public OptionalConstantStringCodec(String defaultValue) {
         this.defaultValue = defaultValue;
     }
-    public int decode(EObject object, int index, byte[] buffer, int offset, BitVectorReader reader, Context context) {
+    public void decode(EObject object, int index, ByteBuffer buffer, BitVectorReader reader, Context context) {
         if (reader.read())
             object.set(index, defaultValue);
-        return offset;
     }
     public int encode(EObject object, int index, byte[] buffer, int offset, BitVectorBuilder pmapBuilder, Context context) {
         if (object.isDefined(index))
@@ -24,7 +24,7 @@ public class OptionalConstantStringCodec implements FieldCodec {
             pmapBuilder.skip();
         return offset;
     }
-    public int getLength(byte[] buffer, int offset, BitVectorReader reader) {
+    public int getLength(ByteBuffer buffer, BitVectorReader reader) {
         return 0;
     }
 }

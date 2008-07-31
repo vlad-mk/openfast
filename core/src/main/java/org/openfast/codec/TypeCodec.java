@@ -1,6 +1,8 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
+
 public interface TypeCodec {
-    int getLength(byte[] buffer, int offset);
-    boolean isNull(byte[] buffer, int offset);
+    int getLength(ByteBuffer buffer);
+    boolean isNull(ByteBuffer buffer);
 }

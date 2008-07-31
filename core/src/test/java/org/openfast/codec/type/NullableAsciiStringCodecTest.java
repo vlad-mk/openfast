@@ -25,6 +25,6 @@ public class NullableAsciiStringCodecTest extends OpenFastTestCase {
         return buffer;
     }
     private String decode(String bits) {
-        return ascii.decode(bytes(bits), 0);
+        return ascii.decode(buffer(bits));
     }
 }

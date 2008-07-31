@@ -3,16 +3,17 @@ package org.openfast.codec.type;
 import static org.openfast.Fast.SIGN_BIT;
 import static org.openfast.Fast.STOP_BIT;
 import static org.openfast.Fast.VALUE_BITS;
+import java.nio.ByteBuffer;
 import org.openfast.Fast;
 import org.openfast.Global;
 import org.openfast.codec.LongCodec;
 import org.openfast.error.FastConstants;
 
 public class SignedLongCodec extends StopBitEncodedTypeCodec implements LongCodec {
-    public long decode(byte[] buffer, int offset) {
+    public long decode(ByteBuffer buffer) {
         long value = 0;
-        long byt = buffer[offset];
-        if (byt == 0 && (buffer[offset+1] & SIGN_BIT) == 0) {
+        long byt = buffer.get();
+        if (byt == 0 && (buffer.get(buffer.position()) & SIGN_BIT) == 0) {
             Global.handleError(FastConstants.R6_OVERLONG_INT, "Encountered overlong integer.");
         }
         if ((byt & SIGN_BIT) > 0) {
@@ -20,7 +21,7 @@ public class SignedLongCodec extends StopBitEncodedTypeCodec implements LongCode
         }
         value = (value << 7) | (byt & VALUE_BITS);
         while ((byt & STOP_BIT) == 0) {
-            byt = buffer[++offset];
+            byt = buffer.get();
             value = (value << 7) | (byt & VALUE_BITS);
         }
         return value;
@@ -80,7 +81,7 @@ public class SignedLongCodec extends StopBitEncodedTypeCodec implements LongCode
         return 10;
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
+    public boolean isNull(ByteBuffer buffer) {
         return false;
     }
 }

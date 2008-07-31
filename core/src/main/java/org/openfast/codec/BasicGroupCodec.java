@@ -1,5 +1,6 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.FastObject;
@@ -38,17 +39,16 @@ public class BasicGroupCodec implements GroupCodec {
         }
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, BitVectorReader pmapReader, Context context) {
-        return 0;
+    public void decode(EObject object, int index, ByteBuffer buffer, BitVectorReader pmapReader, Context context) {
+        object.set(index, decode(buffer, pmapReader, context));
     }
     
-    public EObject decode(byte[] buffer, int offset, BitVectorReader reader, Context context) {
-        BitVector vector = bitVectorCodec.decode(buffer, offset);
+    public EObject decode(ByteBuffer buffer, BitVectorReader reader, Context context) {
+        BitVector vector = bitVectorCodec.decode(buffer);
         BitVectorReader pmapReader = new BitVectorReader(vector);
-        offset += bitVectorCodec.getLength(buffer, offset);
         FastObject o = composite.newObject();
         for (int i=0; i<fieldCodecs.length; i++) {
-            offset = fieldCodecs[i].decode(o, i, buffer, offset, pmapReader, context);
+            fieldCodecs[i].decode(o, i, buffer, pmapReader, context);
         }
         return o;
     }
@@ -76,7 +76,7 @@ public class BasicGroupCodec implements GroupCodec {
         return offset + pmapLen + index;
     }
 
-    public int getLength(byte[] buffer, int offset, BitVectorReader reader) {
+    public int getLength(ByteBuffer buffer, BitVectorReader reader) {
         return 0;
     }
 }

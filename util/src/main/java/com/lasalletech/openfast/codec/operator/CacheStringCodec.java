@@ -1,5 +1,6 @@
 package com.lasalletech.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
@@ -29,21 +30,22 @@ public class CacheStringCodec implements FieldCodec {
     }
 
     @SuppressWarnings("unchecked")
-    public int decode(EObject object, int index, byte[] buffer, int offset, BitVectorReader pmapReader, Context context) {
+    public void decode(EObject object, int index, ByteBuffer buffer, BitVectorReader pmapReader, Context context) {
         if (!entry.isDefined())
             entry.set(new BasicCache<String>(operator.getSize()));
         Cache<String> cache = (Cache<String>) entry.getObject();
         if (pmapReader.read()) {
-            String value = stringCodec.decode(buffer, offset);
+            String value = stringCodec.decode(buffer);
             object.set(index, value);
             cache.store(value);
-            return stringCodec.getLength(buffer, offset) + offset;
+            return;
         } else {
-            if (integerCodec.isNull(buffer, offset))
-                return offset + 1;
-            int cacheIndex = integerCodec.decode(buffer, offset);
+            if (integerCodec.isNull(buffer)) {
+                buffer.get(); // read off the null value;
+                return;
+            }
+            int cacheIndex = integerCodec.decode(buffer);
             object.set(index, cache.lookup(cacheIndex));
-            return offset + integerCodec.getLength(buffer, offset);
         }
     }
 
@@ -69,7 +71,7 @@ public class CacheStringCodec implements FieldCodec {
         }
     }
 
-    public int getLength(byte[] buffer, int offset, BitVectorReader reader) {
+    public int getLength(ByteBuffer buffer, BitVectorReader reader) {
         return 0;
     }
 }

@@ -1,6 +1,8 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
+
 public interface StringCodec extends TypeCodec {
-    String decode(byte[] buffer, int offset);
+    String decode(ByteBuffer buffer);
     int encode(byte[] buffer, int offset, String value);
 }

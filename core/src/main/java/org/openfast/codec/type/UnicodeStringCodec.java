@@ -14,11 +14,14 @@ import org.openfast.error.FastConstants;
 public class UnicodeStringCodec extends LengthEncodedTypeCodec implements StringCodec {
     private final CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
     private final CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
-    public String decode(byte[] buffer, int offset) {
-        int length = UNSIGNED_INTEGER.decode(buffer, offset);
-        offset = UNSIGNED_INTEGER.getLength(buffer, offset) + offset;
+    public String decode(ByteBuffer buffer) {
+        int length = UNSIGNED_INTEGER.decode(buffer);
         try {
-            return decoder.decode(ByteBuffer.wrap(buffer, offset, length)).toString();
+            int limit = buffer.limit();
+            buffer.limit(buffer.position() + length);
+            CharBuffer charBuffer = decoder.decode(buffer);
+            buffer.limit(limit);
+            return charBuffer.toString();
         } catch (CharacterCodingException e) {
             Global.handleError(FastConstants.GENERAL_ERROR, "Unable to decode unicode string.", e);
             return null;
@@ -37,7 +40,7 @@ public class UnicodeStringCodec extends LengthEncodedTypeCodec implements String
         }
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
+    public boolean isNull(ByteBuffer buffer) {
         return false;
     }
 }

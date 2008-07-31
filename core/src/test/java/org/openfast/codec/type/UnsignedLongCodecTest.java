@@ -42,7 +42,7 @@ public class UnsignedLongCodecTest extends OpenFastTestCase {
     }
 
     private long decode(String bits) {
-        return codec.decode(bytes(bits), 0);
+        return codec.decode(buffer(bits));
     }
 
     private byte[] encode(long value) {

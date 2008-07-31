@@ -2,19 +2,19 @@ package org.openfast.codec.type;
 
 import static org.openfast.codec.type.FastTypeCodecs.SIGNED_INTEGER;
 import static org.openfast.codec.type.FastTypeCodecs.SIGNED_LONG;
+import java.nio.ByteBuffer;
 import org.openfast.Decimal;
 import org.openfast.Global;
 import org.openfast.codec.DecimalCodec;
 import org.openfast.error.FastConstants;
 
 public class BasicDecimalCodec implements DecimalCodec {
-    public Decimal decode(byte[] buffer, int offset) {
-        int newOffset = offset + SIGNED_INTEGER.getLength(buffer, offset);
-        int exponent = SIGNED_INTEGER.decode(buffer, offset);
+    public Decimal decode(ByteBuffer buffer) {
+        int exponent = SIGNED_INTEGER.decode(buffer);
         if (Math.abs(exponent) > 63) {
             Global.handleError(FastConstants.R1_LARGE_DECIMAL, "Encountered exponent of size " + exponent);
         }
-        long mantissa = SIGNED_LONG.decode(buffer, newOffset);
+        long mantissa = SIGNED_LONG.decode(buffer);
         return new Decimal(mantissa, exponent);
     }
 
@@ -26,12 +26,11 @@ public class BasicDecimalCodec implements DecimalCodec {
         return SIGNED_LONG.encode(buffer, newOffset, value.mantissa);
     }
 
-    public int getLength(byte[] buffer, int offset) {
-        offset += SIGNED_INTEGER.getLength(buffer, offset);
-        return offset + SIGNED_LONG.getLength(buffer, offset);
+    public int getLength(ByteBuffer buffer) {
+        return SIGNED_INTEGER.getLength(buffer) + SIGNED_LONG.getLength(buffer);
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
+    public boolean isNull(ByteBuffer buffer) {
         return false;
     }
 }

@@ -42,7 +42,7 @@ public class NullableUnsignedIntegerCodecTest extends OpenFastTestCase {
     }
 
     private int decode(String bits) {
-        return codec.decode(bytes(bits), 0);
+        return codec.decode(buffer(bits));
     }
 
     private byte[] encode(int value) {

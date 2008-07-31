@@ -1,6 +1,7 @@
 package org.openfast.codec;
 
 import static org.openfast.template.ScalarBuilder.scalar;
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.lasalletech.entity.QName;
 import org.openfast.Context;
@@ -26,8 +27,8 @@ public class BasicGroupCodecTest extends OpenFastTestCase {
     byte[] buffer = new byte[32];
     
     public void testDecode() {
-        byte[] encoded = bytes("10000000 10000010 11000001");
-        EObject object = codec.decode(encoded, 0, BitVectorReader.INFINITE_TRUE, context);
+        ByteBuffer encoded = buffer("10000000 10000010 11000001");
+        EObject object = codec.decode(encoded, BitVectorReader.INFINITE_TRUE, context);
         assertEquals(2, object.getInt(0));
         assertEquals("A", object.getString(1));
     }

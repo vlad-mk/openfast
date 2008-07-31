@@ -47,6 +47,6 @@ public class NullableULongCodecTest extends OpenFastTestCase {
 
 
     private ULong decode(String bits) {
-        return codec.decode(bytes(bits), 0);
+        return codec.decode(buffer(bits));
     }
 }

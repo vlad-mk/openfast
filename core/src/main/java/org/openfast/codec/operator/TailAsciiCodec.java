@@ -1,5 +1,6 @@
 package org.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
@@ -15,13 +16,13 @@ public class TailAsciiCodec extends DictionaryOperatorStringCodec implements Fie
     }
 
     @Override
-    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
-        if (stringCodec.isNull(buffer, offset)) {
+    public void decode(EObject object, int index, ByteBuffer buffer, Context context) {
+        if (stringCodec.isNull(buffer)) {
             dictionaryEntry.setNull();
             return;
         }
         String baseValue = getBaseValue();
-        String encodedValue = stringCodec.decode(buffer, offset);
+        String encodedValue = stringCodec.decode(buffer);
         String value;
         if (encodedValue.length() > baseValue.length())
             value = encodedValue;
@@ -71,7 +72,7 @@ public class TailAsciiCodec extends DictionaryOperatorStringCodec implements Fie
     }
 
     @Override
-    public int getLength(byte[] buffer, int offset) {
-        return stringCodec.getLength(buffer, offset);
+    public int getLength(ByteBuffer buffer) {
+        return stringCodec.getLength(buffer);
     }
 }

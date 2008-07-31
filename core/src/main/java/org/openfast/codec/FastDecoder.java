@@ -1,5 +1,6 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import org.openfast.Context;
@@ -35,13 +36,11 @@ public class FastDecoder implements Coder {
         uintCodec = implementation.getTypeCodecRegistry().getLongCodec(FastTypes.U32);
     }
 
-    public Message decode(byte[] buffer, int offset) {
-        BitVectorReader reader = new BitVectorReader(bitVectorCodec.decode(buffer, offset));
-        offset += bitVectorCodec.getLength(buffer, offset);
+    public Message decode(ByteBuffer buffer) {
+        BitVectorReader reader = new BitVectorReader(bitVectorCodec.decode(buffer));
         int templateId = 0;
         if (reader.read()) {
-            templateId = (int) uintCodec.decode(buffer, offset);
-            offset += uintCodec.getLength(buffer, offset);
+            templateId = (int) uintCodec.decode(buffer);
             context.setLastTemplateId(templateId);
         } else {
             templateId = context.getLastTemplateId();
@@ -49,7 +48,7 @@ public class FastDecoder implements Coder {
         MessageTemplate template = context.getTemplate(templateId);
         MessageCodec codec = getCodec(templateId, template);
         Message message = template.newObject();
-        codec.decode(message, buffer, offset, reader, context);
+        codec.decode(message, buffer, reader, context);
         if (messageHandlers.containsKey(message.getTemplate()))
             messageHandlers.get(message.getTemplate()).handleMessage(message, context, this);
         return message;
@@ -66,20 +65,20 @@ public class FastDecoder implements Coder {
         return codecRegistry.get(id);
     }
 
-    public int getNextMessageLength(byte[] buffer, final int offset) {
-        BitVectorReader reader = new BitVectorReader(bitVectorCodec.decode(buffer, offset));
-        int newOffset = offset + bitVectorCodec.getLength(buffer, offset);
+    public int getNextMessageLength(ByteBuffer buffer) {
+        BitVectorReader reader = new BitVectorReader(bitVectorCodec.decode(buffer));
+        int length = bitVectorCodec.getLength(buffer);
         int templateId = 0;
         if (reader.read()) {
-            templateId = (int) uintCodec.decode(buffer, newOffset);
-            newOffset += uintCodec.getLength(buffer, newOffset);
+            templateId = (int) uintCodec.decode(buffer);
+            length += uintCodec.getLength(buffer);
         } else {
             templateId = context.getLastTemplateId();
         }
         MessageTemplate template = context.getTemplate(templateId);
         MessageCodec codec = getCodec(templateId, template);
-        newOffset += codec.getLength(buffer, newOffset, reader, context);
-        return newOffset - offset;
+        length += codec.getLength(buffer, reader, context);
+        return length;
     }
 
     public void registerMessageHandler(MessageTemplate template, MessageHandler messageHandler) {

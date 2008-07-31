@@ -24,6 +24,7 @@ package org.openfast.test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.util.Calendar;
 import java.util.Date;
 import junit.framework.AssertionFailedError;
@@ -104,6 +105,10 @@ public abstract class OpenFastTestCase extends TestCase {
         return this.getClass().getClassLoader().getResourceAsStream(url);
     }
     
+    protected ByteBuffer buffer(String bitString) {
+        return ByteBuffer.wrap(bytes(bitString));
+    }
+
     protected static void assertEquals(BigDecimal expected, BigDecimal actual) {
         if (expected.compareTo(actual) != 0)
             throw new AssertionFailedError("expected:<" + expected.toPlainString() + "> bug was:<" + actual.toPlainString() + ">");

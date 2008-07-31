@@ -1,5 +1,6 @@
 package org.openfast.codec;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.lasalletech.entity.EObjectList;
 import org.lasalletech.entity.EmptyEObject;
@@ -43,8 +44,7 @@ public class BasicSequenceCodec implements FieldCodec {
         groupCodec = (BasicGroupCodec) basicCodecFactory.createGroupCodec(template, field, implementation, dictionaryRegistry);
     }
 
-    public int decode(EObject object, int index, byte[] buffer, int offset, BitVectorReader pmapReader, Context context) {
-        return 0;
+    public void decode(EObject object, int index, ByteBuffer buffer, BitVectorReader pmapReader, Context context) {
     }
 
     public int encode(EObject object, int index, byte[] buffer, int offset, BitVectorBuilder pmapBuilder, Context context) {
@@ -60,7 +60,7 @@ public class BasicSequenceCodec implements FieldCodec {
         return newOffset;
     }
 
-    public int getLength(byte[] buffer, int offset, BitVectorReader reader) {
+    public int getLength(ByteBuffer buffer, BitVectorReader reader) {
         return 0;
     }
 }

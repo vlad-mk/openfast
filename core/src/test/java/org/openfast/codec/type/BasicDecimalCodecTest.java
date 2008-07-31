@@ -29,7 +29,7 @@ public class BasicDecimalCodecTest extends OpenFastTestCase {
 
     public void testDecodeLargeDecimalReportsError() {
         try {
-            basic.decode(bytes("00000001 11111111 10000001"), 0);
+            basic.decode(buffer("00000001 11111111 10000001"));
             fail();
         } catch (FastException e) {
             assertEquals(FastConstants.R1_LARGE_DECIMAL, e.getCode());
@@ -66,6 +66,6 @@ public class BasicDecimalCodecTest extends OpenFastTestCase {
         return buffer;
     }
     private Decimal decode(String bits) {
-        return basic.decode(bytes(bits), 0);
+        return basic.decode(buffer(bits));
     }
 }

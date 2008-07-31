@@ -1,5 +1,6 @@
 package org.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
@@ -18,14 +19,14 @@ public class DefaultIntegerCodec extends SinglePresenceMapEntryFieldCodec implem
         this.integerCodec = integerCodec;
         this.defaultValue = operator.hasDefaultValue() ? Integer.parseInt(operator.getDefaultValue()) : 0;
     }
-    public int getLength(byte[] buffer, int offset) {
-        return integerCodec.getLength(buffer, offset);
+    public int getLength(ByteBuffer buffer) {
+        return integerCodec.getLength(buffer);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
-        if (integerCodec.isNull(buffer, offset))
+    public void decode(EObject object, int index, ByteBuffer buffer, Context context) {
+        if (integerCodec.isNull(buffer))
             return;
-        int value = integerCodec.decode(buffer, offset);
+        int value = integerCodec.decode(buffer);
         object.set(index, value);
     }
 

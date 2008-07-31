@@ -15,23 +15,23 @@ import org.openfast.error.FastConstants;
 public class AsciiStringCodec extends StopBitEncodedTypeCodec implements StringCodec {
     private final CharsetDecoder decoder = Charset.forName("US-ASCII").newDecoder();
     private final CharsetEncoder encoder = Charset.forName("US-ASCII").newEncoder();
-    public String decode(byte[] buffer, int offset) {
+    public String decode(ByteBuffer bbuf) {
         CharBuffer decoded;
         try {
-            int length = getLength(buffer, offset);
-            if ((buffer[offset] & Fast.VALUE_BITS) == 0) {
-                if (!ByteUtil.isEmpty(buffer, offset, length)) { 
+            int length = getLength(bbuf);
+            byte[] buffer = new byte[length];
+            bbuf.get(buffer, 0, length);
+            if ((buffer[0] & Fast.VALUE_BITS) == 0) {
+                if (!ByteUtil.isEmpty(buffer, 0, length)) { 
                     Global.handleError(FastConstants.R9_STRING_OVERLONG, null);
-                    offset++;
                 }
-                else if (length > 1 && (buffer[offset+1] & Fast.VALUE_BITS) == 0)
+                else if (length > 1 && (buffer[1] & Fast.VALUE_BITS) == 0)
                     return Fast.ZERO_TERMINATOR;
                 else
                     return "";
             }
-            buffer[length + offset - 1] &= Fast.VALUE_BITS; // remove stop bit
-            decoded = decoder.decode(ByteBuffer.wrap(buffer, offset, length));
-            buffer[length + offset - 1] |= Fast.STOP_BIT; // replace stop bit to prevent side effects
+            buffer[length - 1] &= Fast.VALUE_BITS; // remove stop bit
+            decoded = decoder.decode(ByteBuffer.wrap(buffer));
             return decoded.toString();
         } catch (CharacterCodingException e) {
             throw new RuntimeException(e);
@@ -59,7 +59,7 @@ public class AsciiStringCodec extends StopBitEncodedTypeCodec implements StringC
         return encoded.limit() + offset;
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
+    public boolean isNull(ByteBuffer buffer) {
         return false;
     }
 }

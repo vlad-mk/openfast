@@ -1,5 +1,6 @@
 package org.openfast.codec.operator;
 
+import java.nio.ByteBuffer;
 import org.lasalletech.entity.EObject;
 import org.openfast.Context;
 import org.openfast.Fast;
@@ -19,19 +20,18 @@ public class DeltaAsciiCodec extends DictionaryOperatorStringCodec implements Fi
         this.integerCodec = integerCodec;
     }
 
-    public int getLength(byte[] buffer, int offset) {
-        if (integerCodec.isNull(buffer, offset)) return 1;
-        int len = integerCodec.getLength(buffer, offset);
-        return len + stringCodec.getLength(buffer, offset + len);
+    public int getLength(ByteBuffer buffer) {
+        if (integerCodec.isNull(buffer)) return 1;
+        int len = integerCodec.getLength(buffer);
+        return len + stringCodec.getLength(buffer);
     }
 
-    public void decode(EObject object, int index, byte[] buffer, int offset, Context context) {
-        if (integerCodec.isNull(buffer, offset)) {
+    public void decode(EObject object, int index, ByteBuffer buffer, Context context) {
+        if (integerCodec.isNull(buffer)) {
             return;
         }
-        int subtractionLength = integerCodec.decode(buffer, offset);
-        offset += integerCodec.getLength(buffer, offset);
-        String delta = stringCodec.decode(buffer, offset);
+        int subtractionLength = integerCodec.decode(buffer);
+        String delta = stringCodec.decode(buffer);
         String value = new StringDelta(subtractionLength, delta).applyTo(getPreviousValue(object, context));
         dictionaryEntry.set(value);
         object.set(index, value);

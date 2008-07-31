@@ -1,11 +1,12 @@
 package org.openfast.codec.type;
 
+import java.nio.ByteBuffer;
 import org.openfast.Fast;
 import org.openfast.codec.IntegerCodec;
 
 public class NullableUnsignedIntegerCodec extends StopBitEncodedTypeCodec implements IntegerCodec {
-    public int decode(byte[] buffer, int offset) {
-        return FastTypeCodecs.UNSIGNED_INTEGER.decode(buffer, offset) - 1;
+    public int decode(ByteBuffer buffer) {
+        return FastTypeCodecs.UNSIGNED_INTEGER.decode(buffer) - 1;
     }
 
     public int encode(byte[] buffer, int offset, int value) {
@@ -20,7 +21,7 @@ public class NullableUnsignedIntegerCodec extends StopBitEncodedTypeCodec implem
         return FastTypeCodecs.UNSIGNED_INTEGER.encode(buffer, offset, value + 1);
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
-        return buffer[offset] == Fast.NULL;
+    public boolean isNull(ByteBuffer buffer) {
+        return buffer.get(0) == Fast.NULL;
     }
 }

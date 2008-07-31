@@ -1,11 +1,12 @@
 package org.openfast.codec.type;
 
+import java.nio.ByteBuffer;
 import org.openfast.Fast;
 import org.openfast.codec.LongCodec;
 
 public class NullableSignedLongCodec extends StopBitEncodedTypeCodec implements LongCodec {
-    public long decode(byte[] buffer, int offset) {
-        int value = FastTypeCodecs.SIGNED_INTEGER.decode(buffer, offset);
+    public long decode(ByteBuffer buffer) {
+        int value = FastTypeCodecs.SIGNED_INTEGER.decode(buffer);
         if (value > 0)
             return value - 1;
         return value;
@@ -31,7 +32,7 @@ public class NullableSignedLongCodec extends StopBitEncodedTypeCodec implements 
         return FastTypeCodecs.SIGNED_LONG.encode(buffer, offset, value);
     }
 
-    public boolean isNull(byte[] buffer, int offset) {
-        return buffer[offset] == Fast.NULL;
+    public boolean isNull(ByteBuffer buffer) {
+        return buffer.get(0) == Fast.NULL;
     }
 }
