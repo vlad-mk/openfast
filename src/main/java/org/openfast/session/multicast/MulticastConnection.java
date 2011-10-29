@@ -29,11 +29,14 @@ import java.net.MulticastSocket;
 import org.openfast.session.Connection;
 
 public class MulticastConnection implements Connection {
-    private MulticastSocket socket;
-    private InetAddress group;
+    protected MulticastOutputStream outputStream;
+    protected MulticastSocket socket;
+    protected int port;
+    protected InetAddress group;
 
-    public MulticastConnection(MulticastSocket socket, InetAddress group) {
+    public MulticastConnection(MulticastSocket socket, int port, InetAddress group) {
         this.socket = socket;
+        this.port = port;
         this.group = group;
     }
 
@@ -41,7 +44,8 @@ public class MulticastConnection implements Connection {
         try {
             socket.leaveGroup(group);
             socket.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
         }
     }
 
@@ -50,6 +54,8 @@ public class MulticastConnection implements Connection {
     }
 
     public OutputStream getOutputStream() throws IOException {
-        throw new UnsupportedOperationException("Multicast sending not currently supported.");
+        if(outputStream == null)
+            outputStream = new MulticastOutputStream(socket, port, group);
+        return outputStream;
     }
 }

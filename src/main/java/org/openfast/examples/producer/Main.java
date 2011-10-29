@@ -6,20 +6,35 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.openfast.examples.Assert;
 import org.openfast.examples.OpenFastExample;
-import org.openfast.session.Endpoint;
+import org.openfast.examples.MessageBlockWriterFactory;
 import org.openfast.session.FastConnectionException;
+import org.openfast.session.Endpoint;
 import org.openfast.session.tcp.TcpEndpoint;
+import org.openfast.session.multicast.MulticastServerEndpoint;
 
 public class Main extends OpenFastExample {
     private static Options options = new Options();
     
     static {
         options.addOption("?", HELP, false, "Displays this message");
+        options.addOption("r", PROTOCOL, true, "Protocol [tcp|udp] defaults to tcp");
         options.addOption("p", PORT, true, "Port to serve data on");
-        options.addOption("h", HOST, true, "The host name of the server");
+        options.addOption("h", HOST, true, "The host name of the server (or group name for multicast)");
+        options.addOption("i", INTERFACE, true, "The ip address of the network interface to use");
         options.addOption("e", ERROR, false, "Show stacktrace information");
         options.addOption("t", MESSAGE_TEMPLATE_FILE, true, "Message template definition file");
         options.addOption("x", XML_DATA_FILE, true, "The XML data to convert to FAST");
+        options.addOption("k", WRITE_OFFSET, true, WRITE_OFFSET_DESCRIPTION);
+        options.addOption("z", VARIANT, true, VARIANT_DESCRIPTION);
+    }
+
+    public static boolean isMulticast(CommandLine cl) {
+        if (cl.hasOption(PROTOCOL)) {
+            if ("udp".equals(cl.getOptionValue(PROTOCOL))) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -38,8 +53,14 @@ public class Main extends OpenFastExample {
             Assert.assertTrue(cl.hasOption(PORT), "The required parameter \"" + PORT + "\" is missing.");
             int port = getInteger(cl, PORT);
             String host = cl.hasOption(HOST) ? cl.getOptionValue(HOST) : "localhost";
+            String ifaddr = cl.hasOption(INTERFACE) ? cl.getOptionValue(INTERFACE) : null;
             
-            endpoint = new TcpEndpoint(host, port);
+            if(isMulticast(cl)) {
+                endpoint = new MulticastServerEndpoint(port, host, ifaddr);
+            }
+            if (endpoint == null) {
+                endpoint = new TcpEndpoint(host, port);
+            }
             templatesFile = getFile(cl, MESSAGE_TEMPLATE_FILE);
             xmlDataFile = getFile(cl, XML_DATA_FILE);
             Assert.assertTrue(templatesFile.exists(), "The template definition file \"" + templatesFile.getAbsolutePath() + "\" does not exist.");
@@ -52,8 +73,16 @@ public class Main extends OpenFastExample {
             System.out.println(e.getMessage());
             displayHelp("consumer", options);
         }
-        FastMessageProducer producer = new FastMessageProducer(endpoint, templatesFile);
+        
         try {
+			final int writeOffset = cl.hasOption(WRITE_OFFSET) ? getInteger(cl, WRITE_OFFSET) : 0;
+			final Variant variant = cl.hasOption(VARIANT) ? getVariant(cl) : Variant.DEFAULT;
+			final MessageBlockWriterFactory msgBlockWriterFactory = new MessageBlockWriterFactory(variant, writeOffset);
+			
+			FastMessageProducer producer = isMulticast(cl)
+                ? new MulticastFastMessageProducer(endpoint, templatesFile, msgBlockWriterFactory)
+                : new FastMessageProducer(endpoint, templatesFile, msgBlockWriterFactory);
+
             producer.start();
             producer.encode(xmlDataFile);
             producer.stop();

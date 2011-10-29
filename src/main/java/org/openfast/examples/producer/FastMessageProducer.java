@@ -1,6 +1,8 @@
 package org.openfast.examples.producer;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.openfast.Context;
 import org.openfast.Global;
 import org.openfast.Message;
+import org.openfast.MessageBlockWriter;
 import org.openfast.MessageOutputStream;
 import org.openfast.error.ErrorHandler;
 import org.openfast.session.Connection;
@@ -17,14 +20,21 @@ import org.openfast.session.Endpoint;
 import org.openfast.session.FastConnectionException;
 import org.openfast.template.TemplateRegistry;
 import org.openfast.template.loader.XMLMessageTemplateLoader;
+import org.openfast.examples.MessageBlockWriterFactory;
 
 public class FastMessageProducer implements ConnectionListener {
-    private final Endpoint endpoint;
-    private final TemplateRegistry templateRegistry;
-    private Thread acceptThread;
-    private List connections = new ArrayList();
+    protected final Endpoint endpoint;
+    protected final TemplateRegistry templateRegistry;
+    protected Thread acceptThread;
+    protected List connections = new ArrayList();
+    protected XmlCompressedMessageConverter converter = new XmlCompressedMessageConverter();
+    protected final MessageBlockWriterFactory messageBlockWriterFactory;
 
     public FastMessageProducer(Endpoint endpoint, File templatesFile) {
+		this(endpoint, templatesFile, new MessageBlockWriterFactory());
+	}
+
+	public FastMessageProducer(Endpoint endpoint, File templatesFile, MessageBlockWriterFactory messageBlockWriterFactory) {
         Global.setErrorHandler(ErrorHandler.NULL);
         this.endpoint = endpoint;
         XMLMessageTemplateLoader loader = new XMLMessageTemplateLoader();
@@ -35,23 +45,40 @@ public class FastMessageProducer implements ConnectionListener {
             throw new RuntimeException(e.getMessage(), e);
         }
         this.templateRegistry = loader.getTemplateRegistry();
-    }
+        this.converter.setTemplateRegistry(this.templateRegistry);
+		this.messageBlockWriterFactory = messageBlockWriterFactory;
+	}
 
     public void encode(File xmlDataFile) throws FastConnectionException, IOException {
-        XmlCompressedMessageConverter converter = new XmlCompressedMessageConverter();
-        converter.setTemplateRegistry(templateRegistry);
-        List messages = converter.parse(new FileInputStream(xmlDataFile));
-        while (true) {
-            for (int i=0; i<messages.size(); i++) {
-                Message message = (Message) messages.get(i);
-                for (int j=0; j<connections.size(); j++) {
-                    MessageOutputStream out = (MessageOutputStream) connections.get(j);
-                    out.writeMessage(message);
-                }
-            }
+        encode(new FileInputStream(xmlDataFile), true);
+    }
+
+    public void encode(InputStream xmlData) throws FastConnectionException, IOException {
+        encode(xmlData, true);
+    }
+
+    public void encode(InputStream xmlData, boolean loopForever) throws FastConnectionException, IOException {
+        List messages = converter.parse(xmlData);
+        if(messages == null)
+            throw new IllegalArgumentException("The XML data stream contains no FAST messages!");
+
+        do {
+            publish(messages, connections);
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
+            }
+        }
+        while(loopForever);
+    }
+
+    protected void publish(List messages, List msgOutputStreams) {
+        for (int i = 0; i < messages.size(); ++i) {
+            Message message = (Message) messages.get(i);
+            for (int j = 0; j < msgOutputStreams.size(); ++j) {
+                MessageOutputStream out = (MessageOutputStream)msgOutputStreams.get(j);
+                out.writeMessage(message);
             }
         }
     }
@@ -83,7 +110,8 @@ public class FastMessageProducer implements ConnectionListener {
             context.setTemplateRegistry(templateRegistry);
             try {
                 MessageOutputStream out = new MessageOutputStream(connection.getOutputStream(), context);
-                connections.add(out);
+				out.setBlockWriter(messageBlockWriterFactory.create());
+				connections.add(out);
             } catch (IOException e) {
                 e.printStackTrace();
             }

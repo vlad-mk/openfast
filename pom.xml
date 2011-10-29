@@ -3,7 +3,7 @@
     <groupId>org.openfast</groupId>
     <artifactId>openfast</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
 
     <organization>
         <name>The LaSalle Technology Group, LLC</name>
@@ -71,9 +71,9 @@
     </issueManagement>
 
     <scm>
-        <connection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/tags/openfast-1.0.1</connection>
-        <developerConnection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/tags/openfast-1.0.1</developerConnection>
-        <url>http://openfast.svn.sourceforge.net/viewvc/openfast/tags/openfast-1.0.1</url>
+        <connection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/tags/openfast-1.0.3</connection>
+        <developerConnection>scm:svn:https://openfast.svn.sourceforge.net/svnroot/openfast/tags/openfast-1.0.3</developerConnection>
+        <url>http://openfast.svn.sourceforge.net/viewvc/openfast/tags/openfast-1.0.3</url>
     </scm>
 
     <mailingLists>
@@ -230,21 +230,21 @@
             <id>sourceforge.net</id>
             <name>Sourceforge.net Repository</name>
             <url>
-            scp://web.sourceforge.net/home/groups/o/op/openfast/htdocs/maven/release
+            scp://shell.sourceforge.net/home/groups/o/op/openfast/htdocs/maven/release
             </url>
         </repository>
         <snapshotRepository>
             <id>sourceforge.net</id>
             <name>Sourceforge.net Snapshot Repository</name>
             <url>
-           scp://web.sourceforge.net/home/groups/o/op/openfast/htdocs/maven/snapshot
+           scp://shell.sourceforge.net/home/groups/o/op/openfast/htdocs/maven/snapshot
             </url>
         </snapshotRepository>
         <site>
             <id>sourceforge.net</id>
             <name>Sourceforge.net OpenFAST Web Site</name>
             <url>
-                scp://web.sourceforge.net/home/groups/o/op/openfast/htdocs/
+                scp://shell.sourceforge.net/home/groups/o/op/openfast/htdocs/
             </url>
         </site>
     </distributionManagement>

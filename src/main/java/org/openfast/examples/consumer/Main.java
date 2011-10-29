@@ -6,9 +6,11 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.openfast.examples.Assert;
 import org.openfast.examples.OpenFastExample;
+import org.openfast.examples.MessageBlockReaderFactory;
 import org.openfast.session.Endpoint;
 import org.openfast.session.FastConnectionException;
 import org.openfast.session.multicast.MulticastEndpoint;
+import org.openfast.session.multicast.MulticastClientEndpoint;
 import org.openfast.session.tcp.TcpEndpoint;
 
 public class Main extends OpenFastExample {
@@ -22,6 +24,8 @@ public class Main extends OpenFastExample {
         options.addOption("i", INTERFACE, true, "The ip address of the network interface to use");
         options.addOption("e", ERROR, false, "Show stacktrace information");
         options.addOption("t", MESSAGE_TEMPLATE_FILE, true, "Message template definition file");
+        options.addOption("j", READ_OFFSET, true, READ_OFFSET_DESCRIPTION);
+        options.addOption("z", VARIANT, true, VARIANT_DESCRIPTION);
     }
     
     /**
@@ -43,7 +47,7 @@ public class Main extends OpenFastExample {
             
             if (cl.hasOption(PROTOCOL)) {
                 if ("udp".equals(cl.getOptionValue(PROTOCOL))) {
-                    endpoint = new MulticastEndpoint(port, host, ifaddr);
+                    endpoint = new MulticastClientEndpoint(port, host, ifaddr);
                 }
             }
             if (endpoint == null) {
@@ -57,7 +61,13 @@ public class Main extends OpenFastExample {
             System.out.println(e.getMessage());
             displayHelp("consumer", options);
         }
-        FastMessageConsumer consumer = new FastMessageConsumer(endpoint, templatesFile);
+        
+
+        final int readOffset = cl.hasOption(READ_OFFSET) ? getInteger(cl, READ_OFFSET) : 0;
+		final Variant variant = cl.hasOption(VARIANT) ? getVariant(cl) : Variant.DEFAULT;
+		final MessageBlockReaderFactory msgBlockReaderFactory = new MessageBlockReaderFactory(variant, readOffset);
+		FastMessageConsumer consumer = new FastMessageConsumer(endpoint, templatesFile, msgBlockReaderFactory);
+        
         try {
             consumer.start();
         } catch (FastConnectionException e) {
