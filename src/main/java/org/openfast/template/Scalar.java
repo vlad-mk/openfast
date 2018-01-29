@@ -238,7 +238,7 @@ public class Scalar extends Field {
                 value = decode(previousValue);
             }
             validateDecodedValueIsCorrectForType(value, type);
-            if (!((getOperator() == Operator.DELTA) && (value == null))) {
+            if (!((getOperator() == Operator.DELTA) && (value == null)) && (operator.shouldStoreValue(value))) {
                 context.store(getDictionary(), template, getKey(), value);
             }
             return value;
